@@ -157,7 +157,7 @@
   .cal-cell.excluded{ background:#F1F2F4; }
   .cal-cell.excluded .cal-day{ color:var(--text-faint); }
   .cal-cell.excluded .cal-amt{ color:var(--text-faint); }
-  .cal-legend{ display:flex; gap:14px; margin:2px 2px 4px; flex-wrap:wrap; margin-bottom: 20px; }
+  .cal-legend{ display:flex; gap:14px; margin:2px 2px 4px; flex-wrap:wrap; }
   .cal-legend span{ font-size:11.5px; color:var(--text-sub); display:flex; align-items:center; gap:5px; }
   .cal-legend i{ width:8px; height:8px; border-radius:50%; display:inline-block; }
 
@@ -366,11 +366,12 @@
       </div>
     </div>
 
-<div id="calendarArea" style="display:none;">
-<div class="cal-legend">
-<span><i style="background:var(--mint);"></i>예산 이내</span>
-<span><i style="background:var(--red);"></i>예산 초과</span>
-
+    <div id="calendarArea" style="display:none;">
+      <div class="cal-legend">
+        <span><i style="background:var(--mint);"></i>예산 이내</span>
+        <span><i style="background:var(--red);"></i>예산 초과</span>
+        
+      </div>
       <div class="cal-dow-row">
         <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
       </div>
@@ -683,12 +684,12 @@
     if(todayInPeriod){ forEachDateInRange(r.start,new Date(todayKey+'T00:00:00'),function(x){if(isBudgetDay(fmtKey(x))) elapsed++;}); }
     var remainingDays=Math.max(0,budgetDays-elapsed);
     var avg=elapsed>0?used/elapsed:0;
-    var title='오늘의 식비 리포트', copy='아직 오늘의 지출이 없습니다.<br>여유 있게 시작해보세요.';
+    var title='오늘의 식비 리포트', copy='아직 오늘의 지출이 없습니다. 여유 있게 시작해보세요.';
     if(!todayInPeriod) copy='현재 선택한 예산 기간과 오늘이 다릅니다.';
     else if(budget<=0) copy=todaySpent>0 ? '오늘 '+won(todaySpent)+'을 사용했어요. 예산을 설정하면 지출 흐름까지 확인할 수 있어요.' : '오늘의 지출을 기록하면 하루 단위로 흐름을 확인할 수 있어요.';
     else if(todaySpent===0) copy='오늘은 아직 지출이 없어요. 현재 기준으로 예산에 여유가 있습니다.';
-    else if(todaySpent<=dailyBudget) copy='오늘은 기준 예산 안에서 사용하고 있어요.<br>지금 흐름을 유지해보세요.';
-    else copy='오늘은 기준 예산보다 '+won(todaySpent-dailyBudget)+' 더 사용했어요.<br>남은 기간은 조금 여유 있게 관리해보세요.';
+    else if(todaySpent<=dailyBudget) copy='오늘은 기준 예산 안에서 사용하고 있어요. 지금 흐름을 유지해보세요.';
+    else copy='오늘은 기준 예산보다 '+won(todaySpent-dailyBudget)+' 더 사용했어요. 남은 기간은 조금 여유 있게 관리해보세요.';
     document.getElementById('reportTitle').textContent=title; document.getElementById('reportCopy').textContent=copy;
     var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     [[todayInPeriod?'오늘 사용':'오늘 기록',won(todaySpent)],[budget>0?'하루 기준':'현재 평균',budget>0?won(dailyBudget):won(avg)],[budget>0?'남은 기간':'기록 수',budget>0?(remainingDays+'일'):mEntries.length+'건']].forEach(function(x){var el=document.createElement('div');el.className='report-metric';el.innerHTML='<div class="report-metric-label">'+x[0]+'</div><div class="report-metric-value">'+x[1]+'</div>';metrics.appendChild(el);});
