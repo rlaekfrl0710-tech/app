@@ -157,7 +157,7 @@
   .cal-cell.excluded{ background:#F1F2F4; }
   .cal-cell.excluded .cal-day{ color:var(--text-faint); }
   .cal-cell.excluded .cal-amt{ color:var(--text-faint); }
-  .cal-legend{ display:flex; gap:14px; margin:2px 2px 4px; flex-wrap:wrap; }
+  .cal-legend{ display:flex; gap:14px; margin:2px 2px 4px; flex-wrap:wrap; margin-bottom: 20px; }
   .cal-legend span{ font-size:11.5px; color:var(--text-sub); display:flex; align-items:center; gap:5px; }
   .cal-legend i{ width:8px; height:8px; border-radius:50%; display:inline-block; }
 
@@ -367,12 +367,10 @@
     </div>
 
 <div id="calendarArea" style="display:none;">
-  <div class="cal-legend" style="line-height: 1.5;">
-    <span><i style="background:var(--mint);"></i>예산 이내</span>
-    <span><i style="background:var(--red);"></i>예산 초과</span>
-  </div>
-</div>
-    
+<div class="cal-legend">
+<span><i style="background:var(--mint);"></i>예산 이내</span>
+<span><i style="background:var(--red);"></i>예산 초과</span>
+
       <div class="cal-dow-row">
         <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
       </div>
