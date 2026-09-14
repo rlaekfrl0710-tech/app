@@ -4,1128 +4,5264 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>점심 가계부</title>
+
 <style>
-  :root{
-    --bg:#F5F6F8;
-    --surface:#FFFFFF;
-    --line:#EEF0F2;
-    --text:#191F28;
-    --text-sub:#8B95A1;
-    --text-faint:#B0B8C1;
-    --blue:#3182F6;
-    --blue-dark:#1B64DA;
-    --blue-rgb:49,130,246;
-    --mint:#02C2B4;
-    --red:#F04452;
-    --red-bg:#FFF0F1;
-    --mint-bg:#E6FAF7;
-    --blue-bg:#EAF2FF;
-    --radius-lg:22px;
-    --radius-md:16px;
-    --radius-sm:12px;
-    --shadow: 0 8px 24px rgba(25,31,40,0.06);
+:root{
+  --bg:#F5F5F7;
+  --surface:#FFFFFF;
+  --surface2:#F8F8FA;
+  --line:#E8E8ED;
+  --text:#1D1D1F;
+  --sub:#86868B;
+  --faint:#B8B8BE;
+
+  --blue:#007AFF;
+  --blue-soft:#EAF3FF;
+  --green:#34C759;
+  --green-soft:#EAF8EE;
+  --red:#FF3B30;
+  --red-soft:#FFF0EF;
+  --orange:#FF9500;
+  --orange-soft:#FFF4E5;
+  --purple:#AF52DE;
+  --purple-soft:#F5ECFA;
+
+  --radius-xl:24px;
+  --radius-lg:18px;
+  --radius-md:14px;
+  --radius-sm:11px;
+
+  --shadow:0 4px 18px rgba(0,0,0,.045);
+}
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "SF Pro Text",
+    "Pretendard",
+    "Apple SD Gothic Neo",
+    "Malgun Gothic",
+    sans-serif;
+}
+
+button,
+input,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+#app{
+  width:100%;
+  max-width:430px;
+  min-height:100vh;
+  margin:0 auto;
+  background:var(--bg);
+  padding-bottom:96px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  padding:16px 20px 12px;
+  background:rgba(245,245,247,.88);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+
+.header-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.header-title{
+  font-size:21px;
+  font-weight:750;
+  letter-spacing:-.5px;
+}
+
+.icon-btn{
+  width:36px;
+  height:36px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:#fff;
+  color:#666;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+
+.period-header{
+  margin-top:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+}
+
+.period-arrow{
+  border:0;
+  background:transparent;
+  color:#A1A1A6;
+  width:28px;
+  height:28px;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.period-label{
+  min-width:175px;
+  text-align:center;
+  font-size:14px;
+  font-weight:650;
+  color:#6E6E73;
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.page{
+  display:none;
+  padding:8px 20px 0;
+}
+
+.page.active{
+  display:block;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.period-chip{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:4px 0 14px;
+  padding:11px 14px;
+  border-radius:13px;
+  background:#fff;
+  border:1px solid var(--line);
+}
+
+.period-chip-label{
+  color:var(--sub);
+  font-size:12px;
+  font-weight:600;
+}
+
+.period-chip-value{
+  color:var(--text);
+  font-size:13px;
+  font-weight:700;
+}
+
+.hero{
+  border-radius:var(--radius-xl);
+  padding:24px 22px 21px;
+  background:var(--text);
+  color:#fff;
+  margin-bottom:12px;
+}
+
+.hero.over{
+  background:#2B1716;
+}
+
+.hero-label{
+  font-size:13px;
+  color:rgba(255,255,255,.65);
+  font-weight:600;
+}
+
+.hero-amount{
+  margin-top:6px;
+  font-size:34px;
+  line-height:1.1;
+  font-weight:780;
+  letter-spacing:-1px;
+}
+
+.hero-progress{
+  margin-top:20px;
+  height:5px;
+  border-radius:10px;
+  overflow:hidden;
+  background:rgba(255,255,255,.18);
+}
+
+.hero-progress-fill{
+  width:0;
+  height:100%;
+  border-radius:10px;
+  background:#fff;
+  transition:width .3s ease;
+}
+
+.hero-bottom{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:18px;
+}
+
+.hero-stat{
+  min-width:0;
+}
+
+.hero-stat-label{
+  color:rgba(255,255,255,.55);
+  font-size:11px;
+}
+
+.hero-stat-value{
+  margin-top:4px;
+  font-size:13px;
+  font-weight:700;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* daily report */
+
+.report-card{
+  padding:17px 18px;
+  border-radius:var(--radius-lg);
+  background:#fff;
+  border:1px solid var(--line);
+  margin-bottom:12px;
+}
+
+.report-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.report-title{
+  font-size:13px;
+  color:var(--sub);
+  font-weight:650;
+}
+
+.report-date{
+  font-size:11px;
+  color:var(--faint);
+}
+
+.report-text{
+  margin-top:9px;
+  font-size:15px;
+  line-height:1.5;
+  font-weight:700;
+  letter-spacing:-.25px;
+}
+
+.report-sub{
+  margin-top:5px;
+  color:var(--sub);
+  font-size:12px;
+  line-height:1.45;
+}
+
+/* summary cards */
+
+.summary-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:22px;
+}
+
+.summary-card{
+  min-width:0;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  padding:16px;
+}
+
+.summary-label{
+  font-size:12px;
+  color:var(--sub);
+  font-weight:600;
+}
+
+.summary-value{
+  margin-top:6px;
+  font-size:20px;
+  font-weight:760;
+  letter-spacing:-.4px;
+}
+
+.summary-sub{
+  margin-top:3px;
+  color:var(--faint);
+  font-size:11px;
+}
+
+/* section */
+
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:24px 1px 10px;
+}
+
+.section-title{
+  font-size:16px;
+  font-weight:750;
+  letter-spacing:-.3px;
+}
+
+.section-more{
+  border:0;
+  background:transparent;
+  color:var(--sub);
+  font-size:12px;
+  padding:4px;
+}
+
+/* records */
+
+.day-group{
+  margin-bottom:17px;
+}
+
+.day-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:0 2px 8px;
+}
+
+.day-date{
+  font-size:13px;
+  font-weight:700;
+}
+
+.day-dow{
+  margin-left:5px;
+  color:var(--faint);
+  font-size:11px;
+}
+
+.day-total{
+  color:var(--sub);
+  font-size:12px;
+  font-weight:650;
+}
+
+.entry-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px;
+  margin-bottom:7px;
+  border-radius:var(--radius-md);
+  background:#fff;
+  border:1px solid var(--line);
+}
+
+.entry-left{
+  min-width:0;
+}
+
+.entry-place{
+  font-size:14px;
+  font-weight:700;
+}
+
+.entry-menu{
+  margin-top:3px;
+  color:var(--sub);
+  font-size:12px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.entry-meta{
+  margin-top:4px;
+  color:var(--faint);
+  font-size:10.5px;
+}
+
+.entry-right{
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.entry-price{
+  font-size:14px;
+  font-weight:750;
+}
+
+.payer-badge{
+  padding:3px 6px;
+  border-radius:6px;
+  font-size:9px;
+  font-weight:700;
+  background:#F1F1F4;
+  color:#777;
+}
+
+.payer-badge.friend{
+  background:var(--purple-soft);
+  color:var(--purple);
+}
+
+.empty{
+  padding:48px 15px;
+  text-align:center;
+  color:var(--faint);
+  font-size:13px;
+  line-height:1.6;
+}
+
+/* =========================
+   CALENDAR
+========================= */
+
+.view-switch{
+  display:flex;
+  padding:3px;
+  border-radius:10px;
+  background:#E9E9ED;
+  margin-bottom:13px;
+}
+
+.view-switch button{
+  flex:1;
+  border:0;
+  padding:7px;
+  border-radius:8px;
+  background:transparent;
+  color:#8B8B91;
+  font-size:12px;
+  font-weight:700;
+}
+
+.view-switch button.active{
+  background:#fff;
+  color:var(--text);
+  box-shadow:0 1px 4px rgba(0,0,0,.08);
+}
+
+.calendar{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  padding:14px 10px;
+}
+
+.calendar-week{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  margin-bottom:8px;
+}
+
+.calendar-week span{
+  text-align:center;
+  color:var(--faint);
+  font-size:10px;
+  font-weight:700;
+}
+
+.calendar-week span:first-child{
+  color:#FF6961;
+}
+
+.calendar-week span:last-child{
+  color:#5799FF;
+}
+
+.calendar-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:5px;
+}
+
+.cal-cell{
+  min-height:49px;
+  border-radius:9px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  background:#FAFAFB;
+  border:1px solid transparent;
+}
+
+.cal-cell.empty{
+  background:transparent;
+}
+
+.cal-cell.today{
+  border-color:var(--blue);
+}
+
+.cal-cell.under{
+  background:var(--green-soft);
+}
+
+.cal-cell.over{
+  background:var(--red-soft);
+}
+
+.cal-cell.excluded{
+  background:#F0F0F2;
+}
+
+.cal-day{
+  font-size:11px;
+  font-weight:700;
+}
+
+.cal-amount{
+  color:var(--sub);
+  font-size:8px;
+  font-weight:650;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats-period{
+  color:var(--sub);
+  font-size:12px;
+  margin:2px 0 15px;
+}
+
+.stats-main{
+  padding:21px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius-xl);
+}
+
+.stats-main-label{
+  color:var(--sub);
+  font-size:12px;
+  font-weight:600;
+}
+
+.stats-main-value{
+  margin-top:5px;
+  font-size:31px;
+  font-weight:780;
+  letter-spacing:-1px;
+}
+
+.stats-main-detail{
+  display:flex;
+  justify-content:space-between;
+  margin-top:15px;
+  padding-top:14px;
+  border-top:1px solid var(--line);
+}
+
+.stats-detail-item{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.stats-detail-label{
+  color:var(--sub);
+  font-size:10px;
+}
+
+.stats-detail-value{
+  font-size:13px;
+  font-weight:700;
+}
+
+.stats-card{
+  margin-top:12px;
+  padding:18px;
+  border-radius:var(--radius-lg);
+  background:#fff;
+  border:1px solid var(--line);
+}
+
+.stats-card-title{
+  font-size:14px;
+  font-weight:750;
+  margin-bottom:16px;
+}
+
+.category-row{
+  margin-bottom:15px;
+}
+
+.category-row:last-child{
+  margin-bottom:0;
+}
+
+.category-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:7px;
+}
+
+.category-name{
+  font-size:12px;
+  font-weight:650;
+}
+
+.category-value{
+  color:var(--sub);
+  font-size:11px;
+}
+
+.category-bar{
+  height:6px;
+  border-radius:10px;
+  background:#F0F0F2;
+  overflow:hidden;
+}
+
+.category-fill{
+  height:100%;
+  border-radius:10px;
+  background:var(--text);
+}
+
+.bar-chart{
+  height:145px;
+  display:flex;
+  align-items:flex-end;
+  gap:7px;
+  padding-top:12px;
+}
+
+.bar-item{
+  flex:1;
+  min-width:0;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-end;
+  gap:6px;
+}
+
+.bar{
+  width:100%;
+  max-width:20px;
+  min-height:2px;
+  border-radius:5px 5px 2px 2px;
+  background:var(--text);
+}
+
+.bar-label{
+  color:var(--sub);
+  font-size:9px;
+}
+
+.bar-value{
+  color:var(--faint);
+  font-size:8px;
+}
+
+.compare-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.compare-box{
+  padding:14px;
+  border-radius:13px;
+  background:var(--surface2);
+}
+
+.compare-label{
+  color:var(--sub);
+  font-size:11px;
+}
+
+.compare-value{
+  margin-top:5px;
+  font-size:17px;
+  font-weight:750;
+}
+
+.compare-sub{
+  margin-top:3px;
+  color:var(--faint);
+  font-size:10px;
+}
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
+.bottom-nav{
+  position:fixed;
+  z-index:30;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:430px;
+  height:76px;
+  padding:8px 18px 12px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:4px;
+  background:rgba(255,255,255,.92);
+  border-top:1px solid rgba(0,0,0,.06);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+
+.nav-btn{
+  border:0;
+  background:transparent;
+  color:#9B9BA0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  font-size:10px;
+  font-weight:650;
+}
+
+.nav-btn.active{
+  color:var(--text);
+}
+
+.nav-icon{
+  width:22px;
+  height:22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* =========================
+   FAB
+========================= */
+
+.fab{
+  position:fixed;
+  z-index:31;
+  right:max(calc((100vw - 430px)/2 + 20px),20px);
+  bottom:88px;
+  width:52px;
+  height:52px;
+  border:0;
+  border-radius:50%;
+  background:var(--text);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 7px 20px rgba(0,0,0,.18);
+}
+
+/* =========================
+   OVERLAY / SHEET
+========================= */
+
+.overlay{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  background:rgba(0,0,0,.38);
+}
+
+.overlay.open{
+  display:flex;
+}
+
+.sheet{
+  width:100%;
+  max-width:430px;
+  max-height:90vh;
+  overflow:auto;
+  padding:9px 20px 30px;
+  background:#fff;
+  border-radius:25px 25px 0 0;
+  animation:sheetUp .22s ease;
+}
+
+@keyframes sheetUp{
+  from{
+    transform:translateY(25px);
+    opacity:.6;
   }
-  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:var(--bg);
-    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Pretendard","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
-    color:var(--text);
-    display:flex;
-    justify-content:center;
-    min-height:100vh;
+  to{
+    transform:translateY(0);
+    opacity:1;
   }
-  #app{
-    width:100%;
-    max-width:430px;
-    min-height:100vh;
-    background:var(--bg);
-    position:relative;
-    display:flex;
-    flex-direction:column;
-    padding-bottom:110px;
+}
+
+.sheet-handle{
+  width:34px;
+  height:4px;
+  border-radius:4px;
+  background:#D7D7DC;
+  margin:4px auto 17px;
+}
+
+.sheet-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.sheet-title{
+  font-size:20px;
+  font-weight:780;
+  letter-spacing:-.4px;
+}
+
+.close-btn{
+  width:30px;
+  height:30px;
+  border:0;
+  border-radius:50%;
+  background:#F2F2F5;
+  color:#777;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* form */
+
+.field{
+  margin-bottom:15px;
+}
+
+.field label{
+  display:block;
+  margin-bottom:7px;
+  color:var(--sub);
+  font-size:11px;
+  font-weight:700;
+}
+
+.field input,
+.field select{
+  width:100%;
+  height:46px;
+  padding:0 13px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#FAFAFB;
+  color:var(--text);
+  outline:none;
+  font-size:14px;
+}
+
+.field input:focus,
+.field select:focus{
+  border-color:#B7B7BC;
+  background:#fff;
+}
+
+.two-fields{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.primary-btn{
+  width:100%;
+  height:48px;
+  border:0;
+  border-radius:13px;
+  background:var(--text);
+  color:#fff;
+  font-size:14px;
+  font-weight:700;
+}
+
+.secondary-btn{
+  width:100%;
+  height:46px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#fff;
+  color:var(--text);
+  font-size:13px;
+  font-weight:700;
+}
+
+.danger-btn{
+  color:var(--red);
+  background:var(--red-soft);
+  border-color:transparent;
+}
+
+/* settings */
+
+.settings-group{
+  margin-bottom:22px;
+}
+
+.settings-group-title{
+  margin:0 3px 8px;
+  color:#8A8A90;
+  font-size:11px;
+  font-weight:700;
+}
+
+.settings-card{
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#fff;
+}
+
+.setting-row{
+  min-height:57px;
+  padding:11px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  border-bottom:1px solid var(--line);
+}
+
+.setting-row:last-child{
+  border-bottom:0;
+}
+
+.setting-info{
+  min-width:0;
+}
+
+.setting-title{
+  font-size:13px;
+  font-weight:650;
+}
+
+.setting-sub{
+  margin-top:3px;
+  color:var(--sub);
+  font-size:10px;
+}
+
+.setting-input{
+  width:125px !important;
+  height:38px !important;
+  text-align:right;
+  background:#F6F6F8 !important;
+}
+
+.period-input{
+  width:72px !important;
+}
+
+.total-budget{
+  padding:15px 14px;
+  background:#F8F8FA;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.total-budget-label{
+  font-size:12px;
+  color:var(--sub);
+}
+
+.total-budget-value{
+  font-size:16px;
+  font-weight:760;
+}
+
+.swatches{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+}
+
+.swatch{
+  width:31px;
+  height:31px;
+  border:2px solid transparent;
+  border-radius:50%;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.swatch.selected{
+  border-color:#1D1D1F;
+  box-shadow:inset 0 0 0 3px #fff;
+}
+
+.exclude-add{
+  display:flex;
+  gap:7px;
+}
+
+.exclude-add input{
+  flex:1;
+  height:42px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:0 10px;
+  background:#FAFAFB;
+}
+
+.exclude-add button{
+  width:58px;
+  border:0;
+  border-radius:11px;
+  background:var(--text);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+}
+
+.exclude-list{
+  margin-top:8px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.exclude-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 12px;
+  border-radius:11px;
+  background:#F7F7F8;
+  font-size:12px;
+}
+
+.exclude-remove{
+  width:24px;
+  height:24px;
+  border:0;
+  background:transparent;
+  color:#AAA;
+}
+
+.settings-actions{
+  display:grid;
+  gap:8px;
+}
+
+/* day detail */
+
+.day-badge{
+  display:inline-flex;
+  align-items:center;
+  padding:7px 10px;
+  border-radius:9px;
+  background:#F2F2F5;
+  color:#666;
+  font-size:11px;
+  font-weight:700;
+  margin-bottom:12px;
+}
+
+.day-add{
+  margin-top:12px;
+}
+
+/* loading */
+
+#loading{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--bg);
+  color:var(--sub);
+  font-size:13px;
+  z-index:999;
+}
+
+/* responsive */
+
+@media(max-width:360px){
+  .page{
+    padding-left:16px;
+    padding-right:16px;
   }
 
-  /* header */
   header{
-    position:sticky; top:0; z-index:20;
-    background:rgba(245,246,248,0.92);
-    backdrop-filter:blur(10px);
-    padding:18px 20px 10px;
-  }
-  .headline{
-    display:flex; align-items:center; justify-content:space-between;
-  }
-  .headline h1{
-    font-size:19px; font-weight:800; margin:0; letter-spacing:-0.3px;
-  }
-  .icon-btn{
-    width:36px; height:36px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    background:var(--surface); border:none; box-shadow:var(--shadow);
-    cursor:pointer; color:var(--text-sub);
-  }
-  .month-nav{
-    display:flex; align-items:center; justify-content:center; gap:14px;
-    margin-top:10px;
-  }
-  .month-nav button{
-    background:none; border:none; padding:6px; cursor:pointer; color:var(--text-faint);
-    display:flex; align-items:center;
-  }
-  .month-nav .month-label{
-    font-size:15px; font-weight:700; color:var(--text-sub); min-width:96px; text-align:center;
+    padding-left:16px;
+    padding-right:16px;
   }
 
-  main{ padding:6px 20px 0; flex:1; }
+  .hero-amount{
+    font-size:30px;
+  }
 
-  /* hero card */
-  .hero{
-    background:linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
-    border-radius:var(--radius-lg);
-    padding:26px 24px 22px;
-    color:#fff;
-    box-shadow:0 14px 30px rgba(var(--blue-rgb),0.28);
-    margin-top:6px;
-  }
-  .hero.over{
-    background:linear-gradient(135deg,#F04452 0%, #D8303F 60%, #B8202E 100%);
-    box-shadow:0 14px 30px rgba(240,68,82,0.28);
-  }
-  .hero-label{ font-size:13px; opacity:0.85; font-weight:600; }
-  .hero-amount{ font-size:34px; font-weight:800; margin-top:6px; letter-spacing:-0.5px; }
-  .hero-bar{
-    margin-top:16px; height:7px; border-radius:6px; background:rgba(255,255,255,0.28); overflow:hidden;
-  }
-  .hero-bar-fill{ height:100%; background:#fff; border-radius:6px; transition:width .35s ease; }
-  .hero-stats{
-    display:flex; justify-content:space-between; margin-top:16px;
-  }
-  .hero-stat{ font-size:12.5px; opacity:0.9; }
-  .hero-stat b{ display:block; font-size:14.5px; font-weight:700; margin-top:2px; }
-
-  /* today card */
-  .today-card{
-    background:var(--surface); border-radius:var(--radius-md);
-    padding:16px 18px; margin-top:14px;
-    display:flex; align-items:center; justify-content:space-between;
-    box-shadow:var(--shadow);
-  }
-  .today-card .t-label{ font-size:13px; color:var(--text-sub); font-weight:600; }
-  .today-card .t-amount{ font-size:19px; font-weight:800; margin-top:3px; }
-  .badge{
-    padding:6px 11px; border-radius:20px; font-size:12.5px; font-weight:700; white-space:nowrap;
-  }
-  .badge.over{ background:var(--red-bg); color:var(--red); }
-  .badge.under{ background:var(--mint-bg); color:var(--mint); }
-  .badge.blue{ background:var(--blue-bg); color:var(--blue); }
-
-  /* list */
-  .section-title{
-    font-size:15px; font-weight:800; margin:26px 2px 10px;
-    display:flex; align-items:center; justify-content:space-between;
-  }
-  .view-toggle{
-    display:flex; background:#EAECEF; border-radius:10px; padding:3px; gap:2px;
-  }
-  .view-toggle button{
-    border:none; background:none; padding:6px 13px; border-radius:8px;
-    font-size:12.5px; font-weight:700; color:var(--text-sub); cursor:pointer;
-  }
-  .view-toggle button.active{ background:#fff; color:var(--text); box-shadow:0 1px 3px rgba(25,31,40,0.12); }
-
-  /* calendar */
-  .cal-dow-row{ display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-bottom:8px; }
-  .cal-dow-row span{ text-align:center; font-size:11.5px; font-weight:700; color:var(--text-faint); }
-  .cal-dow-row span:first-child{ color:var(--red); }
-  .cal-dow-row span:last-child{ color:var(--blue); }
-  .cal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-bottom:8px; }
-  .cal-cell{
-    aspect-ratio:1; border-radius:12px; background:var(--surface);
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    cursor:pointer; border:1.5px solid transparent; padding:2px; gap:2px;
-    box-shadow:var(--shadow);
-  }
-  .cal-cell.empty{ background:transparent; box-shadow:none; cursor:default; }
-  .cal-cell.today{ border-color:var(--blue); }
-  .cal-cell.has-under{ background:var(--mint-bg); }
-  .cal-cell.has-over{ background:var(--red-bg); }
-  .cal-cell .cal-day{ font-size:12.5px; font-weight:700; color:var(--text); }
-  .cal-cell .cal-amt{ font-size:9.5px; font-weight:700; color:var(--text-sub); }
-  .cal-cell.has-over .cal-day{ color:var(--red); }
-  .cal-cell.has-under .cal-day{ color:var(--mint); }
-  .cal-cell.excluded{ background:#F1F2F4; }
-  .cal-cell.excluded .cal-day{ color:var(--text-faint); }
-  .cal-cell.excluded .cal-amt{ color:var(--text-faint); }
-  .cal-legend{ display:flex; gap:14px; margin:2px 2px 4px; flex-wrap:wrap; }
-  .cal-legend span{ font-size:11.5px; color:var(--text-sub); display:flex; align-items:center; gap:5px; }
-  .cal-legend i{ width:8px; height:8px; border-radius:50%; display:inline-block; }
-
-  /* color picker */
-  .swatch-row{ display:flex; gap:12px; flex-wrap:wrap; margin-top:4px; }
-  .swatch{
-    width:34px; height:34px; border-radius:50%; border:2px solid transparent;
-    cursor:pointer; position:relative; display:flex; align-items:center; justify-content:center;
-  }
-  .swatch.selected{ border-color:var(--text); }
-  .swatch svg{ display:none; }
-  .swatch.selected svg{ display:block; }
-
-  /* excluded date manager */
-  .excl-desc{ font-size:12px; color:var(--text-faint); line-height:1.5; margin:-4px 0 12px; }
-  .excl-add-row{ display:flex; gap:8px; margin-bottom:10px; }
-  .excl-add-row input{ flex:1; }
-  .excl-add-row button{
-    flex-shrink:0; padding:0 16px; border:none; border-radius:var(--radius-sm);
-    background:var(--blue); color:#fff; font-weight:700; font-size:13.5px; cursor:pointer;
-  }
-  .excl-list{ display:flex; flex-direction:column; gap:8px; }
-  .excl-chip{
-    display:flex; align-items:center; justify-content:space-between;
-    background:#FAFBFC; border:1.5px solid var(--line); border-radius:var(--radius-sm);
-    padding:10px 12px; font-size:13.5px; font-weight:600;
-  }
-  .excl-chip button{ background:none; border:none; color:var(--text-faint); cursor:pointer; }
-  .excl-empty{ font-size:12.5px; color:var(--text-faint); padding:6px 2px; }
-  .day-toggle-btn{
-    width:100%; padding:12px; border-radius:var(--radius-sm); border:1.5px solid var(--line);
-    background:#fff; font-size:13.5px; font-weight:700; cursor:pointer; margin-bottom:14px;
-  }
-  .day-toggle-btn.on{ background:var(--red-bg); border-color:var(--red-bg); color:var(--red); }
-  .day-group{ margin-bottom:16px; }
-  .day-head{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:0 2px 8px;
-  }
-  .day-head .d-left{ display:flex; align-items:baseline; gap:6px; }
-  .day-head .d-date{ font-size:13.5px; font-weight:700; color:var(--text); }
-  .day-head .d-dow{ font-size:12px; color:var(--text-faint); font-weight:600; }
-  .day-total{ font-size:12.5px; color:var(--text-sub); font-weight:600; }
-
-  .entry-card{
-    background:var(--surface); border-radius:var(--radius-sm);
-    padding:14px 14px; margin-bottom:8px;
-    display:flex; align-items:center; justify-content:space-between;
-    box-shadow:var(--shadow);
-    cursor:pointer;
-  }
-  .entry-card:active{ background:#FAFBFC; }
-  .entry-left{ display:flex; flex-direction:column; gap:3px; min-width:0; }
-  .entry-place{ font-size:14.5px; font-weight:700; color:var(--text); }
-  .entry-menu{ font-size:13px; color:var(--text-sub); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .entry-right{ display:flex; align-items:center; gap:10px; flex-shrink:0; }
-  .entry-price{ font-size:15px; font-weight:800; }
-  .entry-chevron{
-    color:var(--text-faint); display:flex; align-items:center; justify-content:center;
-    width:20px; height:20px;
-  }
-  .ghost-btn.danger{ border-color:var(--red-bg); color:var(--red); background:var(--red-bg); }
-
-  .empty-state{
-    text-align:center; padding:50px 20px; color:var(--text-faint);
-  }
-  .empty-state .emoji{ font-size:34px; margin-bottom:10px; }
-  .empty-state p{ font-size:13.5px; line-height:1.6; margin:0; }
-
-  /* FAB */
   .fab{
-    position:fixed; bottom:28px; left:50%; transform:translateX(calc(-50% + 145px));
-    width:58px; height:58px; border-radius:50%;
-    background:var(--blue); color:#fff; border:none;
-    display:flex; align-items:center; justify-content:center;
-    box-shadow:0 10px 24px rgba(var(--blue-rgb),0.4);
-    cursor:pointer; z-index:30;
+    right:18px;
   }
-
-  /* sheets */
-  .overlay{
-    position:fixed; inset:0; background:rgba(15,18,22,0.42);
-    display:none; align-items:flex-end; justify-content:center; z-index:50;
-  }
-  .overlay.open{ display:flex; }
-  .sheet{
-    width:100%; max-width:430px; background:var(--surface);
-    border-radius:24px 24px 0 0; padding:10px 22px 28px;
-    max-height:88vh; overflow-y:auto;
-    animation:slideUp .25s ease;
-  }
-  @keyframes slideUp{ from{ transform:translateY(24px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
-  .sheet-handle{ width:36px; height:4px; background:var(--line); border-radius:4px; margin:6px auto 14px; }
-  .sheet-title{ font-size:18px; font-weight:800; margin-bottom:18px; }
-  .field{ margin-bottom:14px; }
-  .field label{ display:block; font-size:12.5px; font-weight:700; color:var(--text-sub); margin-bottom:7px; }
-  .field input{
-    width:100%; padding:13px 14px; border-radius:var(--radius-sm); border:1.5px solid var(--line);
-    font-size:15px; font-family:inherit; color:var(--text); background:#FAFBFC;
-    outline:none;
-  }
-  .field input:focus{ border-color:var(--blue); background:#fff; }
-  .primary-btn{
-    width:100%; padding:15px; border:none; border-radius:var(--radius-sm);
-    background:var(--blue); color:#fff; font-size:15.5px; font-weight:700;
-    cursor:pointer; margin-top:6px;
-  }
-  .primary-btn:active{ background:var(--blue-dark); }
-  .ghost-btn{
-    width:100%; padding:14px; border-radius:var(--radius-sm); border:1.5px solid var(--line);
-    background:#fff; color:var(--text); font-size:14.5px; font-weight:700; cursor:pointer;
-    display:flex; align-items:center; justify-content:center; gap:8px;
-  }
-  .divider-label{ font-size:12px; color:var(--text-faint); font-weight:700; margin:22px 0 10px; }
-  .backup-row{ display:flex; flex-direction:column; gap:10px; }
-  .close-x{ position:absolute; top:16px; right:18px; background:none;border:none;color:var(--text-faint);cursor:pointer; }
-  .sheet-wrap{ position:relative; }
-  .hint{ font-size:12px; color:var(--text-faint); margin-top:8px; line-height:1.5; }
-  #loading{
-    position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center;
-    z-index:100; color:var(--text-faint); font-size:13.5px;
-  }
+}
 </style>
 </head>
+
 <body>
 
 <div id="loading">불러오는 중...</div>
+
 <div id="app" style="display:none;">
 
+  <!-- =========================
+       HEADER
+  ========================== -->
+
   <header>
-    <div class="headline">
-      <h1>점심 가계부</h1>
+    <div class="header-top">
+      <div class="header-title">점심 가계부</div>
+
       <button class="icon-btn" id="openSettings" aria-label="설정">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 3.7 15H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9A1.65 1.65 0 0 0 10 3.17V3a2 2 0 1 1 4 0v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 18.3 9c.16.6.7 1 1.31 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+          </path>
+        </svg>
       </button>
     </div>
-    <div class="month-nav">
-      <button id="prevMonth" aria-label="이전달">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+
+    <div class="period-header">
+      <button class="period-arrow" id="prevPeriod">
+        <svg width="17" height="17" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
       </button>
-      <span class="month-label" id="monthLabel">2026년 9월</span>
-      <button id="nextMonth" aria-label="다음달">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+
+      <div class="period-label" id="periodHeaderLabel">-</div>
+
+      <button class="period-arrow" id="nextPeriod">
+        <svg width="17" height="17" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
       </button>
     </div>
   </header>
 
-  <main>
+
+  <!-- =========================
+       HOME
+  ========================== -->
+
+  <section class="page active" id="homePage">
+
+    <div class="period-chip">
+      <span class="period-chip-label">정산 기간</span>
+      <span class="period-chip-value" id="homePeriod">-</span>
+    </div>
+
     <div class="hero" id="heroCard">
-      <div class="hero-label" id="heroLabel">이번달 남은 식비</div>
+      <div class="hero-label" id="heroLabel">남은 예산</div>
       <div class="hero-amount" id="heroAmount">0원</div>
-      <div class="hero-bar"><div class="hero-bar-fill" id="heroBarFill" style="width:0%"></div></div>
-      <div class="hero-stats">
-        <div class="hero-stat">예산<b id="statBudget">0원</b></div>
-        <div class="hero-stat">사용<b id="statUsed">0원</b></div>
-        <div class="hero-stat">평일 평균<b id="statAvg">0원</b></div>
+
+      <div class="hero-progress">
+        <div class="hero-progress-fill" id="heroProgress"></div>
+      </div>
+
+      <div class="hero-bottom">
+        <div class="hero-stat">
+          <div class="hero-stat-label">전체 예산</div>
+          <div class="hero-stat-value" id="heroBudget">0원</div>
+        </div>
+
+        <div class="hero-stat">
+          <div class="hero-stat-label">사용 금액</div>
+          <div class="hero-stat-value" id="heroUsed">0원</div>
+        </div>
+
+        <div class="hero-stat">
+          <div class="hero-stat-label">평균 사용</div>
+          <div class="hero-stat-value" id="heroAverage">0원</div>
+        </div>
       </div>
     </div>
 
-    <div class="today-card" id="todayCard" style="display:none;">
-      <div>
-        <div class="t-label">오늘 점심 식비</div>
-        <div class="t-amount" id="todayAmount">0원</div>
+    <!-- 오늘 -->
+
+    <div class="summary-grid">
+
+      <div class="summary-card">
+        <div class="summary-label">내 예산</div>
+        <div class="summary-value" id="myBudgetValue">0원</div>
+        <div class="summary-sub">이번 정산 기간</div>
       </div>
-      <div class="badge" id="todayBadge">-</div>
+
+      <div class="summary-card">
+        <div class="summary-label">친구 예산</div>
+        <div class="summary-value" id="friendBudgetValue">0원</div>
+        <div class="summary-sub">이번 정산 기간</div>
+      </div>
+
     </div>
 
-    <div class="section-title">
-      <span>식비 기록</span>
-      <div class="view-toggle">
-        <button id="tabList" class="active">리스트</button>
-        <button id="tabCal">캘린더</button>
+    <!-- Daily report -->
+
+    <div class="report-card">
+      <div class="report-top">
+        <div class="report-title">오늘의 리포트</div>
+        <div class="report-date" id="reportDate">-</div>
+      </div>
+
+      <div class="report-text" id="reportText">
+        기록을 확인하고 있어요.
+      </div>
+
+      <div class="report-sub" id="reportSub">
+        -
       </div>
     </div>
 
-    <div id="calendarArea" style="display:none;">
-      <div class="cal-legend">
-        <span><i style="background:var(--mint);"></i>예산 이내</span>
-        <span><i style="background:var(--red);"></i>예산 초과</span>
-        <span><i style="background:#C7CBD1;"></i>제외일(주말·수동)</span>
-      </div>
-      <div class="cal-dow-row">
-        <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
-      </div>
-      <div class="cal-grid" id="calGrid"></div>
+    <!-- Records -->
+
+    <div class="section-head">
+      <div class="section-title">식비 기록</div>
+
+      <button class="section-more" id="goCalendar">
+        캘린더
+      </button>
     </div>
 
-    <div id="listArea"></div>
-  </main>
+    <div id="homeRecords"></div>
+
+  </section>
+
+
+  <!-- =========================
+       CALENDAR
+  ========================== -->
+
+  <section class="page" id="calendarPage">
+
+    <div class="section-head" style="margin-top:4px;">
+      <div class="section-title">캘린더</div>
+    </div>
+
+    <div class="view-switch">
+      <button id="calendarListBtn">리스트</button>
+      <button id="calendarViewBtn" class="active">캘린더</button>
+    </div>
+
+    <div id="calendarView">
+
+      <div class="calendar">
+        <div class="calendar-week">
+          <span>일</span>
+          <span>월</span>
+          <span>화</span>
+          <span>수</span>
+          <span>목</span>
+          <span>금</span>
+          <span>토</span>
+        </div>
+
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+
+    </div>
+
+    <div id="calendarList" style="display:none;"></div>
+
+  </section>
+
+
+  <!-- =========================
+       STATS
+  ========================== -->
+
+  <section class="page" id="statsPage">
+
+    <div class="stats-period" id="statsPeriod">
+      -
+    </div>
+
+    <div class="stats-main">
+
+      <div class="stats-main-label">이번 기간 총 사용</div>
+
+      <div class="stats-main-value" id="statsTotal">
+        0원
+      </div>
+
+      <div class="stats-main-detail">
+
+        <div class="stats-detail-item">
+          <span class="stats-detail-label">예산</span>
+          <span class="stats-detail-value" id="statsBudget">0원</span>
+        </div>
+
+        <div class="stats-detail-item">
+          <span class="stats-detail-label">남은 금액</span>
+          <span class="stats-detail-value" id="statsRemaining">0원</span>
+        </div>
+
+        <div class="stats-detail-item">
+          <span class="stats-detail-label">사용률</span>
+          <span class="stats-detail-value" id="statsPercent">0%</span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- 나 / 친구 -->
+
+    <div class="stats-card">
+
+      <div class="stats-card-title">정산 현황</div>
+
+      <div class="compare-grid">
+
+        <div class="compare-box">
+          <div class="compare-label">내 사용</div>
+          <div class="compare-value" id="statsMySpent">0원</div>
+          <div class="compare-sub" id="statsMyBudget">예산 0원</div>
+        </div>
+
+        <div class="compare-box">
+          <div class="compare-label">친구 사용</div>
+          <div class="compare-value" id="statsFriendSpent">0원</div>
+          <div class="compare-sub" id="statsFriendBudget">예산 0원</div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- 카테고리 -->
+
+    <div class="stats-card">
+
+      <div class="stats-card-title">지출 비중</div>
+
+      <div id="categoryStats"></div>
+
+    </div>
+
+
+    <!-- 일별 -->
+
+    <div class="stats-card">
+
+      <div class="stats-card-title">일별 사용 금액</div>
+
+      <div class="bar-chart" id="dailyChart"></div>
+
+    </div>
+
+
+    <!-- 분석 -->
+
+    <div class="stats-card">
+
+      <div class="stats-card-title">기간 분석</div>
+
+      <div class="compare-grid">
+
+        <div class="compare-box">
+          <div class="compare-label">가장 많이 쓴 날</div>
+          <div class="compare-value" id="highestDay">-</div>
+          <div class="compare-sub" id="highestDayAmount">0원</div>
+        </div>
+
+        <div class="compare-box">
+          <div class="compare-label">하루 평균</div>
+          <div class="compare-value" id="statsDailyAverage">0원</div>
+          <div class="compare-sub">기록이 있는 날 기준</div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       BOTTOM NAV
+  ========================== -->
+
+  <nav class="bottom-nav">
+
+    <button class="nav-btn active" data-page="homePage">
+
+      <span class="nav-icon">
+        <svg width="21" height="21" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 10.5 12 3l9 7.5"></path>
+          <path d="M5 9.5V21h14V9.5"></path>
+          <path d="M9 21v-6h6v6"></path>
+        </svg>
+      </span>
+
+      홈
+
+    </button>
+
+
+    <button class="nav-btn" data-page="calendarPage">
+
+      <span class="nav-icon">
+        <svg width="21" height="21" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="17" rx="3"></rect>
+          <path d="M8 2v4M16 2v4M3 9h18"></path>
+        </svg>
+      </span>
+
+      기록
+
+    </button>
+
+
+    <button class="nav-btn" data-page="statsPage">
+
+      <span class="nav-icon">
+        <svg width="21" height="21" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19V5"></path>
+          <path d="M4 19h17"></path>
+          <rect x="7" y="12" width="3" height="5" rx="1"></rect>
+          <rect x="12" y="9" width="3" height="8" rx="1"></rect>
+          <rect x="17" y="6" width="3" height="11" rx="1"></rect>
+        </svg>
+      </span>
+
+      통계
+
+    </button>
+
+  </nav>
+
+
+  <!-- =========================
+       FAB
+  ========================== -->
 
   <button class="fab" id="openAdd" aria-label="기록 추가">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+
+    <svg width="23" height="23" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2.3"
+         stroke-linecap="round">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+
   </button>
 
-  <!-- Add Entry Sheet -->
-  <div class="overlay" id="addOverlay">
-    <div class="sheet sheet-wrap">
+
+  <!-- =========================
+       ADD / EDIT
+  ========================== -->
+
+  <div class="overlay" id="entryOverlay">
+
+    <div class="sheet">
+
       <div class="sheet-handle"></div>
-      <button class="close-x" data-close="addOverlay">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+
+      <div class="sheet-header">
+
+        <div class="sheet-title" id="entrySheetTitle">
+          점심 기록
+        </div>
+
+        <button class="close-btn" data-close="entryOverlay">
+          <svg width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+
+      </div>
+
+
+      <div class="field">
+        <label>날짜</label>
+        <input type="date" id="entryDate">
+      </div>
+
+
+      <div class="field">
+        <label>장소</label>
+        <input type="text" id="entryPlace" placeholder="예: 회사 근처 식당">
+      </div>
+
+
+      <div class="field">
+        <label>메뉴</label>
+        <input type="text" id="entryMenu" placeholder="예: 제육볶음">
+      </div>
+
+
+      <div class="two-fields">
+
+        <div class="field">
+          <label>금액</label>
+          <input type="number" id="entryPrice"
+                 placeholder="0"
+                 inputmode="numeric"
+                 min="0">
+        </div>
+
+        <div class="field">
+          <label>결제한 사람</label>
+
+          <select id="entryPayer">
+            <option value="me">나</option>
+            <option value="friend">친구</option>
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <button class="primary-btn" id="saveEntry">
+        저장하기
       </button>
-      <div class="sheet-title" id="addSheetTitle">점심 기록 추가</div>
-      <div class="field">
-        <label>언제</label>
-        <input type="date" id="inpDate">
-      </div>
-      <div class="field">
-        <label>어디서</label>
-        <input type="text" id="inpPlace" placeholder="예: 김밥천국 강남점" maxlength="30">
-      </div>
-      <div class="field">
-        <label>무엇을</label>
-        <input type="text" id="inpMenu" placeholder="예: 참치김밥 + 라면" maxlength="30">
-      </div>
-      <div class="field">
-        <label>얼마에</label>
-        <input type="number" id="inpPrice" placeholder="0" inputmode="numeric" min="0">
-      </div>
-      <button class="primary-btn" id="saveEntry">저장하기</button>
-      <button class="ghost-btn danger" id="deleteEntryBtn" style="display:none; margin-top:10px;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-        이 기록 삭제하기
+
+      <button class="secondary-btn danger-btn"
+              id="deleteEntry"
+              style="display:none;margin-top:8px;">
+        이 기록 삭제
       </button>
+
     </div>
+
   </div>
 
-  <!-- Settings Sheet -->
+
+  <!-- =========================
+       SETTINGS
+  ========================== -->
+
   <div class="overlay" id="settingsOverlay">
-    <div class="sheet sheet-wrap">
+
+    <div class="sheet">
+
       <div class="sheet-handle"></div>
-      <button class="close-x" data-close="settingsOverlay">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-      </button>
-      <div class="sheet-title">설정</div>
-      <div class="field">
-        <label>한달 점심 식비 예산</label>
-        <input type="number" id="inpBudget" placeholder="예: 300000" inputmode="numeric" min="0">
-      </div>
-      <div class="field">
-        <label>정산 시작일</label>
-        <input type="number" id="inpPeriodStart" placeholder="1" inputmode="numeric" min="1" max="31">
-      </div>
-      <div class="field">
-        <label>정산 종료일</label>
-        <input type="number" id="inpPeriodEnd" placeholder="31" inputmode="numeric" min="1" max="31">
-      </div>
-      <div class="hint" style="margin-top:-6px; margin-bottom:14px;">시작일과 종료일을 각각 지정할 수 있어요. 예를 들어 시작일 25일, 종료일 24일이면 매달 25일부터 다음달 24일까지가 한 주기가 돼요. 예산은 그 안에서 평일에만 나눠 적용돼요.</div>
-      <button class="primary-btn" id="saveBudget">예산 저장</button>
 
-      <div class="divider-label">테마 컬러</div>
-      <div class="swatch-row" id="swatchRow"></div>
+      <div class="sheet-header">
 
-      <div class="divider-label">예산 제외 날짜</div>
-      <div class="excl-desc">공휴일, 회식, 출장 등 예산 계산에 넣지 않을 평일을 직접 추가하세요. 주말은 이미 자동으로 제외돼요.</div>
-      <div class="excl-add-row">
-        <input type="date" id="inpExcludeDate">
-        <button id="addExcludeBtn">추가</button>
-      </div>
-      <div class="excl-list" id="exclList"></div>
+        <div class="sheet-title">설정</div>
 
-      <div class="divider-label">데이터 백업</div>
-      <div class="backup-row">
-        <button class="ghost-btn" id="exportBtn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-          백업 파일 다운로드
+        <button class="close-btn" data-close="settingsOverlay">
+          <svg width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
         </button>
-        <button class="ghost-btn" id="importBtn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-          백업 파일 불러오기
-        </button>
-        <input type="file" id="importFile" accept="application/json" style="display:none;">
+
       </div>
-      <div class="hint">불러오기를 하면 현재 기기의 기록이 백업 파일 내용으로 모두 대체돼요.</div>
+
+
+      <!-- 예산 -->
+
+      <div class="settings-group">
+
+        <div class="settings-group-title">
+          예산
+        </div>
+
+        <div class="settings-card">
+
+          <div class="setting-row">
+
+            <div class="setting-info">
+              <div class="setting-title">내 예산</div>
+              <div class="setting-sub">이번 정산 기간 기준</div>
+            </div>
+
+            <input
+              class="setting-input"
+              type="number"
+              id="settingMyBudget"
+              placeholder="0"
+              min="0"
+              inputmode="numeric">
+
+          </div>
+
+
+          <div class="setting-row">
+
+            <div class="setting-info">
+              <div class="setting-title">친구 예산</div>
+              <div class="setting-sub">이번 정산 기간 기준</div>
+            </div>
+
+            <input
+              class="setting-input"
+              type="number"
+              id="settingFriendBudget"
+              placeholder="0"
+              min="0"
+              inputmode="numeric">
+
+          </div>
+
+
+          <div class="total-budget">
+
+            <span class="total-budget-label">
+              전체 예산
+            </span>
+
+            <strong class="total-budget-value"
+                    id="settingTotalBudget">
+              0원
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- 기간 -->
+
+      <div class="settings-group">
+
+        <div class="settings-group-title">
+          정산 기간
+        </div>
+
+        <div class="settings-card">
+
+          <div class="setting-row">
+
+            <div class="setting-info">
+              <div class="setting-title">시작일</div>
+              <div class="setting-sub">매달 정산이 시작되는 날짜</div>
+            </div>
+
+            <input
+              class="setting-input period-input"
+              type="number"
+              id="settingStart"
+              min="1"
+              max="31">
+
+          </div>
+
+
+          <div class="setting-row">
+
+            <div class="setting-info">
+              <div class="setting-title">종료일</div>
+              <div class="setting-sub">정산이 끝나는 날짜</div>
+            </div>
+
+            <input
+              class="setting-input period-input"
+              type="number"
+              id="settingEnd"
+              min="1"
+              max="31">
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- 테마 -->
+
+      <div class="settings-group">
+
+        <div class="settings-group-title">
+          테마
+        </div>
+
+        <div class="settings-card">
+
+          <div class="setting-row">
+
+            <div class="setting-info">
+              <div class="setting-title">포인트 컬러</div>
+            </div>
+
+            <div class="swatches" id="swatches"></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- 제외일 -->
+
+      <div class="settings-group">
+
+        <div class="settings-group-title">
+          예산 제외 날짜
+        </div>
+
+        <div class="settings-card" style="padding:12px;">
+
+          <div class="exclude-add">
+
+            <input
+              type="date"
+              id="excludeDate">
+
+            <button id="addExclude">
+              추가
+            </button>
+
+          </div>
+
+          <div class="exclude-list" id="excludeList"></div>
+
+        </div>
+
+      </div>
+
+
+      <!-- 저장 -->
+
+      <div class="settings-actions">
+
+        <button class="primary-btn" id="saveSettings">
+          저장
+        </button>
+
+        <button class="secondary-btn" id="exportData">
+          데이터 백업
+        </button>
+
+        <button class="secondary-btn" id="importData">
+          백업 불러오기
+        </button>
+
+        <input
+          type="file"
+          id="importFile"
+          accept="application/json"
+          style="display:none;">
+
+      </div>
+
     </div>
+
   </div>
 
-  <!-- Day Detail Sheet -->
+
+  <!-- =========================
+       DAY DETAIL
+  ========================== -->
+
   <div class="overlay" id="dayOverlay">
-    <div class="sheet sheet-wrap">
+
+    <div class="sheet">
+
       <div class="sheet-handle"></div>
-      <button class="close-x" data-close="dayOverlay">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-      </button>
-      <div class="sheet-title" id="dayTitle">-</div>
-      <div class="badge" id="dayBadge" style="margin-bottom:10px; display:inline-block;">-</div>
-      <button class="day-toggle-btn" id="dayExcludeToggle" style="display:none;"></button>
+
+      <div class="sheet-header">
+
+        <div class="sheet-title" id="dayTitle">
+          -
+        </div>
+
+        <button class="close-btn" data-close="dayOverlay">
+          <svg width="16" height="16" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+
+      </div>
+
+      <div class="day-badge" id="dayBadge">
+        -
+      </div>
+
       <div id="dayEntries"></div>
-      <button class="ghost-btn" id="dayAddBtn" style="margin-top:6px;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+
+      <button class="secondary-btn day-add" id="dayAdd">
         이 날짜에 기록 추가
       </button>
+
     </div>
+
   </div>
 
 </div>
 
+
 <script>
 (function(){
-  var state = { entries: [], budget: 0, viewYear: null, viewMonth: null, view: 'list', excludedDates: [], colorId: 'blue', periodStartDay: 1, periodEndDay: 31 };
-  var today = new Date();
-  var todayKey = fmtKey(today);
 
-  var COLOR_PRESETS = [
-    { id:'blue',   name:'토스 블루', base:'#3182F6', dark:'#1B64DA', bg:'#EAF2FF', rgb:'49,130,246' },
-    { id:'mint',   name:'민트',      base:'#02C2B4', dark:'#019C90', bg:'#E6FAF7', rgb:'2,194,180' },
-    { id:'coral',  name:'코랄',      base:'#FF6B4A', dark:'#E8532F', bg:'#FFEDE8', rgb:'255,107,74' },
-    { id:'purple', name:'퍼플',      base:'#7C5CFC', dark:'#6042E0', bg:'#F1EDFF', rgb:'124,92,252' },
-    { id:'amber',  name:'앰버',      base:'#FFB020', dark:'#E89600', bg:'#FFF3DE', rgb:'255,176,32' },
-    { id:'slate',  name:'슬레이트',  base:'#5E6AD2', dark:'#4A54B0', bg:'#EEF0FC', rgb:'94,106,210' }
-  ];
+"use strict";
 
-  function fmtKey(d){
-    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+/* =========================================================
+   STATE
+========================================================= */
+
+var state = {
+  entries: [],
+
+  myBudget: 0,
+  friendBudget: 0,
+
+  excludedDates: [],
+
+  periodStartDay: 1,
+  periodEndDay: 31,
+
+  colorId: "blue",
+
+  viewYear: null,
+  viewMonth: null,
+
+  currentPage: "homePage",
+
+  editingId: null
+};
+
+var today = new Date();
+
+function pad(n){
+  return String(n).padStart(2,"0");
+}
+
+function dateKey(date){
+  return date.getFullYear() + "-" +
+    pad(date.getMonth()+1) + "-" +
+    pad(date.getDate());
+}
+
+var todayKey = dateKey(today);
+
+
+/* =========================================================
+   COLORS
+========================================================= */
+
+var COLORS = [
+
+  {
+    id:"blue",
+    base:"#007AFF",
+    soft:"#EAF3FF"
+  },
+
+  {
+    id:"green",
+    base:"#34C759",
+    soft:"#EAF8EE"
+  },
+
+  {
+    id:"orange",
+    base:"#FF9500",
+    soft:"#FFF4E5"
+  },
+
+  {
+    id:"red",
+    base:"#FF3B30",
+    soft:"#FFF0EF"
+  },
+
+  {
+    id:"purple",
+    base:"#AF52DE",
+    soft:"#F5ECFA"
+  },
+
+  {
+    id:"pink",
+    base:"#FF2D55",
+    soft:"#FFF0F4"
   }
-  function won(n){
-    n = Math.round(n||0);
-    return n.toLocaleString('ko-KR') + '원';
-  }
-  function daysInMonth(y,m){ return new Date(y, m+1, 0).getDate(); }
-  function dowLabel(d){ return ['일','월','화','수','목','금','토'][d.getDay()]; }
-  function isWeekday(dateKey){
-    var dow = new Date(dateKey+'T00:00:00').getDay();
-    return dow!==0 && dow!==6;
-  }
-  function isBudgetDay(dateKey){
-    return isWeekday(dateKey) && state.excludedDates.indexOf(dateKey)===-1;
-  }
-  function periodRange(y,m){
-    var startDay = Math.min(Math.max(Number(state.periodStartDay)||1, 1), 31);
-    var endDay = Math.min(Math.max(Number(state.periodEndDay)||31, 1), 31);
-    var start = new Date(y, m, Math.min(startDay, daysInMonth(y,m)));
-    var endMonth = endDay >= startDay ? m : m + 1;
-    var endYear = y;
-    if(endMonth > 11){ endMonth = 0; endYear++; }
-    var end = new Date(endYear, endMonth, Math.min(endDay, daysInMonth(endYear,endMonth)));
-    return { start: start, end: end, startKey: fmtKey(start), endKey: fmtKey(end) };
-  }
-  function forEachDateInRange(start, end, cb){
-    var cur = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-    var endKey = fmtKey(end);
-    while(fmtKey(cur) <= endKey){
-      cb(cur);
-      cur.setDate(cur.getDate()+1);
+
+];
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+function localGet(key){
+
+  try{
+
+    var value = localStorage.getItem(key);
+
+    if(value !== null){
+      return JSON.parse(value);
     }
+
+  }catch(e){}
+
+  return null;
+}
+
+
+function localSet(key,value){
+
+  try{
+
+    localStorage.setItem(
+      key,
+      JSON.stringify(value)
+    );
+
+  }catch(e){}
+
+}
+
+
+async function storageGet(key){
+
+  try{
+
+    if(window.storage &&
+       typeof window.storage.get === "function"){
+
+      var result =
+        await window.storage.get(key,false);
+
+      if(result && result.value !== undefined){
+
+        return JSON.parse(result.value);
+
+      }
+
+    }
+
+  }catch(e){}
+
+  return localGet(key);
+}
+
+
+async function storageSet(key,value){
+
+  try{
+
+    if(window.storage &&
+       typeof window.storage.set === "function"){
+
+      await window.storage.set(
+        key,
+        JSON.stringify(value),
+        false
+      );
+
+      return;
+
+    }
+
+  }catch(e){}
+
+  localSet(key,value);
+}
+
+
+/* =========================================================
+   LOAD
+========================================================= */
+
+async function loadData(){
+
+  state.entries =
+    await storageGet("lunch-entries") || [];
+
+  /*
+    기존 버전의 budget도 읽어서
+    내 예산으로 자동 호환
+  */
+
+  var oldBudget =
+    await storageGet("lunch-budget");
+
+  state.myBudget =
+    Number(await storageGet("lunch-my-budget"));
+
+  state.friendBudget =
+    Number(await storageGet("lunch-friend-budget"));
+
+  if(
+    !state.myBudget &&
+    oldBudget
+  ){
+    state.myBudget =
+      Number(oldBudget) || 0;
   }
-  function countBudgetDaysInMonth(y,m){
-    var r = periodRange(y,m);
-    var c = 0;
-    forEachDateInRange(r.start, r.end, function(d){ if(isBudgetDay(fmtKey(d))) c++; });
-    return c;
+
+  state.excludedDates =
+    await storageGet("lunch-excluded") || [];
+
+  state.periodStartDay =
+    Number(await storageGet("lunch-period-start")) || 1;
+
+  state.periodEndDay =
+    Number(await storageGet("lunch-period-end")) || 31;
+
+  state.colorId =
+    await storageGet("lunch-color") || "blue";
+
+}
+
+
+/* =========================================================
+   SAVE
+========================================================= */
+
+function saveAll(){
+
+  storageSet(
+    "lunch-entries",
+    state.entries
+  );
+
+  storageSet(
+    "lunch-my-budget",
+    state.myBudget
+  );
+
+  storageSet(
+    "lunch-friend-budget",
+    state.friendBudget
+  );
+
+  storageSet(
+    "lunch-excluded",
+    state.excludedDates
+  );
+
+  storageSet(
+    "lunch-period-start",
+    state.periodStartDay
+  );
+
+  storageSet(
+    "lunch-period-end",
+    state.periodEndDay
+  );
+
+  storageSet(
+    "lunch-color",
+    state.colorId
+  );
+
+}
+
+
+/* =========================================================
+   FORMAT
+========================================================= */
+
+function won(value){
+
+  value = Math.round(Number(value) || 0);
+
+  return value.toLocaleString("ko-KR") + "원";
+
+}
+
+
+function shortWon(value){
+
+  value = Math.round(Number(value) || 0);
+
+  if(value >= 10000){
+
+    var man =
+      Math.round(value / 1000);
+
+    return man + "k";
+
   }
-  function applyColor(id){
-    var preset = COLOR_PRESETS.filter(function(c){return c.id===id;})[0] || COLOR_PRESETS[0];
-    var root = document.documentElement.style;
-    root.setProperty('--blue', preset.base);
-    root.setProperty('--blue-dark', preset.dark);
-    root.setProperty('--blue-bg', preset.bg);
-    root.setProperty('--blue-rgb', preset.rgb);
+
+  return value.toLocaleString("ko-KR");
+
+}
+
+
+function formatDate(date){
+
+  return date.getFullYear() +
+    "." +
+    (date.getMonth()+1) +
+    "." +
+    date.getDate();
+
+}
+
+
+function weekday(date){
+
+  return [
+    "일",
+    "월",
+    "화",
+    "수",
+    "목",
+    "금",
+    "토"
+  ][date.getDay()];
+
+}
+
+
+function isWeekday(key){
+
+  var d =
+    new Date(key + "T00:00:00");
+
+  return d.getDay() !== 0 &&
+         d.getDay() !== 6;
+
+}
+
+
+function isExcluded(key){
+
+  return state.excludedDates
+    .indexOf(key) !== -1;
+
+}
+
+
+function isBudgetDay(key){
+
+  return isWeekday(key) &&
+         !isExcluded(key);
+
+}
+
+
+/* =========================================================
+   PERIOD
+========================================================= */
+
+function daysInMonth(year,month){
+
+  return new Date(
+    year,
+    month+1,
+    0
+  ).getDate();
+
+}
+
+
+function periodRange(year,month){
+
+  var startDay =
+    Math.min(
+      Math.max(
+        Number(state.periodStartDay) || 1,
+        1
+      ),
+      31
+    );
+
+  var endDay =
+    Math.min(
+      Math.max(
+        Number(state.periodEndDay) || 31,
+        1
+      ),
+      31
+    );
+
+  var start =
+    new Date(
+      year,
+      month,
+      Math.min(
+        startDay,
+        daysInMonth(year,month)
+      )
+    );
+
+  var endMonth =
+    endDay >= startDay
+      ? month
+      : month + 1;
+
+  var endYear = year;
+
+  if(endMonth > 11){
+
+    endMonth = 0;
+    endYear++;
+
   }
-  function renderSwatches(){
-    var row = document.getElementById('swatchRow');
-    row.innerHTML = '';
-    COLOR_PRESETS.forEach(function(c){
-      var sw = document.createElement('button');
-      sw.className = 'swatch' + (state.colorId===c.id ? ' selected' : '');
-      sw.style.background = c.base;
-      sw.title = c.name;
-      sw.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
-      sw.onclick = function(){
-        state.colorId = c.id;
-        applyColor(c.id);
-        saveColor();
-        renderSwatches();
+
+  var end =
+    new Date(
+      endYear,
+      endMonth,
+      Math.min(
+        endDay,
+        daysInMonth(endYear,endMonth)
+      )
+    );
+
+  return {
+    start:start,
+    end:end,
+    startKey:dateKey(start),
+    endKey:dateKey(end)
+  };
+
+}
+
+
+function eachDate(start,end,callback){
+
+  var current =
+    new Date(
+      start.getFullYear(),
+      start.getMonth(),
+      start.getDate()
+    );
+
+  while(
+    dateKey(current) <= dateKey(end)
+  ){
+
+    callback(current);
+
+    current.setDate(
+      current.getDate()+1
+    );
+
+  }
+
+}
+
+
+function budgetDays(range){
+
+  var count = 0;
+
+  eachDate(
+    range.start,
+    range.end,
+    function(date){
+
+      if(isBudgetDay(dateKey(date))){
+        count++;
+      }
+
+    }
+  );
+
+  return count;
+
+}
+
+
+/* =========================================================
+   CURRENT PERIOD
+========================================================= */
+
+function getCurrentRange(){
+
+  return periodRange(
+    state.viewYear,
+    state.viewMonth
+  );
+
+}
+
+
+function periodEntries(){
+
+  var range =
+    getCurrentRange();
+
+  return state.entries.filter(
+    function(entry){
+
+      return (
+        entry.date >= range.startKey &&
+        entry.date <= range.endKey
+      );
+
+    }
+  );
+
+}
+
+
+function totalBudget(){
+
+  return (
+    Number(state.myBudget) +
+    Number(state.friendBudget)
+  );
+
+}
+
+
+function totalSpent(){
+
+  return periodEntries()
+    .reduce(
+      function(sum,entry){
+
+        return sum +
+          Number(entry.price || 0);
+
+      },
+      0
+    );
+
+}
+
+
+function dailyBudget(){
+
+  var budget =
+    totalBudget();
+
+  var days =
+    budgetDays(
+      getCurrentRange()
+    );
+
+  if(!budget || !days){
+    return 0;
+  }
+
+  return budget / days;
+
+}
+
+
+/* =========================================================
+   COLOR
+========================================================= */
+
+function applyColor(){
+
+  var color =
+    COLORS.find(
+      function(item){
+        return item.id === state.colorId;
+      }
+    ) || COLORS[0];
+
+  document.documentElement.style
+    .setProperty(
+      "--blue",
+      color.base
+    );
+
+  document.documentElement.style
+    .setProperty(
+      "--blue-soft",
+      color.soft
+    );
+
+}
+
+
+function renderSwatches(){
+
+  var wrap =
+    document.getElementById(
+      "swatches"
+    );
+
+  wrap.innerHTML = "";
+
+  COLORS.forEach(
+    function(color){
+
+      var button =
+        document.createElement("button");
+
+      button.className =
+        "swatch" +
+        (
+          state.colorId === color.id
+            ? " selected"
+            : ""
+        );
+
+      button.style.background =
+        color.base;
+
+      button.innerHTML =
+        state.colorId === color.id
+          ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
+          : "";
+
+      button.onclick =
+        function(){
+
+          state.colorId =
+            color.id;
+
+          applyColor();
+          renderSwatches();
+
+        };
+
+      wrap.appendChild(button);
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+function renderHeader(){
+
+  var range =
+    getCurrentRange();
+
+  var label =
+    formatDate(range.start) +
+    " – " +
+    formatDate(range.end);
+
+  document.getElementById(
+    "periodHeaderLabel"
+  ).textContent = label;
+
+}
+
+
+/* =========================================================
+   HOME
+========================================================= */
+
+function renderHome(){
+
+  var range =
+    getCurrentRange();
+
+  var entries =
+    periodEntries();
+
+  var budget =
+    totalBudget();
+
+  var used =
+    totalSpent();
+
+  var remaining =
+    budget - used;
+
+  var days =
+    budgetDays(range);
+
+  var average =
+    days > 0
+      ? used / days
+      : 0;
+
+  var percent =
+    budget > 0
+      ? Math.min(
+          100,
+          (used / budget) * 100
+        )
+      : 0;
+
+
+  /* period */
+
+  document.getElementById(
+    "homePeriod"
+  ).textContent =
+    formatDate(range.start) +
+    " – " +
+    formatDate(range.end);
+
+
+  /* hero */
+
+  var hero =
+    document.getElementById(
+      "heroCard"
+    );
+
+  hero.classList.toggle(
+    "over",
+    remaining < 0
+  );
+
+
+  var heroLabel =
+    document.getElementById(
+      "heroLabel"
+    );
+
+  var heroAmount =
+    document.getElementById(
+      "heroAmount"
+    );
+
+
+  if(budget <= 0){
+
+    heroLabel.textContent =
+      "이번 기간 사용 금액";
+
+    heroAmount.textContent =
+      won(used);
+
+  }else if(remaining >= 0){
+
+    heroLabel.textContent =
+      "이번 기간 남은 예산";
+
+    heroAmount.textContent =
+      won(remaining);
+
+  }else{
+
+    heroLabel.textContent =
+      "이번 기간 예산 초과";
+
+    heroAmount.textContent =
+      won(Math.abs(remaining));
+
+  }
+
+
+  document.getElementById(
+    "heroProgress"
+  ).style.width =
+    percent + "%";
+
+
+  document.getElementById(
+    "heroBudget"
+  ).textContent =
+    budget > 0
+      ? won(budget)
+      : "미설정";
+
+
+  document.getElementById(
+    "heroUsed"
+  ).textContent =
+    won(used);
+
+
+  document.getElementById(
+    "heroAverage"
+  ).textContent =
+    won(average);
+
+
+  document.getElementById(
+    "myBudgetValue"
+  ).textContent =
+    won(state.myBudget);
+
+
+  document.getElementById(
+    "friendBudgetValue"
+  ).textContent =
+    won(state.friendBudget);
+
+
+  renderDailyReport();
+
+  renderHomeRecords();
+
+}
+
+
+/* =========================================================
+   DAILY REPORT
+========================================================= */
+
+function renderDailyReport(){
+
+  var range =
+    getCurrentRange();
+
+  var entries =
+    periodEntries();
+
+  var budget =
+    totalBudget();
+
+  var used =
+    totalSpent();
+
+  var todayInRange =
+    todayKey >= range.startKey &&
+    todayKey <= range.endKey;
+
+  var todaySpent =
+    entries
+      .filter(
+        function(entry){
+          return entry.date === todayKey;
+        }
+      )
+      .reduce(
+        function(sum,entry){
+          return sum +
+            Number(entry.price || 0);
+        },
+        0
+      );
+
+
+  var reportText =
+    document.getElementById(
+      "reportText"
+    );
+
+  var reportSub =
+    document.getElementById(
+      "reportSub"
+    );
+
+  document.getElementById(
+    "reportDate"
+  ).textContent =
+    formatDate(today);
+
+
+  if(!todayInRange){
+
+    reportText.textContent =
+      "현재 정산 기간을 확인해보세요.";
+
+    reportSub.textContent =
+      formatDate(range.start) +
+      "부터 " +
+      formatDate(range.end) +
+      "까지입니다.";
+
+    return;
+
+  }
+
+
+  if(budget <= 0){
+
+    if(todaySpent > 0){
+
+      reportText.textContent =
+        "오늘 " + won(todaySpent) +
+        " 사용했어요.";
+
+      reportSub.textContent =
+        "예산을 설정하면 오늘 사용량과 기간 흐름을 함께 볼 수 있어요.";
+
+    }else{
+
+      reportText.textContent =
+        "오늘 기록된 점심 식비가 없어요.";
+
+      reportSub.textContent =
+        "사용한 금액을 기록해두면 기간별 흐름을 확인할 수 있어요.";
+
+    }
+
+    return;
+
+  }
+
+
+  var rangeDays =
+    budgetDays(range);
+
+  var elapsedDays = 0;
+
+  eachDate(
+    range.start,
+    new Date(todayKey + "T00:00:00"),
+    function(date){
+
+      if(
+        dateKey(date) <= todayKey &&
+        isBudgetDay(dateKey(date))
+      ){
+        elapsedDays++;
+      }
+
+    }
+  );
+
+
+  var expected =
+    budget *
+    (
+      elapsedDays /
+      Math.max(rangeDays,1)
+    );
+
+  var difference =
+    used - expected;
+
+
+  if(todaySpent > dailyBudget()){
+
+    reportText.textContent =
+      "오늘은 평소보다 조금 많이 사용했어요.";
+
+    reportSub.textContent =
+      "오늘 " +
+      won(todaySpent) +
+      " 사용했어요. 현재 기간 사용액은 " +
+      won(used) +
+      "입니다.";
+
+  }
+  else if(difference > budget * 0.1){
+
+    reportText.textContent =
+      "현재 지출 속도가 조금 빠른 편이에요.";
+
+    reportSub.textContent =
+      "예상 사용액보다 " +
+      won(difference) +
+      " 많이 사용했어요.";
+
+  }
+  else if(difference < -budget * 0.1){
+
+    reportText.textContent =
+      "현재 예산 흐름이 안정적이에요.";
+
+    reportSub.textContent =
+      "예상 사용액보다 " +
+      won(Math.abs(difference)) +
+      " 적게 사용하고 있어요.";
+
+  }
+  else{
+
+    reportText.textContent =
+      "현재 예산 흐름이 무난해요.";
+
+    reportSub.textContent =
+      "남은 예산은 " +
+      won(Math.max(remainingBudget(),0)) +
+      "입니다.";
+
+  }
+
+}
+
+
+function remainingBudget(){
+
+  return totalBudget() -
+    totalSpent();
+
+}
+
+
+/* =========================================================
+   HOME RECORDS
+========================================================= */
+
+function renderHomeRecords(){
+
+  var wrap =
+    document.getElementById(
+      "homeRecords"
+    );
+
+  var entries =
+    periodEntries();
+
+  wrap.innerHTML = "";
+
+  if(entries.length === 0){
+
+    wrap.innerHTML =
+      '<div class="empty">아직 기록이 없어요.<br>오늘 점심 식비를 기록해보세요.</div>';
+
+    return;
+
+  }
+
+
+  var groups = {};
+
+  entries.forEach(
+    function(entry){
+
+      if(!groups[entry.date]){
+        groups[entry.date] = [];
+      }
+
+      groups[entry.date].push(entry);
+
+    }
+  );
+
+
+  var dates =
+    Object.keys(groups)
+      .sort()
+      .reverse();
+
+
+  dates
+    .slice(0,7)
+    .forEach(
+      function(key){
+
+        renderDayGroup(
+          wrap,
+          key,
+          groups[key]
+        );
+
+      }
+    );
+
+
+  if(dates.length > 7){
+
+    var more =
+      document.createElement("button");
+
+    more.className =
+      "secondary-btn";
+
+    more.style.marginTop =
+      "4px";
+
+    more.textContent =
+      "전체 기록 보기";
+
+    more.onclick =
+      function(){
+
+        switchPage(
+          "calendarPage"
+        );
+
+        renderCalendarList();
+
       };
-      row.appendChild(sw);
-    });
+
+    wrap.appendChild(more);
+
   }
 
-  async function loadData(){
-    try{
-      var e = await window.storage.get('lunch-entries', false);
-      state.entries = e ? JSON.parse(e.value) : [];
-    }catch(err){ state.entries = []; }
-    try{
-      var b = await window.storage.get('lunch-budget', false);
-      state.budget = b ? JSON.parse(b.value) : 0;
-    }catch(err){ state.budget = 0; }
-    try{
-      var x = await window.storage.get('lunch-excluded', false);
-      state.excludedDates = x ? JSON.parse(x.value) : [];
-    }catch(err){ state.excludedDates = []; }
-    try{
-      var c = await window.storage.get('lunch-color', false);
-      state.colorId = c ? JSON.parse(c.value) : 'blue';
-    }catch(err){ state.colorId = 'blue'; }
-    try{
-      var p = await window.storage.get('lunch-period-start', false);
-      state.periodStartDay = p ? JSON.parse(p.value) : 1;
-    }catch(err){ state.periodStartDay = 1; }
-    try{
-      var pe = await window.storage.get('lunch-period-end', false);
-      state.periodEndDay = pe ? JSON.parse(pe.value) : 31;
-    }catch(err){ state.periodEndDay = 31; }
-  }
-  async function saveEntries(){
-    try{ await window.storage.set('lunch-entries', JSON.stringify(state.entries), false); }
-    catch(err){ console.error('저장 실패', err); }
-  }
-  async function saveBudget(){
-    try{ await window.storage.set('lunch-budget', JSON.stringify(state.budget), false); }
-    catch(err){ console.error('저장 실패', err); }
-  }
-  async function saveExcluded(){
-    try{ await window.storage.set('lunch-excluded', JSON.stringify(state.excludedDates), false); }
-    catch(err){ console.error('저장 실패', err); }
-  }
-  async function saveColor(){
-    try{ await window.storage.set('lunch-color', JSON.stringify(state.colorId), false); }
-    catch(err){ console.error('저장 실패', err); }
-  }
-  async function savePeriodStart(){
-    try{ await window.storage.set('lunch-period-start', JSON.stringify(state.periodStartDay), false); }
-    catch(err){ console.error('저장 실패', err); }
-  }
-  async function savePeriodEnd(){
-    try{ await window.storage.set('lunch-period-end', JSON.stringify(state.periodEndDay), false); }
-    catch(err){ console.error('저장 실패', err); }
-  }
+}
 
-  function monthEntries(){
-    var r = periodRange(state.viewYear, state.viewMonth);
-    return state.entries.filter(function(en){ return en.date >= r.startKey && en.date <= r.endKey; });
-  }
 
-  function render(){
-    var r = periodRange(state.viewYear, state.viewMonth);
-    var monthLabelEl = document.getElementById('monthLabel');
-    if(state.periodStartDay===1 && state.periodEndDay===31){
-      monthLabelEl.textContent = state.viewYear + '년 ' + (state.viewMonth+1) + '월';
-    } else {
-      monthLabelEl.textContent = (r.start.getMonth()+1)+'.'+r.start.getDate()+' - '+(r.end.getMonth()+1)+'.'+r.end.getDate();
+/* =========================================================
+   DAY GROUP
+========================================================= */
+
+function renderDayGroup(
+  wrap,
+  key,
+  entries
+){
+
+  var date =
+    new Date(key + "T00:00:00");
+
+  var group =
+    document.createElement("div");
+
+  group.className =
+    "day-group";
+
+
+  var total =
+    entries.reduce(
+      function(sum,entry){
+
+        return sum +
+          Number(entry.price || 0);
+
+      },
+      0
+    );
+
+
+  var head =
+    document.createElement("div");
+
+  head.className =
+    "day-head";
+
+
+  var left =
+    document.createElement("div");
+
+  left.innerHTML =
+    '<span class="day-date">' +
+    (date.getMonth()+1) +
+    "월 " +
+    date.getDate() +
+    "일</span>" +
+    '<span class="day-dow">' +
+    weekday(date) +
+    "요일</span>";
+
+
+  var right =
+    document.createElement("div");
+
+  right.className =
+    "day-total";
+
+  right.textContent =
+    won(total);
+
+
+  head.appendChild(left);
+  head.appendChild(right);
+
+  group.appendChild(head);
+
+
+  entries.forEach(
+    function(entry){
+
+      group.appendChild(
+        createEntryCard(entry)
+      );
+
     }
+  );
 
-    var mEntries = monthEntries();
-    var used = mEntries.filter(function(e){ return isBudgetDay(e.date); }).reduce(function(s,e){ return s+Number(e.price||0); }, 0);
-    var budget = Number(state.budget||0);
-    var remaining = budget - used;
-    var budgetDaysInMonth = countBudgetDaysInMonth(state.viewYear, state.viewMonth);
-    var dailyBudget = (budget > 0 && budgetDaysInMonth > 0) ? budget/budgetDaysInMonth : 0;
-    var pct = budget>0 ? Math.min(100, (used/budget)*100) : 0;
-    var isCurrentMonth = (todayKey >= r.startKey && todayKey <= r.endKey);
-    var passedBudgetDays = 0;
-    var countEndKey = todayKey > r.endKey ? r.endKey : (todayKey < r.startKey ? null : todayKey);
-    if(countEndKey){
-      forEachDateInRange(r.start, new Date(countEndKey+'T00:00:00'), function(d){ if(isBudgetDay(fmtKey(d))) passedBudgetDays++; });
-    }
-    var avgPerDay = passedBudgetDays>0 ? used/passedBudgetDays : 0;
 
-    var periodLabel = (state.periodStartDay===1 && state.periodEndDay===31) ? (state.viewMonth+1)+'월' : '이번 기간';
-    var hero = document.getElementById('heroCard');
-    var heroLabel = document.getElementById('heroLabel');
-    var heroAmount = document.getElementById('heroAmount');
-    if(budget<=0){
-      hero.classList.remove('over');
-      heroLabel.textContent = periodLabel+' 사용한 식비';
-      heroAmount.textContent = won(used);
-    } else if(remaining>=0){
-      hero.classList.remove('over');
-      heroLabel.textContent = periodLabel+' 남은 식비';
-      heroAmount.textContent = won(remaining);
-    } else {
-      hero.classList.add('over');
-      heroLabel.textContent = periodLabel+' 예산 초과';
-      heroAmount.textContent = won(Math.abs(remaining));
-    }
-    document.getElementById('heroBarFill').style.width = pct + '%';
-    document.getElementById('statBudget').textContent = budget>0 ? won(budget) : '미설정';
-    document.getElementById('statUsed').textContent = won(used);
-    document.getElementById('statAvg').textContent = won(avgPerDay);
+  wrap.appendChild(group);
 
-    // today card
-    var todayCard = document.getElementById('todayCard');
-    if(isCurrentMonth){
-      todayCard.style.display = 'flex';
-      var todaySpent = mEntries.filter(function(e){return e.date===todayKey;}).reduce(function(s,e){return s+Number(e.price||0);},0);
-      document.getElementById('todayAmount').textContent = won(todaySpent);
-      var badge = document.getElementById('todayBadge');
-      if(!isBudgetDay(todayKey)){
-        badge.className='badge blue'; badge.textContent = isWeekday(todayKey) ? '예산 제외일' : '주말 (예산 제외)';
-      } else if(budget<=0){
-        badge.className='badge blue'; badge.textContent='예산 미설정';
-      } else if(todaySpent <= dailyBudget){
-        badge.className='badge under'; badge.textContent = won(dailyBudget-todaySpent) + ' 남음';
-      } else {
-        badge.className='badge over'; badge.textContent = won(todaySpent-dailyBudget) + ' 오버';
+}
+
+
+function createEntryCard(entry){
+
+  var card =
+    document.createElement("div");
+
+  card.className =
+    "entry-card";
+
+
+  var left =
+    document.createElement("div");
+
+  left.className =
+    "entry-left";
+
+
+  var place =
+    document.createElement("div");
+
+  place.className =
+    "entry-place";
+
+  place.textContent =
+    entry.place || "장소 미입력";
+
+
+  var menu =
+    document.createElement("div");
+
+  menu.className =
+    "entry-menu";
+
+  menu.textContent =
+    entry.menu || "메뉴 미입력";
+
+
+  var meta =
+    document.createElement("div");
+
+  meta.className =
+    "entry-meta";
+
+  meta.textContent =
+    entry.payer === "friend"
+      ? "친구 결제"
+      : "내 결제";
+
+
+  left.appendChild(place);
+  left.appendChild(menu);
+  left.appendChild(meta);
+
+
+  var right =
+    document.createElement("div");
+
+  right.className =
+    "entry-right";
+
+
+  var payer =
+    document.createElement("span");
+
+  payer.className =
+    "payer-badge" +
+    (
+      entry.payer === "friend"
+        ? " friend"
+        : ""
+    );
+
+  payer.textContent =
+    entry.payer === "friend"
+      ? "친구"
+      : "나";
+
+
+  var price =
+    document.createElement("div");
+
+  price.className =
+    "entry-price";
+
+  price.textContent =
+    won(entry.price);
+
+
+  right.appendChild(payer);
+  right.appendChild(price);
+
+
+  card.appendChild(left);
+  card.appendChild(right);
+
+
+  card.onclick =
+    function(){
+
+      openEditEntry(entry);
+
+    };
+
+
+  return card;
+
+}
+
+
+/* =========================================================
+   CALENDAR
+========================================================= */
+
+function renderCalendar(){
+
+  var grid =
+    document.getElementById(
+      "calendarGrid"
+    );
+
+  grid.innerHTML = "";
+
+
+  var range =
+    getCurrentRange();
+
+  var groups = {};
+
+  periodEntries().forEach(
+    function(entry){
+
+      if(!groups[entry.date]){
+        groups[entry.date] = [];
       }
-    } else {
-      todayCard.style.display = 'none';
+
+      groups[entry.date].push(entry);
+
     }
+  );
 
-    // group entries by date (used by both list & calendar)
-    var groups = {};
-    mEntries.forEach(function(e){
-      if(!groups[e.date]) groups[e.date]=[];
-      groups[e.date].push(e);
-    });
 
-    document.getElementById('listArea').style.display = state.view==='list' ? 'block' : 'none';
-    document.getElementById('calendarArea').style.display = state.view==='calendar' ? 'block' : 'none';
+  var firstDow =
+    range.start.getDay();
 
-    if(state.view==='calendar'){
-      renderCalendar(groups, budget, dailyBudget);
-      return;
-    }
 
-    // list grouped by date desc
-    var dates = Object.keys(groups).sort().reverse();
-    var listArea = document.getElementById('listArea');
-    listArea.innerHTML = '';
+  for(
+    var i=0;
+    i<firstDow;
+    i++
+  ){
 
-    if(dates.length===0){
-      listArea.innerHTML = '<div class="empty-state"><div class="emoji">🍱</div><p>아직 기록이 없어요.<br>오늘 점심을 기록해보세요.</p></div>';
-      return;
-    }
+    var empty =
+      document.createElement("div");
 
-    dates.forEach(function(dateKey){
-      var list = groups[dateKey];
-      var dayTotal = list.reduce(function(s,e){return s+Number(e.price||0);},0);
-      var dObj = new Date(dateKey+'T00:00:00');
-      var group = document.createElement('div');
-      group.className = 'day-group';
+    empty.className =
+      "cal-cell empty";
 
-      var head = document.createElement('div');
-      head.className = 'day-head';
-      var dLeft = document.createElement('div');
-      dLeft.className = 'd-left';
-      var dDate = document.createElement('span');
-      dDate.className='d-date';
-      dDate.textContent = (dObj.getMonth()+1)+'월 '+dObj.getDate()+'일';
-      var dDow = document.createElement('span');
-      dDow.className='d-dow';
-      dDow.textContent = dowLabel(dObj)+'요일';
-      dLeft.appendChild(dDate); dLeft.appendChild(dDow);
-      head.appendChild(dLeft);
+    grid.appendChild(empty);
 
-      var right;
-      if(!isBudgetDay(dateKey)){
-        right = document.createElement('span');
-        right.className = 'badge blue';
-        right.style.fontSize='11.5px'; right.style.padding='4px 9px';
-        right.textContent = won(dayTotal) + (isWeekday(dateKey) ? ' · 제외' : ' · 주말');
-      } else if(budget>0){
-        right = document.createElement('span');
-        var diff = dailyBudget - dayTotal;
-        right.className = 'badge ' + (diff>=0 ? 'under':'over');
-        right.style.fontSize='11.5px'; right.style.padding='4px 9px';
-        right.textContent = diff>=0 ? (won(diff)+' 남음') : (won(-diff)+' 오버');
-      } else {
-        right = document.createElement('span');
-        right.className='day-total';
-        right.textContent = won(dayTotal);
-      }
-      head.appendChild(right);
-      group.appendChild(head);
-
-      list.forEach(function(e){
-        var card = document.createElement('div');
-        card.className='entry-card';
-        card.onclick = function(entry){ return function(){ openEditEntry(entry); }; }(e);
-        var left = document.createElement('div');
-        left.className='entry-left';
-        var place = document.createElement('div');
-        place.className='entry-place';
-        place.textContent = e.place || '장소 미입력';
-        var menu = document.createElement('div');
-        menu.className='entry-menu';
-        menu.textContent = e.menu || '';
-        left.appendChild(place); left.appendChild(menu);
-
-        var rightWrap = document.createElement('div');
-        rightWrap.className='entry-right';
-        var price = document.createElement('div');
-        price.className='entry-price';
-        price.textContent = won(e.price);
-        var chevron = document.createElement('span');
-        chevron.className='entry-chevron';
-        chevron.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>';
-        rightWrap.appendChild(price); rightWrap.appendChild(chevron);
-
-        card.appendChild(left); card.appendChild(rightWrap);
-        group.appendChild(card);
-      });
-
-      listArea.appendChild(group);
-    });
   }
 
-  function renderCalendar(groups, budget, dailyBudget){
-    var grid = document.getElementById('calGrid');
-    grid.innerHTML = '';
-    var r = periodRange(state.viewYear, state.viewMonth);
-    var firstDow = r.start.getDay();
 
-    for(var i=0;i<firstDow;i++){
-      var blank = document.createElement('div');
-      blank.className = 'cal-cell empty';
-      grid.appendChild(blank);
-    }
+  eachDate(
+    range.start,
+    range.end,
+    function(date){
 
-    forEachDateInRange(r.start, r.end, function(dObj){
-      var dateKey = fmtKey(dObj);
-      var list = groups[dateKey] || [];
-      var total = list.reduce(function(s,e){return s+Number(e.price||0);},0);
+      var key =
+        dateKey(date);
 
-      var cell = document.createElement('div');
-      cell.className = 'cal-cell';
-      if(dateKey===todayKey) cell.classList.add('today');
-      if(!isBudgetDay(dateKey)){
-        cell.classList.add('excluded');
-      } else if(list.length>0 && budget>0){
-        cell.classList.add(total<=dailyBudget ? 'has-under' : 'has-over');
+      var entries =
+        groups[key] || [];
+
+      var total =
+        entries.reduce(
+          function(sum,entry){
+
+            return sum +
+              Number(entry.price || 0);
+
+          },
+          0
+        );
+
+
+      var cell =
+        document.createElement("div");
+
+      cell.className =
+        "cal-cell";
+
+
+      if(key === todayKey){
+        cell.classList.add("today");
       }
-      var dayNum = document.createElement('div');
-      dayNum.className='cal-day';
-      dayNum.textContent = (dObj.getDate()===1 && dateKey!==r.startKey) ? (dObj.getMonth()+1)+'.1' : dObj.getDate();
-      cell.appendChild(dayNum);
-      if(list.length>0){
-        var amt = document.createElement('div');
-        amt.className='cal-amt';
-        amt.textContent = total>=10000 ? Math.round(total/1000)+'k' : total.toLocaleString('ko-KR');
-        cell.appendChild(amt);
+
+
+      if(!isBudgetDay(key)){
+
+        cell.classList.add(
+          "excluded"
+        );
+
       }
-      cell.onclick = function(dk){ return function(){ openDayDetail(dk); }; }(dateKey);
+      else if(
+        entries.length &&
+        totalBudget() > 0
+      ){
+
+        cell.classList.add(
+          total <= dailyBudget()
+            ? "under"
+            : "over"
+        );
+
+      }
+
+
+      var day =
+        document.createElement("div");
+
+      day.className =
+        "cal-day";
+
+      day.textContent =
+        date.getDate();
+
+
+      cell.appendChild(day);
+
+
+      if(entries.length){
+
+        var amount =
+          document.createElement("div");
+
+        amount.className =
+          "cal-amount";
+
+        amount.textContent =
+          shortWon(total);
+
+        cell.appendChild(amount);
+
+      }
+
+
+      cell.onclick =
+        function(){
+
+          openDayDetail(key);
+
+        };
+
+
       grid.appendChild(cell);
-    });
+
+    }
+  );
+
+}
+
+
+function renderCalendarList(){
+
+  var wrap =
+    document.getElementById(
+      "calendarList"
+    );
+
+  wrap.innerHTML = "";
+
+  var entries =
+    periodEntries();
+
+  if(!entries.length){
+
+    wrap.innerHTML =
+      '<div class="empty">기록이 없어요.</div>';
+
+    return;
+
   }
 
-  function openDayDetail(dateKey){
-    var list = state.entries.filter(function(e){ return e.date===dateKey; });
-    var dObj = new Date(dateKey+'T00:00:00');
-    document.getElementById('dayTitle').textContent = (dObj.getMonth()+1)+'월 '+dObj.getDate()+'일 '+dowLabel(dObj)+'요일';
 
-    var total = list.reduce(function(s,e){return s+Number(e.price||0);},0);
-    var budgetDaysInMonth = countBudgetDaysInMonth(state.viewYear, state.viewMonth);
-    var dailyBudget = (state.budget>0 && budgetDaysInMonth>0) ? state.budget/budgetDaysInMonth : 0;
-    var badge = document.getElementById('dayBadge');
-    var weekday = isWeekday(dateKey);
-    var budgetDay = isBudgetDay(dateKey);
+  var groups = {};
 
-    if(!budgetDay){
-      badge.className = 'badge blue';
-      badge.textContent = weekday ? (won(total)+' 사용 · 예산 제외') : (won(total)+' 사용 · 주말');
-    } else if(state.budget>0){
-      var diff = dailyBudget - total;
-      badge.className = 'badge ' + (diff>=0 ? 'under':'over');
-      badge.textContent = diff>=0 ? (won(diff)+' 남음') : (won(-diff)+' 오버');
-    } else {
-      badge.className = 'badge blue';
-      badge.textContent = won(total)+' 사용';
+  entries.forEach(
+    function(entry){
+
+      if(!groups[entry.date]){
+        groups[entry.date] = [];
+      }
+
+      groups[entry.date].push(entry);
+
     }
+  );
 
-    var toggleBtn = document.getElementById('dayExcludeToggle');
-    if(weekday){
-      toggleBtn.style.display = 'block';
-      var isExcluded = state.excludedDates.indexOf(dateKey) !== -1;
-      toggleBtn.className = 'day-toggle-btn' + (isExcluded ? ' on' : '');
-      toggleBtn.textContent = isExcluded ? '✓ 이 날짜는 예산에서 제외됨 (탭하면 포함)' : '이 날짜를 예산에서 제외하기';
-      toggleBtn.onclick = function(){
-        var idx = state.excludedDates.indexOf(dateKey);
-        if(idx===-1) state.excludedDates.push(dateKey);
-        else state.excludedDates.splice(idx,1);
-        saveExcluded();
-        render();
-        openDayDetail(dateKey);
-      };
-    } else {
-      toggleBtn.style.display = 'none';
+
+  Object.keys(groups)
+    .sort()
+    .reverse()
+    .forEach(
+      function(key){
+
+        renderDayGroup(
+          wrap,
+          key,
+          groups[key]
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function renderStats(){
+
+  var range =
+    getCurrentRange();
+
+  var entries =
+    periodEntries();
+
+  var budget =
+    totalBudget();
+
+  var used =
+    totalSpent();
+
+  var remaining =
+    budget - used;
+
+  var percent =
+    budget > 0
+      ? Math.round(
+          (used / budget) * 100
+        )
+      : 0;
+
+
+  document.getElementById(
+    "statsPeriod"
+  ).textContent =
+    formatDate(range.start) +
+    " – " +
+    formatDate(range.end);
+
+
+  document.getElementById(
+    "statsTotal"
+  ).textContent =
+    won(used);
+
+
+  document.getElementById(
+    "statsBudget"
+  ).textContent =
+    budget
+      ? won(budget)
+      : "미설정";
+
+
+  document.getElementById(
+    "statsRemaining"
+  ).textContent =
+    remaining >= 0
+      ? won(remaining)
+      : "-" + won(Math.abs(remaining));
+
+
+  document.getElementById(
+    "statsPercent"
+  ).textContent =
+    budget
+      ? percent + "%"
+      : "-";
+
+
+  var mySpent =
+    entries
+      .filter(
+        function(entry){
+          return entry.payer !== "friend";
+        }
+      )
+      .reduce(
+        function(sum,entry){
+          return sum +
+            Number(entry.price || 0);
+        },
+        0
+      );
+
+
+  var friendSpent =
+    entries
+      .filter(
+        function(entry){
+          return entry.payer === "friend";
+        }
+      )
+      .reduce(
+        function(sum,entry){
+          return sum +
+            Number(entry.price || 0);
+        },
+        0
+      );
+
+
+  document.getElementById(
+    "statsMySpent"
+  ).textContent =
+    won(mySpent);
+
+
+  document.getElementById(
+    "statsFriendSpent"
+  ).textContent =
+    won(friendSpent);
+
+
+  document.getElementById(
+    "statsMyBudget"
+  ).textContent =
+    "예산 " +
+    won(state.myBudget);
+
+
+  document.getElementById(
+    "statsFriendBudget"
+  ).textContent =
+    "예산 " +
+    won(state.friendBudget);
+
+
+  renderCategoryStats(entries);
+
+  renderDailyChart(entries);
+
+  renderStatsAnalysis(entries);
+
+}
+
+
+/* =========================================================
+   CATEGORY
+========================================================= */
+
+function getCategory(entry){
+
+  var text =
+    (
+      (entry.menu || "") +
+      " " +
+      (entry.place || "")
+    ).toLowerCase();
+
+
+  if(
+    /커피|카페|스타벅스|투썸|메가|컴포즈|아메리카노/.test(text)
+  ){
+    return "카페";
+  }
+
+  if(
+    /김밥|분식|떡볶이|라면|돈까스/.test(text)
+  ){
+    return "분식";
+  }
+
+  if(
+    /국밥|찌개|백반|한식|제육|비빔밥/.test(text)
+  ){
+    return "한식";
+  }
+
+  if(
+    /햄버거|맥도날드|버거|치킨|피자/.test(text)
+  ){
+    return "패스트푸드";
+  }
+
+  if(
+    /우동|라멘|초밥|돈부리|일식/.test(text)
+  ){
+    return "일식";
+  }
+
+  if(
+    /샐러드|샌드위치|포케/.test(text)
+  ){
+    return "간편식";
+  }
+
+  return "기타";
+
+}
+
+
+function renderCategoryStats(entries){
+
+  var wrap =
+    document.getElementById(
+      "categoryStats"
+    );
+
+  wrap.innerHTML = "";
+
+
+  var categories = {};
+
+  entries.forEach(
+    function(entry){
+
+      var category =
+        getCategory(entry);
+
+      categories[category] =
+        (
+          categories[category] || 0
+        ) +
+        Number(entry.price || 0);
+
     }
+  );
 
-    var wrap = document.getElementById('dayEntries');
-    wrap.innerHTML = '';
-    if(list.length===0){
-      wrap.innerHTML = '<div class="empty-state" style="padding:26px 10px;"><p>이 날짜에는 기록이 없어요.</p></div>';
-    } else {
-      list.forEach(function(e){
-        var card = document.createElement('div');
-        card.className='entry-card';
-        card.onclick = function(entry){ return function(){ closeSheet('dayOverlay'); openEditEntry(entry); }; }(e);
-        var left = document.createElement('div');
-        left.className='entry-left';
-        var place = document.createElement('div');
-        place.className='entry-place';
-        place.textContent = e.place || '장소 미입력';
-        var menu = document.createElement('div');
-        menu.className='entry-menu';
-        menu.textContent = e.menu || '';
-        left.appendChild(place); left.appendChild(menu);
 
-        var rightWrap = document.createElement('div');
-        rightWrap.className='entry-right';
-        var price = document.createElement('div');
-        price.className='entry-price';
-        price.textContent = won(e.price);
-        var chevron = document.createElement('span');
-        chevron.className='entry-chevron';
-        chevron.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>';
-        rightWrap.appendChild(price); rightWrap.appendChild(chevron);
+  var total =
+    entries.reduce(
+      function(sum,entry){
+        return sum +
+          Number(entry.price || 0);
+      },
+      0
+    );
 
-        card.appendChild(left); card.appendChild(rightWrap);
-        wrap.appendChild(card);
+
+  var list =
+    Object.keys(categories)
+      .sort(
+        function(a,b){
+          return categories[b] -
+            categories[a];
+        }
+      );
+
+
+  if(!list.length){
+
+    wrap.innerHTML =
+      '<div class="empty" style="padding:15px 0;">아직 지출 기록이 없어요.</div>';
+
+    return;
+
+  }
+
+
+  list.forEach(
+    function(category){
+
+      var value =
+        categories[category];
+
+      var percent =
+        total > 0
+          ? (value / total) * 100
+          : 0;
+
+
+      var row =
+        document.createElement("div");
+
+      row.className =
+        "category-row";
+
+
+      row.innerHTML =
+        '<div class="category-top">' +
+          '<span class="category-name">' +
+            category +
+          '</span>' +
+          '<span class="category-value">' +
+            won(value) +
+            " · " +
+            Math.round(percent) +
+            "%" +
+          '</span>' +
+        '</div>' +
+
+        '<div class="category-bar">' +
+          '<div class="category-fill" style="width:' +
+            percent +
+          '%"></div>' +
+        '</div>';
+
+
+      wrap.appendChild(row);
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   DAILY CHART
+========================================================= */
+
+function renderDailyChart(entries){
+
+  var chart =
+    document.getElementById(
+      "dailyChart"
+    );
+
+  chart.innerHTML = "";
+
+
+  var range =
+    getCurrentRange();
+
+  var values = [];
+
+  eachDate(
+    range.start,
+    range.end,
+    function(date){
+
+      var key =
+        dateKey(date);
+
+      var value =
+        entries
+          .filter(
+            function(entry){
+              return entry.date === key;
+            }
+          )
+          .reduce(
+            function(sum,entry){
+              return sum +
+                Number(entry.price || 0);
+            },
+            0
+          );
+
+
+      values.push({
+        date:date,
+        value:value
       });
+
+    }
+  );
+
+
+  /*
+    너무 긴 기간에서는
+    7~10개 단위로 압축
+  */
+
+  if(values.length > 12){
+
+    var step =
+      Math.ceil(
+        values.length / 10
+      );
+
+    var compressed = [];
+
+    for(
+      var i=0;
+      i<values.length;
+      i+=step
+    ){
+
+      var slice =
+        values.slice(
+          i,
+          i+step
+        );
+
+      compressed.push({
+        date:slice[0].date,
+        value:slice.reduce(
+          function(sum,item){
+            return sum +
+              item.value;
+          },
+          0
+        )
+      });
+
     }
 
-    document.getElementById('dayAddBtn').onclick = function(){
-      closeSheet('dayOverlay');
-      openAddSheet(dateKey);
+    values = compressed;
+
+  }
+
+
+  var max =
+    Math.max.apply(
+      null,
+      values.map(
+        function(item){
+          return item.value;
+        }
+      )
+    );
+
+
+  values.forEach(
+    function(item){
+
+      var barItem =
+        document.createElement("div");
+
+      barItem.className =
+        "bar-item";
+
+
+      var value =
+        document.createElement("div");
+
+      value.className =
+        "bar-value";
+
+      value.textContent =
+        item.value
+          ? shortWon(item.value)
+          : "";
+
+
+      var bar =
+        document.createElement("div");
+
+      bar.className =
+        "bar";
+
+      bar.style.height =
+        max > 0
+          ? Math.max(
+              3,
+              (item.value / max) * 100
+            ) + "%"
+          : "2px";
+
+
+      var label =
+        document.createElement("div");
+
+      label.className =
+        "bar-label";
+
+      label.textContent =
+        (item.date.getMonth()+1) +
+        "." +
+        item.date.getDate();
+
+
+      barItem.appendChild(value);
+      barItem.appendChild(bar);
+      barItem.appendChild(label);
+
+      chart.appendChild(barItem);
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   STATS ANALYSIS
+========================================================= */
+
+function renderStatsAnalysis(entries){
+
+  var groups = {};
+
+  entries.forEach(
+    function(entry){
+
+      groups[entry.date] =
+        (
+          groups[entry.date] || 0
+        ) +
+        Number(entry.price || 0);
+
+    }
+  );
+
+
+  var dates =
+    Object.keys(groups);
+
+
+  if(!dates.length){
+
+    document.getElementById(
+      "highestDay"
+    ).textContent = "-";
+
+    document.getElementById(
+      "highestDayAmount"
+    ).textContent = "0원";
+
+    document.getElementById(
+      "statsDailyAverage"
+    ).textContent = "0원";
+
+    return;
+
+  }
+
+
+  var highest =
+    dates.sort(
+      function(a,b){
+        return groups[b] -
+          groups[a];
+      }
+    )[0];
+
+
+  var highestDate =
+    new Date(
+      highest + "T00:00:00"
+    );
+
+
+  document.getElementById(
+    "highestDay"
+  ).textContent =
+    (highestDate.getMonth()+1) +
+    "." +
+    highestDate.getDate();
+
+
+  document.getElementById(
+    "highestDayAmount"
+  ).textContent =
+    won(groups[highest]);
+
+
+  var total =
+    entries.reduce(
+      function(sum,entry){
+        return sum +
+          Number(entry.price || 0);
+      },
+      0
+    );
+
+
+  document.getElementById(
+    "statsDailyAverage"
+  ).textContent =
+    won(
+      total /
+      Math.max(dates.length,1)
+    );
+
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+function switchPage(pageId){
+
+  state.currentPage =
+    pageId;
+
+
+  document.querySelectorAll(
+    ".page"
+  ).forEach(
+    function(page){
+
+      page.classList.toggle(
+        "active",
+        page.id === pageId
+      );
+
+    }
+  );
+
+
+  document.querySelectorAll(
+    ".nav-btn"
+  ).forEach(
+    function(button){
+
+      button.classList.toggle(
+        "active",
+        button.dataset.page === pageId
+      );
+
+    }
+  );
+
+
+  if(pageId === "calendarPage"){
+
+    renderCalendar();
+
+    if(
+      document.getElementById(
+        "calendarView"
+      ).style.display !== "none"
+    ){
+
+      document.getElementById(
+        "calendarList"
+      ).style.display = "none";
+
+    }
+
+  }
+
+
+  if(pageId === "statsPage"){
+
+    renderStats();
+
+  }
+
+
+  renderHeader();
+
+}
+
+
+/* =========================================================
+   ENTRY SHEET
+========================================================= */
+
+function openAddEntry(date){
+
+  state.editingId = null;
+
+  document.getElementById(
+    "entrySheetTitle"
+  ).textContent =
+    "점심 기록";
+
+
+  document.getElementById(
+    "entryDate"
+  ).value =
+    date || todayKey;
+
+
+  document.getElementById(
+    "entryPlace"
+  ).value = "";
+
+
+  document.getElementById(
+    "entryMenu"
+  ).value = "";
+
+
+  document.getElementById(
+    "entryPrice"
+  ).value = "";
+
+
+  document.getElementById(
+    "entryPayer"
+  ).value = "me";
+
+
+  document.getElementById(
+    "saveEntry"
+  ).textContent =
+    "저장하기";
+
+
+  document.getElementById(
+    "deleteEntry"
+  ).style.display =
+    "none";
+
+
+  openOverlay(
+    "entryOverlay"
+  );
+
+}
+
+
+function openEditEntry(entry){
+
+  state.editingId =
+    entry.id;
+
+
+  document.getElementById(
+    "entrySheetTitle"
+  ).textContent =
+    "기록 수정";
+
+
+  document.getElementById(
+    "entryDate"
+  ).value =
+    entry.date;
+
+
+  document.getElementById(
+    "entryPlace"
+  ).value =
+    entry.place || "";
+
+
+  document.getElementById(
+    "entryMenu"
+  ).value =
+    entry.menu || "";
+
+
+  document.getElementById(
+    "entryPrice"
+  ).value =
+    entry.price;
+
+
+  document.getElementById(
+    "entryPayer"
+  ).value =
+    entry.payer || "me";
+
+
+  document.getElementById(
+    "saveEntry"
+  ).textContent =
+    "수정하기";
+
+
+  document.getElementById(
+    "deleteEntry"
+  ).style.display =
+    "block";
+
+
+  openOverlay(
+    "entryOverlay"
+  );
+
+}
+
+
+function saveEntry(){
+
+  var date =
+    document.getElementById(
+      "entryDate"
+    ).value;
+
+  var place =
+    document.getElementById(
+      "entryPlace"
+    ).value.trim();
+
+  var menu =
+    document.getElementById(
+      "entryMenu"
+    ).value.trim();
+
+  var price =
+    Number(
+      document.getElementById(
+        "entryPrice"
+      ).value
+    );
+
+  var payer =
+    document.getElementById(
+      "entryPayer"
+    ).value;
+
+
+  if(!date){
+
+    alert("날짜를 선택해주세요.");
+
+    return;
+
+  }
+
+
+  if(!price || price <= 0){
+
+    alert("금액을 입력해주세요.");
+
+    return;
+
+  }
+
+
+  if(state.editingId){
+
+    var existing =
+      state.entries.find(
+        function(entry){
+          return entry.id ===
+            state.editingId;
+        }
+      );
+
+
+    if(existing){
+
+      existing.date = date;
+      existing.place = place;
+      existing.menu = menu;
+      existing.price = price;
+      existing.payer = payer;
+
+    }
+
+  }else{
+
+    state.entries.push({
+
+      id:
+        Date.now() +
+        "-" +
+        Math.random()
+          .toString(36)
+          .slice(2,8),
+
+      date:date,
+
+      place:place,
+
+      menu:menu,
+
+      price:price,
+
+      payer:payer
+
+    });
+
+  }
+
+
+  saveAll();
+
+
+  state.viewYear =
+    Number(date.slice(0,4));
+
+  state.viewMonth =
+    Number(date.slice(5,7))-1;
+
+
+  closeOverlay(
+    "entryOverlay"
+  );
+
+
+  renderAll();
+
+}
+
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+function deleteCurrentEntry(){
+
+  if(!state.editingId){
+    return;
+  }
+
+
+  if(
+    !confirm(
+      "이 기록을 삭제할까요?"
+    )
+  ){
+    return;
+  }
+
+
+  state.entries =
+    state.entries.filter(
+      function(entry){
+
+        return entry.id !==
+          state.editingId;
+
+      }
+    );
+
+
+  state.editingId =
+    null;
+
+  saveAll();
+
+  closeOverlay(
+    "entryOverlay"
+  );
+
+  renderAll();
+
+}
+
+
+/* =========================================================
+   DAY DETAIL
+========================================================= */
+
+var selectedDay = null;
+
+
+function openDayDetail(key){
+
+  selectedDay = key;
+
+  var date =
+    new Date(
+      key + "T00:00:00"
+    );
+
+
+  document.getElementById(
+    "dayTitle"
+  ).textContent =
+    (date.getMonth()+1) +
+    "월 " +
+    date.getDate() +
+    "일 " +
+    weekday(date) +
+    "요일";
+
+
+  var entries =
+    state.entries.filter(
+      function(entry){
+        return entry.date === key;
+      }
+    );
+
+
+  var total =
+    entries.reduce(
+      function(sum,entry){
+        return sum +
+          Number(entry.price || 0);
+      },
+      0
+    );
+
+
+  var badge =
+    document.getElementById(
+      "dayBadge"
+    );
+
+
+  if(!isBudgetDay(key)){
+
+    badge.textContent =
+      won(total) +
+      " 사용";
+
+  }else if(totalBudget() > 0){
+
+    var diff =
+      dailyBudget() - total;
+
+
+    badge.textContent =
+      diff >= 0
+        ? won(diff) + " 남음"
+        : won(Math.abs(diff)) + " 오버";
+
+  }else{
+
+    badge.textContent =
+      won(total) + " 사용";
+
+  }
+
+
+  var wrap =
+    document.getElementById(
+      "dayEntries"
+    );
+
+  wrap.innerHTML = "";
+
+
+  if(!entries.length){
+
+    wrap.innerHTML =
+      '<div class="empty" style="padding:25px 0;">이 날짜에는 기록이 없어요.</div>';
+
+  }else{
+
+    entries.forEach(
+      function(entry){
+
+        wrap.appendChild(
+          createEntryCard(entry)
+        );
+
+      }
+    );
+
+  }
+
+
+  openOverlay(
+    "dayOverlay"
+  );
+
+}
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+function openSettings(){
+
+  document.getElementById(
+    "settingMyBudget"
+  ).value =
+    state.myBudget || "";
+
+
+  document.getElementById(
+    "settingFriendBudget"
+  ).value =
+    state.friendBudget || "";
+
+
+  document.getElementById(
+    "settingStart"
+  ).value =
+    state.periodStartDay;
+
+
+  document.getElementById(
+    "settingEnd"
+  ).value =
+    state.periodEndDay;
+
+
+  updateSettingTotal();
+
+  renderSwatches();
+
+  renderExcludeList();
+
+  openOverlay(
+    "settingsOverlay"
+  );
+
+}
+
+
+function updateSettingTotal(){
+
+  var my =
+    Number(
+      document.getElementById(
+        "settingMyBudget"
+      ).value
+    ) || 0;
+
+
+  var friend =
+    Number(
+      document.getElementById(
+        "settingFriendBudget"
+      ).value
+    ) || 0;
+
+
+  document.getElementById(
+    "settingTotalBudget"
+  ).textContent =
+    won(my + friend);
+
+}
+
+
+function saveSettings(){
+
+  var my =
+    Number(
+      document.getElementById(
+        "settingMyBudget"
+      ).value
+    ) || 0;
+
+
+  var friend =
+    Number(
+      document.getElementById(
+        "settingFriendBudget"
+      ).value
+    ) || 0;
+
+
+  var start =
+    Number(
+      document.getElementById(
+        "settingStart"
+      ).value
+    ) || 1;
+
+
+  var end =
+    Number(
+      document.getElementById(
+        "settingEnd"
+      ).value
+    ) || 31;
+
+
+  state.myBudget =
+    Math.min(
+      Math.max(my,0),
+      999999999
+    );
+
+
+  state.friendBudget =
+    Math.min(
+      Math.max(friend,0),
+      999999999
+    );
+
+
+  state.periodStartDay =
+    Math.min(
+      Math.max(start,1),
+      31
+    );
+
+
+  state.periodEndDay =
+    Math.min(
+      Math.max(end,1),
+      31
+    );
+
+
+  saveAll();
+
+  closeOverlay(
+    "settingsOverlay"
+  );
+
+  renderAll();
+
+}
+
+
+/* =========================================================
+   EXCLUDE DATE
+========================================================= */
+
+function renderExcludeList(){
+
+  var wrap =
+    document.getElementById(
+      "excludeList"
+    );
+
+  wrap.innerHTML = "";
+
+
+  var list =
+    state.excludedDates
+      .filter(isWeekday)
+      .sort();
+
+
+  if(!list.length){
+
+    return;
+
+  }
+
+
+  list.forEach(
+    function(key){
+
+      var date =
+        new Date(
+          key + "T00:00:00"
+        );
+
+
+      var item =
+        document.createElement("div");
+
+      item.className =
+        "exclude-item";
+
+
+      var label =
+        document.createElement("span");
+
+      label.textContent =
+        formatDate(date) +
+        " (" +
+        weekday(date) +
+        ")";
+
+
+      var remove =
+        document.createElement("button");
+
+      remove.className =
+        "exclude-remove";
+
+      remove.innerHTML =
+        "×";
+
+
+      remove.onclick =
+        function(){
+
+          state.excludedDates =
+            state.excludedDates.filter(
+              function(value){
+                return value !== key;
+              }
+            );
+
+          saveAll();
+
+          renderExcludeList();
+
+          renderAll();
+
+        };
+
+
+      item.appendChild(label);
+      item.appendChild(remove);
+
+      wrap.appendChild(item);
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   EXPORT / IMPORT
+========================================================= */
+
+function exportData(){
+
+  var payload = {
+
+    app:"lunch-budget",
+
+    version:2,
+
+    exportedAt:
+      new Date().toISOString(),
+
+    entries:
+      state.entries,
+
+    myBudget:
+      state.myBudget,
+
+    friendBudget:
+      state.friendBudget,
+
+    budget:
+      totalBudget(),
+
+    excludedDates:
+      state.excludedDates,
+
+    periodStartDay:
+      state.periodStartDay,
+
+    periodEndDay:
+      state.periodEndDay,
+
+    colorId:
+      state.colorId
+
+  };
+
+
+  var blob =
+    new Blob(
+      [
+        JSON.stringify(
+          payload,
+          null,
+          2
+        )
+      ],
+      {
+        type:"application/json"
+      }
+    );
+
+
+  var url =
+    URL.createObjectURL(blob);
+
+
+  var a =
+    document.createElement("a");
+
+  a.href = url;
+
+  a.download =
+    "lunch-budget-backup-" +
+    todayKey +
+    ".json";
+
+
+  document.body.appendChild(a);
+
+  a.click();
+
+  a.remove();
+
+  URL.revokeObjectURL(url);
+
+}
+
+
+function importData(file){
+
+  var reader =
+    new FileReader();
+
+
+  reader.onload =
+    function(){
+
+      try{
+
+        var data =
+          JSON.parse(
+            reader.result
+          );
+
+
+        if(
+          !data ||
+          !Array.isArray(
+            data.entries
+          )
+        ){
+          throw new Error();
+        }
+
+
+        if(
+          !confirm(
+            "현재 기록을 백업 파일로 대체할까요?"
+          )
+        ){
+          return;
+        }
+
+
+        state.entries =
+          data.entries;
+
+
+        if(
+          data.myBudget !== undefined
+        ){
+
+          state.myBudget =
+            Number(
+              data.myBudget
+            ) || 0;
+
+        }else{
+
+          state.myBudget =
+            Number(
+              data.budget
+            ) || 0;
+
+        }
+
+
+        state.friendBudget =
+          Number(
+            data.friendBudget
+          ) || 0;
+
+
+        state.excludedDates =
+          Array.isArray(
+            data.excludedDates
+          )
+            ? data.excludedDates
+            : [];
+
+
+        state.periodStartDay =
+          Number(
+            data.periodStartDay
+          ) || 1;
+
+
+        state.periodEndDay =
+          Number(
+            data.periodEndDay
+          ) || 31;
+
+
+        state.colorId =
+          data.colorId ||
+          "blue";
+
+
+        saveAll();
+
+        applyColor();
+
+        closeOverlay(
+          "settingsOverlay"
+        );
+
+        renderAll();
+
+        alert(
+          "백업을 불러왔어요."
+        );
+
+      }catch(e){
+
+        alert(
+          "올바른 백업 파일이 아니에요."
+        );
+
+      }
+
     };
 
-    openSheet('dayOverlay');
+
+  reader.readAsText(file);
+
+}
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+function openOverlay(id){
+
+  document.getElementById(id)
+    .classList.add("open");
+
+}
+
+
+function closeOverlay(id){
+
+  document.getElementById(id)
+    .classList.remove("open");
+
+}
+
+
+document.querySelectorAll(
+  "[data-close]"
+).forEach(
+  function(button){
+
+    button.onclick =
+      function(){
+
+        closeOverlay(
+          button.dataset.close
+        );
+
+      };
+
   }
+);
 
-  function deleteEntry(id){
-    if(!confirm('이 기록을 삭제할까요?')) return;
-    state.entries = state.entries.filter(function(e){ return e.id!==id; });
-    saveEntries();
-    render();
-  }
 
-  var editingId = null;
+document.querySelectorAll(
+  ".overlay"
+).forEach(
+  function(overlay){
 
-  function openAddSheet(dateKey){
-    editingId = null;
-    document.getElementById('addSheetTitle').textContent = '점심 기록 추가';
-    document.getElementById('saveEntry').textContent = '저장하기';
-    document.getElementById('deleteEntryBtn').style.display = 'none';
-    document.getElementById('inpDate').value = dateKey || todayKey;
-    document.getElementById('inpPlace').value='';
-    document.getElementById('inpMenu').value='';
-    document.getElementById('inpPrice').value='';
-    openSheet('addOverlay');
-  }
+    overlay.addEventListener(
+      "click",
+      function(event){
 
-  function openEditEntry(entry){
-    editingId = entry.id;
-    document.getElementById('addSheetTitle').textContent = '점심 기록 수정';
-    document.getElementById('saveEntry').textContent = '수정하기';
-    document.getElementById('deleteEntryBtn').style.display = 'flex';
-    document.getElementById('inpDate').value = entry.date;
-    document.getElementById('inpPlace').value = entry.place || '';
-    document.getElementById('inpMenu').value = entry.menu || '';
-    document.getElementById('inpPrice').value = entry.price;
-    openSheet('addOverlay');
-  }
+        if(
+          event.target === overlay
+        ){
 
-  function openSheet(id){ document.getElementById(id).classList.add('open'); }
-  function closeSheet(id){ document.getElementById(id).classList.remove('open'); }
+          closeOverlay(
+            overlay.id
+          );
 
-  document.querySelectorAll('[data-close]').forEach(function(btn){
-    btn.onclick = function(){ closeSheet(btn.getAttribute('data-close')); };
-  });
-  document.getElementById('addOverlay').addEventListener('click', function(ev){
-    if(ev.target===this) closeSheet('addOverlay');
-  });
-  document.getElementById('settingsOverlay').addEventListener('click', function(ev){
-    if(ev.target===this) closeSheet('settingsOverlay');
-  });
+        }
 
-  document.getElementById('dayOverlay').addEventListener('click', function(ev){
-    if(ev.target===this) closeSheet('dayOverlay');
-  });
-
-  document.getElementById('tabList').onclick = function(){
-    state.view='list';
-    this.classList.add('active');
-    document.getElementById('tabCal').classList.remove('active');
-    render();
-  };
-  document.getElementById('tabCal').onclick = function(){
-    state.view='calendar';
-    this.classList.add('active');
-    document.getElementById('tabList').classList.remove('active');
-    render();
-  };
-
-  document.getElementById('openAdd').onclick = function(){
-    openAddSheet(todayKey);
-  };
-
-  document.getElementById('saveEntry').onclick = function(){
-    var date = document.getElementById('inpDate').value;
-    var place = document.getElementById('inpPlace').value.trim();
-    var menu = document.getElementById('inpMenu').value.trim();
-    var price = Number(document.getElementById('inpPrice').value);
-    if(!date){ alert('날짜를 선택해주세요.'); return; }
-    if(!price || price<=0){ alert('금액을 입력해주세요.'); return; }
-    if(editingId){
-      var target = state.entries.filter(function(e){ return e.id===editingId; })[0];
-      if(target){
-        target.date = date; target.place = place; target.menu = menu; target.price = price;
       }
-    } else {
-      state.entries.push({ id: Date.now()+'-'+Math.random().toString(36).slice(2,8), date: date, place: place, menu: menu, price: price });
-    }
-    saveEntries();
-    state.viewYear = Number(date.slice(0,4));
-    state.viewMonth = Number(date.slice(5,7))-1;
-    editingId = null;
-    closeSheet('addOverlay');
-    render();
+    );
+
+  }
+);
+
+
+/* =========================================================
+   PERIOD MOVE
+========================================================= */
+
+function movePeriod(direction){
+
+  state.viewMonth +=
+    direction;
+
+
+  if(state.viewMonth < 0){
+
+    state.viewMonth = 11;
+    state.viewYear--;
+
+  }
+
+
+  if(state.viewMonth > 11){
+
+    state.viewMonth = 0;
+    state.viewYear++;
+
+  }
+
+
+  renderAll();
+
+}
+
+
+/* =========================================================
+   ALL RENDER
+========================================================= */
+
+function renderAll(){
+
+  applyColor();
+
+  renderHeader();
+
+  renderHome();
+
+  renderCalendar();
+
+  renderCalendarList();
+
+  renderStats();
+
+}
+
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+
+/* nav */
+
+document.querySelectorAll(
+  ".nav-btn"
+).forEach(
+  function(button){
+
+    button.onclick =
+      function(){
+
+        switchPage(
+          button.dataset.page
+        );
+
+      };
+
+  }
+);
+
+
+/* add */
+
+document.getElementById(
+  "openAdd"
+).onclick =
+  function(){
+
+    openAddEntry(
+      todayKey
+    );
+
   };
 
-  document.getElementById('deleteEntryBtn').onclick = function(){
-    if(!editingId) return;
-    if(!confirm('이 기록을 삭제할까요?')) return;
-    state.entries = state.entries.filter(function(e){ return e.id!==editingId; });
-    saveEntries();
-    editingId = null;
-    closeSheet('addOverlay');
-    render();
+
+/* settings */
+
+document.getElementById(
+  "openSettings"
+).onclick =
+  openSettings;
+
+
+/* period */
+
+document.getElementById(
+  "prevPeriod"
+).onclick =
+  function(){
+
+    movePeriod(-1);
+
   };
 
-  function renderExcludedList(){
-    var wrap = document.getElementById('exclList');
-    wrap.innerHTML = '';
-    var weekdayExcluded = state.excludedDates.filter(isWeekday).sort();
-    if(weekdayExcluded.length===0){
-      wrap.innerHTML = '<div class="excl-empty">추가된 제외 날짜가 없어요.</div>';
+
+document.getElementById(
+  "nextPeriod"
+).onclick =
+  function(){
+
+    movePeriod(1);
+
+  };
+
+
+/* home calendar */
+
+document.getElementById(
+  "goCalendar"
+).onclick =
+  function(){
+
+    switchPage(
+      "calendarPage"
+    );
+
+  };
+
+
+/* save entry */
+
+document.getElementById(
+  "saveEntry"
+).onclick =
+  saveEntry;
+
+
+/* delete entry */
+
+document.getElementById(
+  "deleteEntry"
+).onclick =
+  deleteCurrentEntry;
+
+
+/* day add */
+
+document.getElementById(
+  "dayAdd"
+).onclick =
+  function(){
+
+    closeOverlay(
+      "dayOverlay"
+    );
+
+    openAddEntry(
+      selectedDay
+    );
+
+  };
+
+
+/* setting inputs */
+
+document.getElementById(
+  "settingMyBudget"
+).addEventListener(
+  "input",
+  updateSettingTotal
+);
+
+
+document.getElementById(
+  "settingFriendBudget"
+).addEventListener(
+  "input",
+  updateSettingTotal
+);
+
+
+/* save settings */
+
+document.getElementById(
+  "saveSettings"
+).onclick =
+  saveSettings;
+
+
+/* exclude */
+
+document.getElementById(
+  "addExclude"
+).onclick =
+  function(){
+
+    var value =
+      document.getElementById(
+        "excludeDate"
+      ).value;
+
+
+    if(!value){
       return;
     }
-    weekdayExcluded.forEach(function(dk){
-      var dObj = new Date(dk+'T00:00:00');
-      var chip = document.createElement('div');
-      chip.className = 'excl-chip';
-      var label = document.createElement('span');
-      label.textContent = dObj.getFullYear()+'.'+(dObj.getMonth()+1)+'.'+dObj.getDate()+' ('+dowLabel(dObj)+')';
-      var del = document.createElement('button');
-      del.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
-      del.onclick = function(){
-        state.excludedDates = state.excludedDates.filter(function(d){ return d!==dk; });
-        saveExcluded();
-        renderExcludedList();
-        render();
-      };
-      chip.appendChild(label); chip.appendChild(del);
-      wrap.appendChild(chip);
-    });
+
+
+    if(!isWeekday(value)){
+
+      alert(
+        "주말은 자동으로 제외됩니다."
+      );
+
+      return;
+
+    }
+
+
+    if(
+      state.excludedDates
+        .indexOf(value) === -1
+    ){
+
+      state.excludedDates.push(
+        value
+      );
+
+    }
+
+
+    document.getElementById(
+      "excludeDate"
+    ).value = "";
+
+
+    saveAll();
+
+    renderExcludeList();
+
+    renderAll();
+
+  };
+
+
+/* export */
+
+document.getElementById(
+  "exportData"
+).onclick =
+  exportData;
+
+
+/* import */
+
+document.getElementById(
+  "importData"
+).onclick =
+  function(){
+
+    document.getElementById(
+      "importFile"
+    ).click();
+
+  };
+
+
+document.getElementById(
+  "importFile"
+).onchange =
+  function(event){
+
+    var file =
+      event.target.files[0];
+
+    if(file){
+      importData(file);
+    }
+
+    event.target.value = "";
+
+  };
+
+
+/* calendar mode */
+
+document.getElementById(
+  "calendarViewBtn"
+).onclick =
+  function(){
+
+    document.getElementById(
+      "calendarView"
+    ).style.display =
+      "block";
+
+    document.getElementById(
+      "calendarList"
+    ).style.display =
+      "none";
+
+
+    this.classList.add("active");
+
+    document.getElementById(
+      "calendarListBtn"
+    ).classList.remove("active");
+
+  };
+
+
+document.getElementById(
+  "calendarListBtn"
+).onclick =
+  function(){
+
+    document.getElementById(
+      "calendarView"
+    ).style.display =
+      "none";
+
+    document.getElementById(
+      "calendarList"
+    ).style.display =
+      "block";
+
+
+    this.classList.add("active");
+
+    document.getElementById(
+      "calendarViewBtn"
+    ).classList.remove("active");
+
+
+    renderCalendarList();
+
+  };
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  function(event){
+
+    if(event.key === "Escape"){
+
+      document.querySelectorAll(
+        ".overlay.open"
+      ).forEach(
+        function(overlay){
+
+          closeOverlay(
+            overlay.id
+          );
+
+        }
+      );
+
+    }
+
   }
+);
 
-  document.getElementById('addExcludeBtn').onclick = function(){
-    var v = document.getElementById('inpExcludeDate').value;
-    if(!v){ alert('날짜를 선택해주세요.'); return; }
-    if(!isWeekday(v)){ alert('주말은 이미 자동으로 예산에서 제외돼요.'); return; }
-    if(state.excludedDates.indexOf(v)===-1) state.excludedDates.push(v);
-    saveExcluded();
-    document.getElementById('inpExcludeDate').value='';
-    renderExcludedList();
-    render();
-  };
 
-  document.getElementById('openSettings').onclick = function(){
-    document.getElementById('inpBudget').value = state.budget || '';
-    document.getElementById('inpPeriodStart').value = state.periodStartDay || 1;
-    document.getElementById('inpPeriodEnd').value = state.periodEndDay || 31;
-    renderSwatches();
-    renderExcludedList();
-    openSheet('settingsOverlay');
-  };
-  document.getElementById('saveBudget').onclick = function(){
-    var v = Number(document.getElementById('inpBudget').value)||0;
-    var p = Number(document.getElementById('inpPeriodStart').value)||1;
-    var pe = Number(document.getElementById('inpPeriodEnd').value)||31;
-    if(p<1) p=1;
-    if(p>31) p=31;
-    if(pe<1) pe=1;
-    if(pe>31) pe=31;
-    state.budget = v;
-    state.periodStartDay = p;
-    state.periodEndDay = pe;
-    saveBudget();
-    savePeriodStart();
-    savePeriodEnd();
-    render();
-    closeSheet('settingsOverlay');
-  };
+/* =========================================================
+   INIT
+========================================================= */
 
-  document.getElementById('prevMonth').onclick = function(){
-    state.viewMonth--;
-    if(state.viewMonth<0){ state.viewMonth=11; state.viewYear--; }
-    render();
-  };
-  document.getElementById('nextMonth').onclick = function(){
-    state.viewMonth++;
-    if(state.viewMonth>11){ state.viewMonth=0; state.viewYear++; }
-    render();
-  };
+async function init(){
 
-  document.getElementById('exportBtn').onclick = function(){
-    var payload = {
-      app: 'lunch-budget',
-      exportedAt: new Date().toISOString(),
-      budget: state.budget,
-      entries: state.entries,
-      excludedDates: state.excludedDates,
-      colorId: state.colorId,
-      periodStartDay: state.periodStartDay,
-      periodEndDay: state.periodEndDay
-    };
-    var blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    var stamp = fmtKey(new Date());
-    a.href = url;
-    a.download = 'lunch-budget-backup-'+stamp+'.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
+  await loadData();
 
-  document.getElementById('importBtn').onclick = function(){
-    document.getElementById('importFile').click();
-  };
-  document.getElementById('importFile').onchange = function(ev){
-    var file = ev.target.files[0];
-    if(!file) return;
-    var reader = new FileReader();
-    reader.onload = function(){
-      try{
-        var data = JSON.parse(reader.result);
-        if(!data || !Array.isArray(data.entries)) throw new Error('형식 오류');
-        if(!confirm('백업 파일을 불러오면 현재 기록이 모두 대체돼요. 계속할까요?')) return;
-        state.entries = data.entries;
-        state.budget = Number(data.budget)||0;
-        state.excludedDates = Array.isArray(data.excludedDates) ? data.excludedDates : [];
-        state.colorId = data.colorId || 'blue';
-        state.periodStartDay = Number(data.periodStartDay)||1;
-        state.periodEndDay = Number(data.periodEndDay)||31;
-        saveEntries();
-        saveBudget();
-        saveExcluded();
-        saveColor();
-        savePeriodStart();
-        savePeriodEnd();
-        applyColor(state.colorId);
-        renderSwatches();
-        renderExcludedList();
-        render();
-        closeSheet('settingsOverlay');
-        alert('백업을 불러왔어요.');
-      }catch(err){
-        alert('올바른 백업 파일이 아니에요.');
-      }
-      ev.target.value = '';
-    };
-    reader.readAsText(file);
-  };
+  applyColor();
 
-  async function init(){
-    await loadData();
-    applyColor(state.colorId);
-    state.viewYear = today.getFullYear();
-    state.viewMonth = today.getMonth();
-    render();
-    document.getElementById('loading').style.display='none';
-    document.getElementById('app').style.display='flex';
-  }
-  init();
+  state.viewYear =
+    today.getFullYear();
+
+  state.viewMonth =
+    today.getMonth();
+
+  renderAll();
+
+  document.getElementById(
+    "loading"
+  ).style.display =
+    "none";
+
+  document.getElementById(
+    "app"
+  ).style.display =
+    "block";
+
+}
+
+
+init();
+
 })();
 </script>
+
 </body>
 </html>
