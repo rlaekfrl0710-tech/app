@@ -520,6 +520,7 @@ header{
 }
 
 .cal-cell{
+  position:relative;
   min-height:49px;
   border-radius:9px;
   display:flex;
@@ -548,7 +549,7 @@ header{
 }
 
 .cal-cell.excluded{
-  background:#F0F0F2;
+  background:#EDEDF0;
 }
 
 .cal-day{
@@ -560,6 +561,20 @@ header{
   color:var(--sub);
   font-size:8px;
   font-weight:650;
+}
+
+.cal-cell.excluded .cal-amount{
+  color:#84848A;
+}
+
+.cal-month-tag{
+  position:absolute;
+  top:3px;
+  left:5px;
+  font-size:7px;
+  font-weight:800;
+  color:var(--blue);
+  letter-spacing:.2px;
 }
 
 /* =========================
@@ -992,15 +1007,63 @@ header{
   font-size:10px;
 }
 
+.input-suffix-wrap{
+  position:relative;
+  flex-shrink:0;
+}
+
+.input-suffix-wrap-sm{
+  width:88px;
+}
+
+.input-suffix{
+  position:absolute;
+  top:50%;
+  right:14px;
+  transform:translateY(-50%);
+  color:var(--sub);
+  font-size:13px;
+  font-weight:650;
+  pointer-events:none;
+}
+
 .setting-input{
-  width:125px !important;
-  height:38px !important;
+  width:135px !important;
+  height:44px !important;
   text-align:right;
-  background:#F6F6F8 !important;
+  border:0 !important;
+  border-radius:12px;
+  background:#F2F4F6 !important;
+  color:var(--text);
+  font-size:15px;
+  font-weight:700;
+  padding:0 30px 0 12px !important;
+  transition:background .15s ease, box-shadow .15s ease;
+}
+
+.setting-input::placeholder{
+  color:var(--faint);
+  font-weight:600;
+}
+
+.setting-input:focus{
+  background:#fff !important;
+  box-shadow:0 0 0 2px var(--blue);
+}
+
+.setting-input::-webkit-outer-spin-button,
+.setting-input::-webkit-inner-spin-button{
+  -webkit-appearance:none;
+  margin:0;
+}
+
+.setting-input[type="number"]{
+  -moz-appearance:textfield;
 }
 
 .period-input{
-  width:72px !important;
+  width:100% !important;
+  padding-right:26px !important;
 }
 
 .total-budget{
@@ -1021,26 +1084,37 @@ header{
   font-weight:760;
 }
 
+.theme-card{
+  padding:16px 14px;
+}
+
+.theme-card-title{
+  margin-bottom:14px;
+}
+
 .swatches{
-  display:flex;
-  gap:9px;
-  flex-wrap:wrap;
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:12px 8px;
+  justify-items:center;
 }
 
 .swatch{
-  width:31px;
-  height:31px;
+  width:34px;
+  height:34px;
   border:2px solid transparent;
   border-radius:50%;
   padding:0;
   display:flex;
   align-items:center;
   justify-content:center;
+  transition:transform .12s ease;
 }
 
 .swatch.selected{
   border-color:#1D1D1F;
   box-shadow:inset 0 0 0 3px #fff;
+  transform:scale(1.06);
 }
 
 .exclude-add{
@@ -1050,17 +1124,25 @@ header{
 
 .exclude-add input{
   flex:1;
-  height:42px;
-  border:1px solid var(--line);
-  border-radius:11px;
-  padding:0 10px;
-  background:#FAFAFB;
+  height:44px;
+  border:0;
+  border-radius:12px;
+  padding:0 12px;
+  background:#F2F4F6;
+  color:var(--text);
+  font-weight:650;
+}
+
+.exclude-add input:focus{
+  background:#fff;
+  box-shadow:0 0 0 2px var(--blue);
+  outline:none;
 }
 
 .exclude-add button{
   width:58px;
   border:0;
-  border-radius:11px;
+  border-radius:12px;
   background:var(--text);
   color:#fff;
   font-size:12px;
@@ -1642,13 +1724,16 @@ header{
               <div class="setting-sub">이번 정산 기간 기준</div>
             </div>
 
-            <input
-              class="setting-input"
-              type="number"
-              id="settingMyBudget"
-              placeholder="0"
-              min="0"
-              inputmode="numeric">
+            <div class="input-suffix-wrap">
+              <input
+                class="setting-input"
+                type="number"
+                id="settingMyBudget"
+                placeholder="0"
+                min="0"
+                inputmode="numeric">
+              <span class="input-suffix">원</span>
+            </div>
 
           </div>
 
@@ -1660,13 +1745,16 @@ header{
               <div class="setting-sub">이번 정산 기간 기준</div>
             </div>
 
-            <input
-              class="setting-input"
-              type="number"
-              id="settingFriendBudget"
-              placeholder="0"
-              min="0"
-              inputmode="numeric">
+            <div class="input-suffix-wrap">
+              <input
+                class="setting-input"
+                type="number"
+                id="settingFriendBudget"
+                placeholder="0"
+                min="0"
+                inputmode="numeric">
+              <span class="input-suffix">원</span>
+            </div>
 
           </div>
 
@@ -1706,12 +1794,15 @@ header{
               <div class="setting-sub">매달 정산이 시작되는 날짜</div>
             </div>
 
-            <input
-              class="setting-input period-input"
-              type="number"
-              id="settingStart"
-              min="1"
-              max="31">
+            <div class="input-suffix-wrap input-suffix-wrap-sm">
+              <input
+                class="setting-input period-input"
+                type="number"
+                id="settingStart"
+                min="1"
+                max="31">
+              <span class="input-suffix">일</span>
+            </div>
 
           </div>
 
@@ -1723,12 +1814,15 @@ header{
               <div class="setting-sub">정산이 끝나는 날짜</div>
             </div>
 
-            <input
-              class="setting-input period-input"
-              type="number"
-              id="settingEnd"
-              min="1"
-              max="31">
+            <div class="input-suffix-wrap input-suffix-wrap-sm">
+              <input
+                class="setting-input period-input"
+                type="number"
+                id="settingEnd"
+                min="1"
+                max="31">
+              <span class="input-suffix">일</span>
+            </div>
 
           </div>
 
@@ -1745,17 +1839,11 @@ header{
           테마
         </div>
 
-        <div class="settings-card">
+        <div class="settings-card theme-card">
 
-          <div class="setting-row">
+          <div class="setting-title theme-card-title">포인트 컬러</div>
 
-            <div class="setting-info">
-              <div class="setting-title">포인트 컬러</div>
-            </div>
-
-            <div class="swatches" id="swatches"></div>
-
-          </div>
+          <div class="swatches" id="swatches"></div>
 
         </div>
 
@@ -1915,41 +2003,26 @@ var todayKey = dateKey(today);
 
 var COLORS = [
 
-  {
-    id:"blue",
-    base:"#007AFF",
-    soft:"#EAF3FF"
-  },
+  { id:"blue", base:"#007AFF", soft:"#EAF3FF" },
+  { id:"sky", base:"#32ADE6", soft:"#EAF7FC" },
+  { id:"teal", base:"#00C7BE", soft:"#E4FBFA" },
+  { id:"mint", base:"#38D9A9", soft:"#E7FAF3" },
+  { id:"green", base:"#34C759", soft:"#EAF8EE" },
+  { id:"lime", base:"#A0D911", soft:"#F3FAE0" },
 
-  {
-    id:"green",
-    base:"#34C759",
-    soft:"#EAF8EE"
-  },
+  { id:"yellow", base:"#FFC300", soft:"#FFF7E0" },
+  { id:"orange", base:"#FF9500", soft:"#FFF4E5" },
+  { id:"amber", base:"#FF7A45", soft:"#FFF0E8" },
+  { id:"red", base:"#FF3B30", soft:"#FFF0EF" },
+  { id:"rose", base:"#FF5C77", soft:"#FFEEF1" },
+  { id:"pink", base:"#FF2D55", soft:"#FFF0F4" },
 
-  {
-    id:"orange",
-    base:"#FF9500",
-    soft:"#FFF4E5"
-  },
-
-  {
-    id:"red",
-    base:"#FF3B30",
-    soft:"#FFF0EF"
-  },
-
-  {
-    id:"purple",
-    base:"#AF52DE",
-    soft:"#F5ECFA"
-  },
-
-  {
-    id:"pink",
-    base:"#FF2D55",
-    soft:"#FFF0F4"
-  }
+  { id:"magenta", base:"#E934C8", soft:"#FBEAF8" },
+  { id:"purple", base:"#AF52DE", soft:"#F5ECFA" },
+  { id:"violet", base:"#7C6CF6", soft:"#F0EEFE" },
+  { id:"indigo", base:"#5856D6", soft:"#EEEEFB" },
+  { id:"brown", base:"#A2845E", soft:"#F4EFE9" },
+  { id:"graphite", base:"#6E6E73", soft:"#EDEDEF" }
 
 ];
 
@@ -2301,7 +2374,23 @@ function eachDate(start,end,callback){
     dateKey(current) <= dateKey(end)
   ){
 
-    callback(current);
+    /*
+      콜백마다 새 Date 객체를 넘겨야 함.
+      같은 객체 참조를 넘기면 이후
+      current가 계속 변경되면서
+      이미 저장해둔 날짜값도 같이
+      바뀌어버리는 문제가 있었음
+      (일별 차트 라벨이 전부 같은
+      날짜로 보이던 버그의 원인)
+    */
+
+    callback(
+      new Date(
+        current.getFullYear(),
+        current.getMonth(),
+        current.getDate()
+      )
+    );
 
     current.setDate(
       current.getDate()+1
@@ -3244,6 +3333,33 @@ function renderCalendar(){
 
       day.textContent =
         date.getDate();
+
+
+      /*
+        기간이 두 달에 걸쳐 있을 때
+        1일로 넘어가는 지점에
+        월 표시를 붙여서 날짜가
+        리셋된 게 아니라 다음 달로
+        넘어갔다는 걸 알려줌
+      */
+
+      if(
+        date.getDate() === 1 &&
+        key !== range.startKey
+      ){
+
+        var monthTag =
+          document.createElement("div");
+
+        monthTag.className =
+          "cal-month-tag";
+
+        monthTag.textContent =
+          (date.getMonth()+1) + "월";
+
+        cell.appendChild(monthTag);
+
+      }
 
 
       cell.appendChild(day);
