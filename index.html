@@ -191,6 +191,7 @@
   .settings-sheet .field label{font-size:11px;margin-bottom:7px}
   .settings-sheet input:not([type="color"]){border-radius:14px;background:#f7f8fa;border:1px solid transparent}
   .settings-sheet .currency-input-wrap{border-radius:14px;background:#f7f8fa;border:1px solid transparent}
+  .settings-sheet input[type="date"]{display:block;width:100%;min-width:0;max-width:100%;height:48px;box-sizing:border-box;padding:0 12px;border-radius:14px;background:#f7f8fa;border:1px solid transparent}
   .budget-detail{margin:4px 0 14px;padding:12px 13px;border-radius:14px;background:#f7f8fa}
   .budget-detail div{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11.5px;line-height:1.5}
   .budget-detail div+div{margin-top:6px}
@@ -211,6 +212,10 @@
   .theme-swatch.active{box-shadow:inset 0 0 0 2px #fff,0 0 0 2px var(--swatch)}
   .color-preview{width:100%;height:8px;border-radius:8px;margin-top:14px;background:var(--blue)}
   .custom-color-btn{width:100%;margin-top:12px;padding:12px;border:0;border-radius:12px;background:#F1F3F5;color:var(--text);font-size:12px;font-weight:700;cursor:pointer}
+  .custom-color-list{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px;margin-top:10px}
+  .custom-color-swatch{width:100%;aspect-ratio:1;border:0;border-radius:12px;background:var(--swatch);cursor:pointer;padding:0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.04)}
+  .custom-color-swatch.active{box-shadow:inset 0 0 0 2px #fff,0 0 0 2px var(--swatch)}
+  @media (max-width:360px){.custom-color-list{grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}}
   @media (max-width:380px){.period-row{grid-template-columns:minmax(0,1fr) 12px minmax(0,1fr);gap:4px}.period-row input[type="date"]{font-size:14px;padding:12px 9px}}
 
 @media (max-width:360px){.theme-palette{grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}}
@@ -437,8 +442,8 @@
 
     <div id="calendarArea" style="display:none;">
       <div class="cal-legend">
-        <span><i style="background:var(--mint);"></i>예산 이내</span>
-        <span><i style="background:var(--red);"></i>예산 초과</span>
+        <span><i style="background:var(--mint);"></i>예산이내</span>
+        <span><i style="background:var(--red);"></i>예산초과</span>
         <span><i style="background:var(--blue);"></i>무지출</span>
       </div>
       <div class="cal-dow-row">
@@ -468,7 +473,7 @@
       </div>
       <div class="field">
         <label>매장 · 장소</label>
-        <input type="text" id="inpPlace" placeholder="예: 김밥천국 강남점" maxlength="30">
+        <input type="text" id="inpPlace" placeholder="예: 김밥천국 신촌점" maxlength="30">
       </div>
       <div class="field">
         <label>메뉴</label>
@@ -477,8 +482,8 @@
       <div class="field">
         <label>정산 유형</label>
         <div class="choice-row" id="entryTypeChoices">
-          <button type="button" class="choice-btn active" data-entry-type="mine">내가 먹음</button>
-          <button type="button" class="choice-btn" data-entry-type="paid_friend">내가 사줌</button>
+          <button type="button" class="choice-btn active" data-entry-type="mine">혼자먹음</button>
+          <button type="button" class="choice-btn" data-entry-type="paid_friend">내가사줌</button>
           <button type="button" class="choice-btn" data-entry-type="free">얻어먹음</button>
         </div>
       </div>
@@ -612,6 +617,7 @@
           <button type="button" class="theme-swatch" data-color="#D1D5DB" style="--swatch:#D1D5DB" aria-label="파스텔 그레이"></button>
         </div>
         <button type="button" class="custom-color-btn" id="customColorBtn">+ 커스텀 컬러 추가</button>
+        <div class="custom-color-list" id="customColorList"></div>
 
         <div class="color-preview" id="colorPreview"></div>
       </section>
@@ -651,7 +657,7 @@
 <script>
 (function(){
   var today = new Date();
-  var state = { entries: [], budget: 0, viewYear: null, viewMonth: null, view: 'list', excludedDates: [], colorHex: '#3182F6', periodStartMonth: today.getMonth()+1, periodStartDay: 1, periodEndMonth: today.getMonth()+1, periodEndDay: daysInMonth(today.getFullYear(),today.getMonth()), dailyBudgetMode: 'auto', manualDailyBudget: 0 };
+  var state = { entries: [], budget: 0, viewYear: null, viewMonth: null, view: 'list', excludedDates: [], colorHex: '#3182F6', customColors: [], periodStartMonth: today.getMonth()+1, periodStartDay: 1, periodEndMonth: today.getMonth()+1, periodEndDay: daysInMonth(today.getFullYear(),today.getMonth()), dailyBudgetMode: 'auto', manualDailyBudget: 0 };
   var todayKey = fmtKey(today);
 
   function fmtKey(d){
@@ -779,6 +785,32 @@
     try{ await storageSet('lunch-color', JSON.stringify(state.colorHex)); }
     catch(err){ console.error('저장 실패', err); }
   }
+  async function saveCustomColors(){
+    try{ await storageSet('lunch-custom-colors', JSON.stringify(state.customColors || [])); }
+    catch(err){ console.error('커스텀 컬러 저장 실패', err); }
+  }
+  function renderCustomColors(){
+    var wrap=document.getElementById('customColorList');
+    if(!wrap) return;
+    wrap.innerHTML='';
+    (state.customColors || []).forEach(function(hex){
+      var btn=document.createElement('button');
+      btn.type='button';
+      btn.className='custom-color-swatch';
+      btn.setAttribute('data-color',hex);
+      btn.style.setProperty('--swatch',hex);
+      btn.setAttribute('aria-label','저장된 커스텀 컬러 '+hex);
+      btn.classList.toggle('active', hex === state.colorHex);
+      btn.addEventListener('click',function(){
+        state.colorHex=hex;
+        applyColor(hex);
+        saveColor();
+        document.querySelectorAll('.theme-swatch').forEach(function(item){ item.classList.remove('active'); });
+        renderCustomColors();
+      });
+      wrap.appendChild(btn);
+    });
+  }
 
   async function loadData(){
     try{
@@ -797,6 +829,11 @@
       var c = await storageGet('lunch-color');
       state.colorHex = c ? (normalizeHex(JSON.parse(c.value)) || '#3182F6') : '#3182F6';
     }catch(err){ state.colorHex = '#3182F6'; }
+    try{
+      var cc = await storageGet('lunch-custom-colors');
+      var savedColors = cc ? JSON.parse(cc.value) : [];
+      state.customColors = Array.isArray(savedColors) ? savedColors.map(normalizeHex).filter(Boolean) : [];
+    }catch(err){ state.customColors = []; }
     try{
       var pm = await storageGet('lunch-period-start-month');
       state.periodStartMonth = pm ? JSON.parse(pm.value) : (today.getMonth()+1);
@@ -1395,8 +1432,13 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     var hex=normalizeHex(value);
     if(!hex){ alert('올바른 컬러 코드가 아니에요. 예: #3182F6'); return false; }
     state.colorHex=hex;
+    state.customColors = (state.customColors || []).filter(function(item){ return item !== hex; });
+    state.customColors.unshift(hex);
+    if(state.customColors.length > 8) state.customColors=state.customColors.slice(0,8);
     applyColor(hex);
     saveColor();
+    saveCustomColors();
+    renderCustomColors();
     render();
     return true;
   }
@@ -1414,6 +1456,7 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
       applyColor(state.colorHex);
       saveColor();
       document.querySelectorAll('.theme-swatch').forEach(function(item){ item.classList.toggle('active', item===btn); });
+      renderCustomColors();
     });
   });
 
@@ -1471,6 +1514,7 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     document.querySelectorAll('#dailyBudgetMode button').forEach(function(btn){ btn.classList.toggle('active', btn.getAttribute('data-mode')===state.dailyBudgetMode); });
     document.getElementById('manualDailyField').classList.toggle('show', state.dailyBudgetMode==='manual');
     applyColor(state.colorHex || '#3182F6');
+    renderCustomColors();
     document.querySelectorAll('.theme-swatch').forEach(function(btn){ btn.classList.toggle('active', btn.getAttribute('data-color') === (state.colorHex || '#3182F6')); });
     updateBudgetDetail();
     openSheet('settingsOverlay');
