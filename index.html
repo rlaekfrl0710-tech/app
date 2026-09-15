@@ -178,7 +178,7 @@
   .report-title{font-size:16px;font-weight:800;letter-spacing:-.3px}.report-copy{margin-top:5px;font-size:12.5px;line-height:1.55;color:var(--text-sub);min-height:39px;max-width:300px}
   .report-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:14px}.report-metric{padding:11px 10px;border-radius:12px;background:#F7F8FA}.report-metric-label{font-size:10px;color:var(--text-faint);margin-bottom:4px}.report-metric-value{font-size:13px;font-weight:800;color:var(--text)}
   .settings-sheet{padding-bottom:34px}.settings-top{margin-bottom:20px}.settings-top .sheet-title{margin-bottom:4px}.settings-sub{font-size:12px;color:var(--text-faint)}
-  .settings-section{padding:18px 0;border-top:1px solid var(--line)}.settings-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.settings-section-head strong{font-size:14px}.settings-section-head span{font-size:10px;color:var(--text-faint);letter-spacing:.8px;text-transform:uppercase}.compact-field{margin-bottom:12px}.period-row{display:flex;flex-direction:column;min-width:0;width:100%;gap:0}.period-row .field{min-width:0;width:100%;max-width:100%;box-sizing:border-box}.period-row input[type="date"]{display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box;height:48px;padding:0 10px;font-size:14px;overflow:hidden}.period-row input[type="date"]::-webkit-datetime-edit{padding:0;overflow:hidden}.period-row input[type="date"]::-webkit-calendar-picker-indicator{margin-left:2px}.period-dash{display:none}
+  .settings-section{padding:18px 0;border-top:1px solid var(--line)}.settings-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.settings-section-head strong{font-size:14px}.settings-section-head span{font-size:10px;color:var(--text-faint);letter-spacing:.8px;text-transform:uppercase}.compact-field{margin-bottom:12px}.period-row{display:flex;flex-direction:column;min-width:0;width:100%;gap:0}.period-row .field{min-width:0;width:100%;max-width:100%;box-sizing:border-box;overflow:hidden;flex:0 0 100%}.period-row input[type="date"]{display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box;height:48px;padding:0 10px;font-size:14px;overflow:hidden}.period-row input[type="date"]::-webkit-datetime-edit{padding:0;overflow:hidden}.period-row input[type="date"]::-webkit-calendar-picker-indicator{margin-left:2px}.period-dash{display:none}
 
   /* settings UI refinement */
   .settings-sheet{background:#fff}
@@ -204,7 +204,7 @@
   .manual-daily-field.show{display:block}
   .settings-sheet .primary-btn{border-radius:14px;font-weight:700}
   /* iOS Safari date input only */
-  .settings-sheet input[type="date"]{width:100% !important;min-width:0 !important;max-width:100% !important;box-sizing:border-box;-webkit-appearance:none;appearance:none;font-family:inherit;font-size:14px;color:var(--text);text-align:left;overflow:hidden}
+  .settings-sheet input[type="date"]{display:block;width:100% !important;min-width:0 !important;max-width:100% !important;box-sizing:border-box;-webkit-appearance:none;appearance:none;font-family:inherit;font-size:14px;color:var(--text);text-align:left;overflow:hidden}
   .settings-sheet input[type="date"]::-webkit-date-and-time-value{text-align:left;margin:0;padding:0}
   .settings-sheet input[type="date"]::-webkit-calendar-picker-indicator{margin:0 0 0 auto;width:18px;height:18px}
   .settings-sheet .ghost-btn{border-radius:14px;background:#f7f8fa;border:0}
