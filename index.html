@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>점심 가계부</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='48' fill='%233182F6'/%3E%3Cg fill='none' stroke='white' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M65 35v42M53 35v27M77 35v27M53 62c0 13 6 21 12 21v74M77 62c0 13-6 21-12 21'/%3E%3Cpath d='M127 35v122M127 35c-18 0-27 15-27 34s9 32 27 32'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='48' fill='black'/%3E%3Cg fill='none' stroke='white' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M65 35v42M53 35v27M77 35v27M53 62c0 13 6 21 12 21v74M77 62c0 13-6 21-12 21'/%3E%3Cpath d='M127 35v122M127 35c-18 0-27 15-27 34s9 32 27 32'/%3E%3C/g%3E%3C/svg%3E">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="점심 가계부">
 <meta name="theme-color" content="#3182F6">
-<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%EC%A0%90%EC%8B%AC%20%EA%B0%80%EA%B3%84%EB%B6%80%22%2C%22short_name%22%3A%22%EC%A0%90%EC%8B%AC%20%EA%B0%80%EA%B3%84%EB%B6%80%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23F5F6F8%22%2C%22theme_color%22%3A%22%233182F6%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%253D%2527http%253A%252F%252Fwww.w3.org%252F2000%252Fsvg%2527%2520viewBox%253D%25270%25200%2520192%2520192%2527%253E%253Crect%2520width%253D%2527192%2527%2520height%253D%2527192%2527%2520rx%253D%252748%2527%2520fill%253D%2527%25233182F6%2527%252F%253E%253Cpath%2520d%253D%2527M65%252035v42M53%252035v27M77%252035v27M53%252062c0%252013%25206%252021%252012%252021v74M77%252062c0%252013-6%252021-12%252021M127%252035v122M127%252035c-18%25200-27%252015-27%252034s9%252032%252027%252032%2527%2520fill%253D%2527none%2527%2520stroke%253D%2527white%2527%2520stroke-width%253D%252710%2527%2520stroke-linecap%253D%2527round%2527%2520stroke-linejoin%253D%2527round%2527%252F%253E%253C%252Fsvg%253E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%EC%A0%90%EC%8B%AC%20%EA%B0%80%EA%B3%84%EB%B6%80%22%2C%22short_name%22%3A%22%EC%A0%90%EC%8B%AC%20%EA%B0%80%EA%B3%84%EB%B6%80%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23F5F6F8%22%2C%22theme_color%22%3A%22%233182F6%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%253D%2527http%253A%252F%252Fwww.w3.org%252F2000%252Fsvg%2527%2520viewBox%253D%25270%25200%2520192%2520192%2527%253E%253Crect%2520width%253D%2527192%2527%2520height%253D%2527192%2527%2520rx%253D%252748%2527%2520fill%253D%2527%2523000000%2527%252F%253E%253Cpath%2520d%253D%2527M65%252035v42M53%252035v27M77%252035v27M53%252062c0%252013%25206%252021%252012%252021v74M77%252062c0%252013-6%252021-12%252021M127%252035v122M127%252035c-18%25200-27%252015-27%252034s9%252032%252027%252032%2527%2520fill%253D%2527none%2527%2520stroke%253D%2527white%2527%2520stroke-width%253D%25276%2527%2520stroke-linecap%253D%2527round%2527%2520stroke-linejoin%253D%2527round%2527%252F%253E%253C%252Fsvg%253E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
 
 <style>
   :root{
@@ -165,7 +165,7 @@
   .cal-cell.excluded{ background:#F1F2F4; }
   .cal-cell.excluded .cal-day{ color:var(--text-faint); }
   .cal-cell.excluded .cal-amt{ color:var(--text-faint); }
-  .cal-legend{ display:flex; gap:14px; margin:2px 2px 10px; flex-wrap:wrap; }
+  .cal-legend{ display:flex; gap:14px; margin:2px 2px 18px; flex-wrap:wrap; }
   .cal-legend span{ font-size:11.5px; color:var(--text-sub); display:flex; align-items:center; gap:5px; }
   .cal-legend i{ width:8px; height:8px; border-radius:50%; display:inline-block; }
 
@@ -175,7 +175,7 @@
   .report-title{font-size:16px;font-weight:800;letter-spacing:-.3px}.report-copy{margin-top:5px;font-size:12.5px;line-height:1.55;color:var(--text-sub);min-height:39px;max-width:300px}
   .report-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:14px}.report-metric{padding:11px 10px;border-radius:12px;background:#F7F8FA}.report-metric-label{font-size:10px;color:var(--text-faint);margin-bottom:4px}.report-metric-value{font-size:13px;font-weight:800;color:var(--text)}
   .settings-sheet{padding-bottom:34px}.settings-top{margin-bottom:20px}.settings-top .sheet-title{margin-bottom:4px}.settings-sub{font-size:12px;color:var(--text-faint)}
-  .settings-section{padding:18px 0;border-top:1px solid var(--line)}.settings-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.settings-section-head strong{font-size:14px}.settings-section-head span{font-size:10px;color:var(--text-faint);letter-spacing:.8px;text-transform:uppercase}.compact-field{margin-bottom:12px}.period-row{display:grid;grid-template-columns:1fr 20px 1fr;align-items:end;gap:5px}.period-dash{height:48px;display:flex;align-items:center;justify-content:center;color:var(--text-faint)}
+  .settings-section{padding:18px 0;border-top:1px solid var(--line)}.settings-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.settings-section-head strong{font-size:14px}.settings-section-head span{font-size:10px;color:var(--text-faint);letter-spacing:.8px;text-transform:uppercase}.compact-field{margin-bottom:12px}.period-row{display:grid;grid-template-columns:1fr 20px 1fr;align-items:end;gap:5px}.period-dash{height:48px;display:flex;align-items:center;justify-content:center;color:var(--text-faint);padding-top:18px}
 
   /* settings UI refinement */
   .settings-sheet{background:#fff}
@@ -361,7 +361,7 @@
 
   <header>
     <div class="headline">
-      <h1>🍴 점심 가계부</h1>
+      <h1>점심 가계부</h1>
       <div style="display:flex;gap:8px;align-items:center;">
         <button class="icon-btn" id="openStats" aria-label="통계">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="20" x2="5" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="19" y1="20" x2="19" y2="7"></line></svg>
@@ -552,9 +552,9 @@
           <div class="currency-input-wrap settings-currency"><span>₩</span><input type="text" id="inpBudget" placeholder="300,000" inputmode="numeric" autocomplete="off"></div>
         </div>
         <div class="period-row">
-          <div class="field compact-field"><label>시작일</label><input type="text" id="inpPeriodStart" placeholder="MM-DD" inputmode="numeric" maxlength="5" autocomplete="off"></div>
+          <div class="field compact-field"><label>시작일</label><input type="date" id="inpPeriodStart" autocomplete="off"></div>
           <span class="period-dash">—</span>
-          <div class="field compact-field"><label>종료일</label><input type="text" id="inpPeriodEnd" placeholder="MM-DD" inputmode="numeric" maxlength="5" autocomplete="off"></div>
+          <div class="field compact-field"><label>종료일</label><input type="date" id="inpPeriodEnd" autocomplete="off"></div>
         </div>
         <button class="primary-btn" id="saveBudget">변경사항 저장</button>
         <div class="app-version">v1.0.0</div>
@@ -730,15 +730,16 @@
   }
   async function storageGet(key){
     try{
+      var value=window.localStorage.getItem(key);
+      if(value!=null) return {value:value};
+    }catch(err){}
+    try{
       if(window.storage && typeof window.storage.get==='function'){
         var result=await window.storage.get(key,false);
         if(result && result.value!=null) return result;
       }
     }catch(err){ console.warn('외부 저장소 조회 실패', err); }
-    try{
-      var value=window.localStorage.getItem(key);
-      return value==null ? null : {value:value};
-    }catch(err){ return null; }
+    return null;
   }
   async function storageSet(key,value){
     var saved=false;
@@ -889,7 +890,7 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     renderRows('statsWeekday',weekdays.map(function(x){return {label:x[0],value:x[1]};}));
     var payment={card:0,cash:0,other:0}; entries.forEach(function(e){if(entryType(e)!=='free') payment[e.paymentMethod||'card']+=entryBudgetAmount(e);});
     renderRows('statsPayment',[{label:'카드',value:payment.card},{label:'현금',value:payment.cash},{label:'기타',value:payment.other}]);
-    var types={mine:0,paid_friend:0,free:0}; entries.forEach(function(e){types[entryType(e)]+=entryBudgetAmount(e);});
+    var types={mine:0,paid_friend:0,free:0}; entries.forEach(function(e){types[entryType(e)]+=entryType(e)==='free' ? entryPaidAmount(e) : entryBudgetAmount(e);});
     renderRows('statsType',[{label:'혼자먹음',value:types.mine},{label:'내가사줌',value:types.paid_friend},{label:'얻어먹음',value:types.free}]);
     var highlight=document.getElementById('statsHighlight');
     if(!count){highlight.innerHTML='<div class="stats-highlight">기록을 추가하면 이 기간의 지출 흐름을 한눈에 볼 수 있어요.</div>';return;}
@@ -944,7 +945,7 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     document.getElementById('heroBarFill').style.width = pct + '%';
     document.getElementById('statBudget').textContent = budget>0 ? won(budget) : '미설정';
     document.getElementById('statUsed').textContent = won(used);
-    document.getElementById('statAvg').textContent = won(avgPerDay);
+    document.getElementById('statAvg').textContent = won(dailyBudget);
 
     // today card
     var todayCard = document.getElementById('todayCard');
@@ -1387,20 +1388,20 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
 
   document.getElementById('openSettings').onclick = function(){
     document.getElementById('inpBudget').value = formatMoneyInput(state.budget);
-    document.getElementById('inpPeriodStart').value = String(state.periodStartMonth || 1).padStart(2,'0') + '-' + String(state.periodStartDay || 1).padStart(2,'0');
-    document.getElementById('inpPeriodEnd').value = String(state.periodEndMonth || 12).padStart(2,'0') + '-' + String(state.periodEndDay || 31).padStart(2,'0');
+    document.getElementById('inpPeriodStart').value = '2000-' + String(state.periodStartMonth || 1).padStart(2,'0') + '-' + String(state.periodStartDay || 1).padStart(2,'0');
+    document.getElementById('inpPeriodEnd').value = '2000-' + String(state.periodEndMonth || 12).padStart(2,'0') + '-' + String(state.periodEndDay || 31).padStart(2,'0');
     applyColor(state.colorHex || '#3182F6');
     document.querySelectorAll('.theme-swatch').forEach(function(btn){ btn.classList.toggle('active', btn.getAttribute('data-color') === (state.colorHex || '#3182F6')); });
     openSheet('settingsOverlay');
   };
   document.getElementById('saveBudget').onclick = function(){
     var v = parseMoney(document.getElementById('inpBudget').value);
-    var startParts = String(document.getElementById('inpPeriodStart').value||'01-01').replace(/\//g,'-').split('-');
-    var endParts = String(document.getElementById('inpPeriodEnd').value||'12-31').replace(/\//g,'-').split('-');
-    var sm = Math.min(Math.max(Number(startParts[0])||1,1),12);
-    var sd = Math.min(Math.max(Number(startParts[1])||1,1),31);
-    var em = Math.min(Math.max(Number(endParts[0])||12,1),12);
-    var ed = Math.min(Math.max(Number(endParts[1])||31,1),31);
+    var startParts = String(document.getElementById('inpPeriodStart').value||'2000-01-01').split('-');
+    var endParts = String(document.getElementById('inpPeriodEnd').value||'2000-12-31').split('-');
+    var sm = Math.min(Math.max(Number(startParts[1])||1,1),12);
+    var sd = Math.min(Math.max(Number(startParts[2])||1,1),31);
+    var em = Math.min(Math.max(Number(endParts[1])||12,1),12);
+    var ed = Math.min(Math.max(Number(endParts[2])||31,1),31);
     state.budget = v;
     state.periodStartMonth = sm;
     state.periodStartDay = sd;
@@ -1444,7 +1445,7 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     var a = document.createElement('a');
     var stamp = fmtKey(new Date());
     a.href = url;
-    a.download = 'lunch-budget-backup-'+stamp+'.json';
+    a.download = 'lunch-budget-backup.json';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
