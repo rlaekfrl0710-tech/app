@@ -278,6 +278,12 @@
   .conditional-field.show{ display:block; }
   .calc-note{ margin-top:7px; font-size:11.5px; color:var(--text-faint); line-height:1.45; }
   .entry-price-sub{ font-size:11px; color:var(--text-faint); margin-top:3px; text-align:right; }
+  .entry-price-box{display:flex;flex-direction:column;align-items:flex-end;min-width:92px;}
+  .stats-insight{background:#fff;border-radius:18px;padding:20px;box-shadow:var(--shadow);margin-bottom:12px;}
+  .stats-insight-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}.stats-insight-title{font-size:14px;font-weight:800}.stats-insight-comment{font-size:12px;color:var(--text-sub);line-height:1.55;margin-top:4px}.stats-status{font-size:11px;font-weight:800;padding:5px 9px;border-radius:999px;white-space:nowrap}.stats-status.under{background:var(--mint-bg);color:var(--mint)}.stats-status.over{background:var(--red-bg);color:var(--red)}.stats-status.neutral{background:var(--blue-bg);color:var(--blue)}
+  .stats-kpi-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.stats-kpi{background:#F7F8FA;border-radius:12px;padding:11px 9px}.stats-kpi span{display:block;font-size:10px;color:var(--text-faint);margin-bottom:5px}.stats-kpi b{font-size:13px}.stats-kpi b.good{color:var(--mint)}.stats-kpi b.bad{color:var(--red)}
+  .stats-trend{display:flex;align-items:flex-end;gap:5px;height:112px;padding-top:8px}.stats-trend-col{flex:1;min-width:0;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px}.stats-trend-bar-wrap{width:100%;height:78px;display:flex;align-items:flex-end;justify-content:center}.stats-trend-bar{width:70%;min-height:3px;border-radius:5px 5px 2px 2px;background:var(--blue)}.stats-trend-bar.over{background:var(--red)}.stats-trend-bar.under{background:var(--mint)}.stats-trend-label{font-size:9px;color:var(--text-faint);white-space:nowrap}
+  .stats-meter{height:9px;border-radius:999px;background:#F1F3F5;overflow:hidden;margin-top:12px}.stats-meter-fill{height:100%;border-radius:999px;background:var(--blue)}.stats-meter-fill.over{background:var(--red)}.stats-meter-fill.under{background:var(--mint)}
 
 
   .empty-state{
@@ -747,14 +753,20 @@
     return isWeekday(dateKey) && state.excludedDates.indexOf(dateKey)===-1;
   }
   function periodRange(y,m){
-    var startMonth = Math.min(Math.max(Number(state.periodStartMonth)||1, 1), 12) - 1;
-    var startDay = Math.min(Math.max(Number(state.periodStartDay)||1, 1), daysInMonth(y,startMonth));
-    var endMonth = Math.min(Math.max(Number(state.periodEndMonth)||12, 1), 12) - 1;
-    var endDay = Math.min(Math.max(Number(state.periodEndDay)||31, 1), daysInMonth(y,endMonth));
-    var start = new Date(y, startMonth, startDay);
-    var endYear = endMonth >= startMonth ? y : y + 1;
-    var end = new Date(endYear, endMonth, endDay);
-    return { start: start, end: end, startKey: fmtKey(start), endKey: fmtKey(end) };
+    var baseStartMonth = Math.min(Math.max(Number(state.periodStartMonth)||1, 1), 12) - 1;
+    var baseEndMonth = Math.min(Math.max(Number(state.periodEndMonth)||12, 1), 12) - 1;
+    var anchorIndex = today.getFullYear()*12 + baseStartMonth;
+    var targetIndex = y*12 + m;
+    var currentIndex = today.getFullYear()*12 + today.getMonth();
+    var offset = targetIndex - currentIndex;
+    var startRaw = new Date(today.getFullYear(), baseStartMonth + offset, 1);
+    var startDay = Math.min(Math.max(Number(state.periodStartDay)||1,1), daysInMonth(startRaw.getFullYear(),startRaw.getMonth()));
+    var spanMonths = (baseEndMonth - baseStartMonth + 12) % 12;
+    var endRaw = new Date(startRaw.getFullYear(), startRaw.getMonth()+spanMonths, 1);
+    var endDay = Math.min(Math.max(Number(state.periodEndDay)||31,1), daysInMonth(endRaw.getFullYear(),endRaw.getMonth()));
+    var start = new Date(startRaw.getFullYear(),startRaw.getMonth(),startDay);
+    var end = new Date(endRaw.getFullYear(),endRaw.getMonth(),endDay);
+    return { start:start, end:end, startKey:fmtKey(start), endKey:fmtKey(end) };
   }
   function forEachDateInRange(start, end, cb){
     var cur = new Date(start.getFullYear(), start.getMonth(), start.getDate());
@@ -915,6 +927,10 @@
       state.periodEndMonth = pem ? JSON.parse(pem.value) : (today.getMonth()+1);
     }catch(err){ state.periodEndMonth = 12; }
     try{
+      var pe = await storageGet('lunch-period-end');
+      state.periodEndDay = pe ? JSON.parse(pe.value) : daysInMonth(today.getFullYear(), today.getMonth());
+    }catch(err){ state.periodEndDay = daysInMonth(today.getFullYear(), today.getMonth()); }
+    try{
       var dbm = await storageGet('lunch-daily-budget-mode');
       state.dailyBudgetMode = dbm ? (JSON.parse(dbm.value)==='manual' ? 'manual' : 'auto') : 'auto';
     }catch(err){ state.dailyBudgetMode = 'auto'; }
@@ -922,7 +938,7 @@
       var dba = await storageGet('lunch-daily-budget-manual');
       state.manualDailyBudget = dba ? Number(JSON.parse(dba.value)) || 0 : 0;
     }catch(err){ state.manualDailyBudget = 0; }
-    if(!pm && !pem){ state.periodStartMonth = today.getMonth()+1; state.periodStartDay = 1; state.periodEndMonth = today.getMonth()+1; state.periodEndDay = daysInMonth(today.getFullYear(),today.getMonth()); }
+    if(!pm && !p && !pem && !pe){ state.periodStartMonth = today.getMonth()+1; state.periodStartDay = 1; state.periodEndMonth = today.getMonth()+1; state.periodEndDay = daysInMonth(today.getFullYear(),today.getMonth()); }
     try{
       var pmemo = await storageGet('lunch-place-memos');
       var parsedMemos = pmemo ? JSON.parse(pmemo.value) : {};
@@ -1060,8 +1076,84 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
       items.forEach(function(x){var c=document.createElement('div');c.className='stats-card';c.innerHTML='<div class="stats-card-label">'+x[0]+'</div><div class="stats-card-value">'+x[1]+'</div>';grid.appendChild(c);});
       group.appendChild(heading); group.appendChild(grid); summary.appendChild(group);
     }
-    makeGroup('지출',[["총 지출",won(paid)],["예산 반영",won(used)],["기록 횟수",count+'건'],["1회 평균",won(avg)]]);
-    makeGroup('정산',[["사준 횟수",treatedCount+'회'],["사준 금액 합계",won(treatedTotal)],["얻어먹은 횟수",freeCount+'회'],["얻어먹은 금액 합계",won(freeTotal)]]);
+    var budgetDays=countBudgetDaysInPeriod(r);
+    var dailyBudget=getDailyBudget(budget,r);
+    var budgetDayEntries=entries.filter(function(e){return isBudgetDay(e.date);});
+    var dayMap={}; budgetDayEntries.forEach(function(e){dayMap[e.date]=(dayMap[e.date]||0)+entryBudgetAmount(e);});
+
+    var allBudgetKeys=[];
+    forEachDateInRange(r.start,r.end,function(d){var k=fmtKey(d);if(isBudgetDay(k)) allBudgetKeys.push(k);});
+    var spentDays=Object.keys(dayMap).filter(function(k){return dayMap[k]>0;}).length;
+    var noSpendDays=Math.max(0,budgetDays-spentDays);
+    var underDays=0, overDays=0, savedTotal=0, overTotal=0;
+    allBudgetKeys.forEach(function(k){
+      var v=dayMap[k]||0;
+      if(dailyBudget>0&&v<=dailyBudget){underDays++;savedTotal+=dailyBudget-v;}
+      else if(dailyBudget>0){overDays++;overTotal+=v-dailyBudget;}
+    });
+    var adherence=budgetDays?Math.round(underDays/budgetDays*100):0;
+
+    var values=Object.keys(dayMap).map(function(k){return dayMap[k];}).filter(function(v){return v>0;});
+    var mean=values.length?values.reduce(function(a,b){return a+b;},0)/values.length:0;
+    var variance=values.length?values.reduce(function(a,b){return a+Math.pow(b-mean,2);},0)/values.length:0;
+    var cv=mean?Math.sqrt(variance)/mean:0;
+    var variabilityScore=Math.min(100,Math.round(cv*100));
+    var mood=cv<.18?'매우 일정':cv<.4?'보통':cv<.7?'꽤 변덕':'매우 변덕';
+
+    var balance=budget-used;
+    var budgetRate=budget>0?Math.round(used/budget*100):0;
+    var avgSpendDay=spentDays?used/spentDays:0;
+    var friendExtra=Math.max(0,paid-used);
+
+    var nowKey=fmtKey(new Date());
+    var elapsedBudgetDays=0;
+    allBudgetKeys.forEach(function(k){if(k<=nowKey) elapsedBudgetDays++;});
+    if(nowKey<r.startKey) elapsedBudgetDays=0;
+    if(nowKey>r.endKey) elapsedBudgetDays=budgetDays;
+    var expectedByNow=dailyBudget*elapsedBudgetDays;
+    var paceDiff=used-expectedByNow;
+    var paceText=budget<=0?'예산을 설정하면 소비 속도까지 분석할 수 있어요.':
+      (paceDiff<=0?'현재 계획보다 '+won(Math.abs(paceDiff))+' 천천히 쓰는 중이에요.':'현재 계획보다 '+won(paceDiff)+' 빠르게 쓰는 중이에요.');
+
+    var prevYear=state.statsYear, prevMonth=state.statsMonth-1;
+    if(prevMonth<0){prevMonth=11;prevYear--;}
+    var pr=periodRange(prevYear,prevMonth);
+    var prevEntries=state.entries.filter(function(e){return e.date>=pr.startKey&&e.date<=pr.endKey;});
+    var prevUsed=prevEntries.reduce(function(s,e){return s+entryBudgetAmount(e);},0);
+    var changePct=prevUsed>0?Math.round((used-prevUsed)/prevUsed*100):null;
+    var compareText=changePct===null?'이전 기간 비교 데이터가 아직 부족해요.':
+      (changePct===0?'이전 기간과 지출이 같아요.':changePct<0?'이전 기간보다 '+Math.abs(changePct)+'% 덜 썼어요.':'이전 기간보다 '+changePct+'% 더 썼어요.');
+
+    var insight=document.createElement('div'); insight.className='stats-insight';
+    var statusClass=budget<=0?'neutral':balance>=0?'under':'over';
+    var statusText=budget<=0?'예산 미설정':balance>=0?'예산 이내':'예산 초과';
+    var comment=!count?'기록이 쌓이면 소비 속도와 패턴을 비교해드려요.':
+      (budget>0?(balance>=0?'예산에서 '+won(balance)+' 남아 있어요. ':'예산을 '+won(Math.abs(balance))+' 초과했어요. '):'')+paceText+' '+compareText;
+    insight.innerHTML='<div class="stats-insight-head"><div><div class="stats-insight-title">이번 기간 소비 분석</div><div class="stats-insight-comment">'+comment+'</div></div><span class="stats-status '+statusClass+'">'+statusText+'</span></div>'+
+      '<div class="stats-kpi-row"><div class="stats-kpi"><span>예산 사용률</span><b class="'+(budgetRate>100?'bad':'good')+'">'+(budget>0?budgetRate+'%':'-')+'</b></div><div class="stats-kpi"><span>예산 지킨 날</span><b class="good">'+underDays+'일</b></div><div class="stats-kpi"><span>초과한 날</span><b class="'+(overDays?'bad':'good')+'">'+overDays+'일</b></div></div>'+
+      (budget>0?'<div class="stats-meter"><div class="stats-meter-fill '+(used>budget?'over':'under')+'" style="width:'+Math.min(100,used/budget*100)+'%"></div></div>':'');
+    summary.appendChild(insight);
+
+    makeGroup('내 소비 습관',[
+      ["무지출일",noSpendDays+'일'],
+      ["지출한 날 평균",won(avgSpendDay)],
+      ["소비 변동성",mood+' · '+variabilityScore+'점'],
+      ["예산 준수율",budget>0?adherence+'%':'-']
+    ]);
+    makeGroup('얼마나 아꼈나',[
+      ["기준보다 아낀 금액",budget>0?won(savedTotal):'-'],
+      ["기준보다 더 쓴 금액",budget>0?won(overTotal):'-'],
+      ["현재 예산 잔액",budget>0?won(balance):'-'],
+      ["이전 기간 대비",changePct===null?'-':((changePct>0?'+':'')+changePct+'%')]
+    ]);
+    makeGroup('실제 결제와 내 식비',[
+      ["내 식비",won(used)],
+      ["카드·현금 실결제",won(paid)],
+      ["남을 사준 추가 금액",won(friendExtra)],
+      ["얻어먹은 금액",won(freeTotal)]
+    ]);
+
+    makeGroup('기록 요약',[["총 실결제",won(paid)],["내 식비 합계",won(used)],["기록 횟수",count+'건'],["1회 평균",won(avg)]]);
     function renderRows(id,items){
       var wrap=document.getElementById(id); wrap.innerHTML='';
       var max=items.reduce(function(m,x){return Math.max(m,x.value);},0);
@@ -1116,10 +1208,13 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     renderRankRows('statsMenus', topMenus);
     var highlight=document.getElementById('statsHighlight');
     if(!count){highlight.innerHTML='<div class="stats-highlight">기록을 추가하면 이 기간의 지출 흐름을 한눈에 볼 수 있어요.</div>';return;}
-    var topDay={date:'',value:0}; entries.forEach(function(e){if(entryBudgetAmount(e)>topDay.value){topDay={date:e.date,value:entryBudgetAmount(e)};}});
+    var topDay={date:'',value:0}; Object.keys(dayMap).forEach(function(k){if(dayMap[k]>topDay.value){topDay={date:k,value:dayMap[k]};}});
     var topDate=topDay.date?new Date(topDay.date+'T00:00:00'):null;
-    var budgetText=budget>0?' 예산의 '+Math.round(used/budget*100)+'%를 사용했어요.':'';
-    highlight.innerHTML='<div class="stats-highlight">현재 기간에는 총 <b>'+won(used)+'</b>을 사용했고,'+(topDate?' 가장 많이 지출한 기록은 <b>'+ (topDate.getMonth()+1)+'월 '+topDate.getDate()+'일 '+won(topDay.value)+'</b>입니다.':'')+budgetText+'</div>';
+    var firstSentence=budget>0?(used<=budget?'현재 예산 안에서 <b>'+won(budget-used)+'</b>의 여유가 있어요.':'현재 예산을 <b>'+won(used-budget)+'</b> 초과했어요.'):'현재 내 식비는 <b>'+won(used)+'</b>이에요.';
+    var habitSentence=' 무지출일은 <b>'+noSpendDays+'일</b>, 예산을 지킨 날은 <b>'+underDays+'일</b>이에요.';
+    var paceSentence=budget>0?' '+paceText:'';
+    var compareSentence=changePct!==null?' '+compareText:'';
+    highlight.innerHTML='<div class="stats-highlight">'+firstSentence+habitSentence+paceSentence+compareSentence+'</div>';
   }
 
   function render(){
@@ -1273,7 +1368,7 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
         var rightWrap = document.createElement('div');
         rightWrap.className='entry-right';
         var priceBox = document.createElement('div');
-        priceBox.className='entry-right';
+        priceBox.className='entry-price-box';
         var price = document.createElement('div');
         price.className='entry-price';
         price.textContent = won(entryBudgetAmount(e));
@@ -1399,7 +1494,7 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
         var rightWrap = document.createElement('div');
         rightWrap.className='entry-right';
         var priceBox = document.createElement('div');
-        priceBox.className='entry-right';
+        priceBox.className='entry-price-box';
         var price = document.createElement('div');
         price.className='entry-price';
         price.textContent = won(entryBudgetAmount(e));
@@ -1492,7 +1587,7 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
         var rightWrap = document.createElement('div');
         rightWrap.className='entry-right';
         var priceBox = document.createElement('div');
-        priceBox.className='entry-right';
+        priceBox.className='entry-price-box';
         var price = document.createElement('div');
         price.className='entry-price';
         price.textContent = won(entryBudgetAmount(e));
@@ -1690,7 +1785,7 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     var placeMemo = document.getElementById('inpPlaceMemo').value.trim();
     var paidAmount = Number(document.getElementById('inpPrice').value);
     var myShare = Number(document.getElementById('inpMyShare').value);
-    var budgetAmount = currentEntryType==='free' ? 0 : paidAmount;
+    var budgetAmount = currentEntryType==='free' ? 0 : (currentEntryType==='paid_friend' ? myShare : paidAmount);
     if(!date){ alert('날짜를 선택해주세요.'); return; }
     if(currentEntryType==='free'){ if(paidAmount<0) paidAmount=0; }
     else if(!paidAmount || paidAmount<=0){ alert('결제 금액을 입력해주세요.'); return; }
@@ -1701,10 +1796,10 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     if(editingId){
       var target = state.entries.filter(function(e){ return e.id===editingId; })[0];
       if(target){
-        target.date = date; target.place = place; target.menu = menu; target.price = paidAmount; target.paidAmount = paidAmount; target.budgetAmount = budgetAmount; target.entryType = currentEntryType; target.paymentMethod = currentEntryType==='free' ? 'none' : currentPaymentMethod;
+        target.date = date; target.place = place; target.menu = menu; target.price = paidAmount; target.paidAmount = paidAmount; target.myShare = currentEntryType==='paid_friend' ? myShare : null; target.budgetAmount = budgetAmount; target.entryType = currentEntryType; target.paymentMethod = currentEntryType==='free' ? 'none' : currentPaymentMethod;
       }
     } else {
-      state.entries.push({ id: Date.now()+'-'+Math.random().toString(36).slice(2,8), date: date, place: place, menu: menu, price: paidAmount, paidAmount: paidAmount, budgetAmount: budgetAmount, entryType: currentEntryType, paymentMethod: currentEntryType==='free' ? 'none' : currentPaymentMethod });
+      state.entries.push({ id: Date.now()+'-'+Math.random().toString(36).slice(2,8), date: date, place: place, menu: menu, price: paidAmount, paidAmount: paidAmount, myShare: currentEntryType==='paid_friend' ? myShare : null, budgetAmount: budgetAmount, entryType: currentEntryType, paymentMethod: currentEntryType==='free' ? 'none' : currentPaymentMethod });
     }
     var memoKey = normalizePlaceKey(place);
     if(memoKey){
