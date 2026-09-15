@@ -209,6 +209,12 @@
   .settings-sheet input[type="date"]::-webkit-calendar-picker-indicator{margin:0 0 0 auto;width:18px;height:18px}
   .settings-sheet .ghost-btn{border-radius:14px;background:#f7f8fa;border:0}
   .app-version{margin-top:10px;text-align:center;font-size:11px;color:var(--text-faint);letter-spacing:.2px}
+  /* iOS date fields: keep the outer box fixed and center only the date text */
+  .settings-sheet .period-row input[type="date"]{width:100% !important;min-width:0 !important;max-width:100% !important;box-sizing:border-box !important;padding:0 38px !important;text-align:center !important;overflow:hidden !important}
+  .settings-sheet .period-row input[type="date"]::-webkit-date-and-time-value{display:flex;width:100%;justify-content:center;align-items:center;text-align:center;margin:0;padding:0}
+  .settings-sheet .period-row input[type="date"]::-webkit-datetime-edit{display:flex;justify-content:center;align-items:center;width:100%;padding:0;margin:0;text-align:center;overflow:hidden}
+  .settings-sheet .period-row input[type="date"]::-webkit-calendar-picker-indicator{position:absolute;right:12px;margin:0;width:18px;height:18px}
+  .settings-sheet .period-row .field{width:100% !important;min-width:0 !important;max-width:100% !important;box-sizing:border-box !important;overflow:hidden !important;position:relative}
 
   /* theme palette */
   .theme-palette{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px;margin-top:2px}
@@ -599,7 +605,7 @@
           <div><span>실제 사용 가능</span><b id="usableBudgetInfo">₩0</b></div>
         </div>
         <button class="primary-btn" id="saveBudget">변경사항 저장</button>
-        <div class="app-version">v1.0.2</div>
+        <div class="app-version">v1.0.3</div>
       </section>
 
       <section class="settings-section">
