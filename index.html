@@ -156,12 +156,15 @@
   }
   .cal-cell.empty{ background:transparent; box-shadow:none; cursor:default; }
   .cal-cell.today{ border-color:var(--blue); }
-  .cal-cell.has-under{ background:var(--mint-bg); }
-  .cal-cell.has-over{ background:var(--red-bg); }
+  .cal-cell.has-under{ background:#fff; }
+  .cal-cell.has-over{ background:#fff; }
+  .cal-cell.no-spend{ background:#fff; }
   .cal-cell .cal-day{ font-size:12.5px; font-weight:700; color:var(--text); }
+  .cal-cell .cal-status{ width:6px; height:6px; border-radius:50%; margin-top:4px; flex:none; }
+  .cal-cell.has-under .cal-status{ background:var(--mint); }
+  .cal-cell.has-over .cal-status{ background:var(--red); }
+  .cal-cell.no-spend .cal-status{ background:var(--blue); }
   .cal-cell .cal-amt{ font-size:9.5px; font-weight:700; color:var(--text-sub); max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .cal-cell.has-over .cal-day{ color:var(--red); }
-  .cal-cell.has-under .cal-day{ color:var(--mint); }
   .cal-cell.excluded{ background:#F1F2F4; }
   .cal-cell.excluded .cal-day{ color:var(--text-faint); }
   .cal-cell.excluded .cal-amt{ color:var(--text-faint); }
@@ -175,7 +178,7 @@
   .report-title{font-size:16px;font-weight:800;letter-spacing:-.3px}.report-copy{margin-top:5px;font-size:12.5px;line-height:1.55;color:var(--text-sub);min-height:39px;max-width:300px}
   .report-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:14px}.report-metric{padding:11px 10px;border-radius:12px;background:#F7F8FA}.report-metric-label{font-size:10px;color:var(--text-faint);margin-bottom:4px}.report-metric-value{font-size:13px;font-weight:800;color:var(--text)}
   .settings-sheet{padding-bottom:34px}.settings-top{margin-bottom:20px}.settings-top .sheet-title{margin-bottom:4px}.settings-sub{font-size:12px;color:var(--text-faint)}
-  .settings-section{padding:18px 0;border-top:1px solid var(--line)}.settings-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.settings-section-head strong{font-size:14px}.settings-section-head span{font-size:10px;color:var(--text-faint);letter-spacing:.8px;text-transform:uppercase}.compact-field{margin-bottom:12px}.period-row{display:grid;grid-template-columns:minmax(0,1fr) 20px minmax(0,1fr);align-items:start;gap:8px}.period-dash{height:48px;display:flex;align-items:center;justify-content:center;color:var(--text-faint);padding-top:0;margin-top:20px}
+  .settings-section{padding:18px 0;border-top:1px solid var(--line)}.settings-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.settings-section-head strong{font-size:14px}.settings-section-head span{font-size:10px;color:var(--text-faint);letter-spacing:.8px;text-transform:uppercase}.compact-field{margin-bottom:12px}.period-row{display:grid;grid-template-columns:minmax(0,1fr) 16px minmax(0,1fr);align-items:start;gap:6px;min-width:0;width:100%;overflow:hidden}.period-row .field{min-width:0;width:100%}.period-row input[type="date"]{width:100%;min-width:0;max-width:100%;box-sizing:border-box}.period-dash{height:48px;display:flex;align-items:center;justify-content:center;color:var(--text-faint);padding-top:0;margin-top:20px}
 
   /* settings UI refinement */
   .settings-sheet{background:#fff}
@@ -188,6 +191,16 @@
   .settings-sheet .field label{font-size:11px;margin-bottom:7px}
   .settings-sheet input:not([type="color"]){border-radius:14px;background:#f7f8fa;border:1px solid transparent}
   .settings-sheet .currency-input-wrap{border-radius:14px;background:#f7f8fa;border:1px solid transparent}
+  .budget-detail{margin:4px 0 14px;padding:12px 13px;border-radius:14px;background:#f7f8fa}
+  .budget-detail div{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11.5px;line-height:1.5}
+  .budget-detail div+div{margin-top:6px}
+  .budget-detail span{color:var(--text-faint)}
+  .budget-detail b{font-size:12px;color:var(--text);font-weight:700}
+  .daily-mode{display:flex;background:#eef0f3;border-radius:12px;padding:3px;gap:3px;margin:4px 0 10px}
+  .daily-mode button{flex:1;border:0;background:transparent;padding:8px 10px;border-radius:9px;font-size:12px;font-weight:700;color:var(--text-sub);cursor:pointer}
+  .daily-mode button.active{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(25,31,40,.10)}
+  .manual-daily-field{display:none;margin-bottom:12px}
+  .manual-daily-field.show{display:block}
   .settings-sheet .primary-btn{border-radius:14px;font-weight:700}
   .settings-sheet .ghost-btn{border-radius:14px;background:#f7f8fa;border:0}
   .app-version{margin-top:10px;text-align:center;font-size:11px;color:var(--text-faint);letter-spacing:.2px}
@@ -197,7 +210,10 @@
   .theme-swatch{width:100%;aspect-ratio:1;border:0;border-radius:12px;background:var(--swatch);cursor:pointer;padding:0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.04)}
   .theme-swatch.active{box-shadow:inset 0 0 0 2px #fff,0 0 0 2px var(--swatch)}
   .color-preview{width:100%;height:8px;border-radius:8px;margin-top:14px;background:var(--blue)}
-  @media (max-width:360px){.theme-palette{grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}}
+  .custom-color-btn{width:100%;margin-top:12px;padding:12px;border:0;border-radius:12px;background:#F1F3F5;color:var(--text);font-size:12px;font-weight:700;cursor:pointer}
+  @media (max-width:380px){.period-row{grid-template-columns:minmax(0,1fr) 12px minmax(0,1fr);gap:4px}.period-row input[type="date"]{font-size:14px;padding:12px 9px}}
+
+@media (max-width:360px){.theme-palette{grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}}
 
   .day-toggle-btn{
     width:100%; padding:12px; border-radius:var(--radius-sm); border:1.5px solid var(--line);
@@ -279,25 +295,27 @@
 
   /* statistics */
   .stats-page{width:100%;max-width:430px;height:100vh;background:var(--bg);overflow-y:auto;padding-bottom:34px}
-  .stats-header{position:sticky;top:0;z-index:2;background:rgba(245,246,248,.94);backdrop-filter:blur(10px);padding:18px 20px 14px;display:flex;align-items:center;gap:10px}
+  .stats-header{position:sticky;top:0;z-index:2;background:rgba(245,246,248,.94);backdrop-filter:blur(10px);padding:16px 20px 12px;display:flex;align-items:center;gap:10px}
   .stats-back{width:36px;height:36px;border:0;border-radius:50%;background:#fff;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer}
   .stats-title{font-size:19px;font-weight:800;letter-spacing:-.3px}
-  .stats-content{padding:6px 20px 0}
-  .stats-period{font-size:12px;color:var(--text-sub);margin:8px 2px 14px}
+  .stats-content{padding:8px 20px 0}
+  .stats-period{font-size:12px;color:var(--text-sub);margin:6px 2px 18px}
   .stats-summary{display:flex;flex-direction:column;gap:12px}
-  .stats-group{background:#fff;border-radius:18px;padding:15px;box-shadow:var(--shadow)}
-  .stats-group-title{font-size:12px;font-weight:800;color:var(--text-sub);margin:0 2px 11px}
-  .stats-group-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-  .stats-card{background:#F7F8FA;border-radius:13px;padding:13px 14px}
-  .stats-card-label{font-size:10.5px;color:var(--text-sub);font-weight:600}
-  .stats-card-value{font-size:19px;font-weight:800;margin-top:5px;letter-spacing:-.4px}
-  .stats-section{margin-top:24px}
-  .stats-section-title{font-size:15px;font-weight:800;margin:0 2px 10px}
-  .stats-panel{background:#fff;border-radius:18px;padding:17px;box-shadow:var(--shadow)}
-  .stats-row{display:flex;align-items:center;gap:10px;margin:12px 0}.stats-row:first-child{margin-top:0}.stats-row:last-child{margin-bottom:0}
-  .stats-row-label{width:62px;font-size:12px;color:var(--text-sub);font-weight:600;flex-shrink:0}.stats-row-bar{flex:1;height:9px;background:#F1F3F5;border-radius:8px;overflow:hidden}.stats-row-fill{height:100%;border-radius:8px;background:var(--blue)}.stats-row-value{width:74px;text-align:right;font-size:12.5px;font-weight:800}
-  .stats-empty{text-align:center;color:var(--text-faint);font-size:13px;padding:22px 5px}
-  .stats-highlight{background:var(--blue-bg);border-radius:14px;padding:14px;margin-top:10px;font-size:12.5px;color:var(--text-sub);line-height:1.5}.stats-highlight b{color:var(--blue);font-weight:800}
+  .stats-group{background:#fff;border-radius:18px;padding:20px;box-shadow:var(--shadow)}
+  .stats-group-title{font-size:13px;font-weight:800;color:var(--text);margin:0 0 14px}
+  .stats-group-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .stats-card{background:#F7F8FA;border-radius:14px;padding:16px 15px;min-height:64px;box-sizing:border-box}
+  .stats-card-label{font-size:11px;color:var(--text-sub);font-weight:600}
+  .stats-card-value{font-size:18px;font-weight:800;margin-top:6px;letter-spacing:-.4px}
+  .stats-section{margin-top:26px}
+.stats-overview{margin-bottom:16px}
+  .stats-section-title{font-size:13px;font-weight:800;color:var(--text);margin:0 2px 11px}
+  .stats-panel{background:#fff;border-radius:18px;padding:20px;box-shadow:var(--shadow)}
+  .stats-row{display:flex;align-items:center;gap:10px;margin:16px 0}.stats-row:first-child{margin-top:0}.stats-row:last-child{margin-bottom:0}
+  .stats-row-label{width:42px;font-size:12px;color:var(--text-sub);font-weight:600;flex-shrink:0}.stats-row-bar{flex:1;height:8px;background:#F1F3F5;border-radius:8px;overflow:hidden}.stats-row-fill{height:100%;border-radius:8px;background:var(--blue)}.stats-row-value{width:74px;text-align:right;font-size:12px;font-weight:800}
+  .stats-empty{text-align:center;color:var(--text-faint);font-size:13px;padding:24px 5px}
+  .stats-highlight{background:#fff;border-radius:18px;padding:20px;box-shadow:var(--shadow);font-size:12.5px;color:var(--text-sub);line-height:1.5;box-sizing:border-box}.stats-highlight b{color:var(--blue);font-weight:800}
+
 
   /* sheets */
   .overlay{
@@ -388,9 +406,9 @@
       <div class="hero-amount" id="heroAmount">0원</div>
       <div class="hero-bar"><div class="hero-bar-fill" id="heroBarFill" style="width:0%"></div></div>
       <div class="hero-stats">
-        <div class="hero-stat">예산<b id="statBudget">0원</b></div>
-        <div class="hero-stat">사용<b id="statUsed">0원</b></div>
-        <div class="hero-stat">일 평균<b id="statAvg">0원</b></div>
+        <div class="hero-stat">설정 예산<b id="statBudget">0원</b></div>
+        <div class="hero-stat">사용 가능<b id="statUsed">0원</b></div>
+        <div class="hero-stat">일 예산<b id="statAvg">0원</b></div>
       </div>
     </div>
 
@@ -421,7 +439,7 @@
       <div class="cal-legend">
         <span><i style="background:var(--mint);"></i>예산 이내</span>
         <span><i style="background:var(--red);"></i>예산 초과</span>
-        
+        <span><i style="background:var(--blue);"></i>무지출</span>
       </div>
       <div class="cal-dow-row">
         <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
@@ -515,6 +533,10 @@
       </div>
       <div class="stats-content">
         <div class="stats-period" id="statsPeriod"></div>
+        <div class="stats-section stats-overview">
+          <div class="stats-section-title">한눈에 보기</div>
+          <div id="statsHighlight"></div>
+        </div>
         <div class="stats-summary" id="statsSummary"></div>
         <div class="stats-section">
           <div class="stats-section-title">요일별 지출</div>
@@ -527,10 +549,6 @@
         <div class="stats-section">
           <div class="stats-section-title">정산 유형</div>
           <div class="stats-panel" id="statsType"></div>
-        </div>
-        <div class="stats-section">
-          <div class="stats-section-title">한눈에 보기</div>
-          <div id="statsHighlight"></div>
         </div>
       </div>
     </div>
@@ -548,13 +566,29 @@
       <section class="settings-section">
         <div class="settings-section-head"><strong>예산</strong><span>이번 기간</span></div>
         <div class="field compact-field">
-          <label>기간 예산</label>
+          <label>월 예산</label>
           <div class="currency-input-wrap settings-currency"><span>₩</span><input type="text" id="inpBudget" placeholder="300,000" inputmode="numeric" autocomplete="off"></div>
         </div>
         <div class="period-row">
           <div class="field compact-field"><label>시작일</label><input type="date" id="inpPeriodStart" autocomplete="off"></div>
           <span class="period-dash">—</span>
           <div class="field compact-field"><label>종료일</label><input type="date" id="inpPeriodEnd" autocomplete="off"></div>
+        </div>
+        <div class="field compact-field">
+          <label>일 예산</label>
+          <div class="daily-mode" id="dailyBudgetMode">
+            <button type="button" data-mode="auto" class="active">자동</button>
+            <button type="button" data-mode="manual">수동</button>
+          </div>
+        </div>
+        <div class="field compact-field manual-daily-field" id="manualDailyField">
+          <label>수동 일 예산</label>
+          <div class="currency-input-wrap settings-currency"><span>₩</span><input type="text" id="inpDailyBudget" placeholder="15,000" inputmode="numeric" autocomplete="off"></div>
+        </div>
+        <div class="budget-detail" id="budgetDetail">
+          <div><span>예산 적용일</span><b id="budgetDaysInfo">0일</b></div>
+          <div><span>일 예산</span><b id="dailyBudgetInfo">₩0</b></div>
+          <div><span>실제 사용 가능</span><b id="usableBudgetInfo">₩0</b></div>
         </div>
         <button class="primary-btn" id="saveBudget">변경사항 저장</button>
         <div class="app-version">v1.0.0</div>
@@ -566,36 +600,20 @@
           <button type="button" class="theme-swatch" data-color="#3182F6" style="--swatch:#3182F6" aria-label="블루"></button>
           <button type="button" class="theme-swatch" data-color="#5B8DEF" style="--swatch:#5B8DEF" aria-label="라이트 블루"></button>
           <button type="button" class="theme-swatch" data-color="#00AEEF" style="--swatch:#00AEEF" aria-label="시안 블루"></button>
-          <button type="button" class="theme-swatch" data-color="#38BDF8" style="--swatch:#38BDF8" aria-label="스카이"></button>
-          <button type="button" class="theme-swatch" data-color="#7DD3FC" style="--swatch:#7DD3FC" aria-label="파스텔 스카이"></button>
+          <button type="button" class="theme-swatch" data-color="#38BDF8" style="--swatch:#38BDF8" aria-label="스카이 블루"></button>
+          <button type="button" class="theme-swatch" data-color="#7DD3FC" style="--swatch:#7DD3FC" aria-label="파스텔 블루"></button>
           <button type="button" class="theme-swatch" data-color="#2563EB" style="--swatch:#2563EB" aria-label="딥 블루"></button>
-          <button type="button" class="theme-swatch" data-color="#6366F1" style="--swatch:#6366F1" aria-label="인디고"></button>
-          <button type="button" class="theme-swatch" data-color="#818CF8" style="--swatch:#818CF8" aria-label="라이트 인디고"></button>
-          <button type="button" class="theme-swatch" data-color="#8B5CF6" style="--swatch:#8B5CF6" aria-label="퍼플"></button>
-          <button type="button" class="theme-swatch" data-color="#A78BFA" style="--swatch:#A78BFA" aria-label="라벤더"></button>
-          <button type="button" class="theme-swatch" data-color="#C4B5FD" style="--swatch:#C4B5FD" aria-label="파스텔 라벤더"></button>
-          <button type="button" class="theme-swatch" data-color="#D946EF" style="--swatch:#D946EF" aria-label="마젠타"></button>
           <button type="button" class="theme-swatch" data-color="#F472B6" style="--swatch:#F472B6" aria-label="핑크"></button>
-          <button type="button" class="theme-swatch" data-color="#FB7185" style="--swatch:#FB7185" aria-label="로즈"></button>
-          <button type="button" class="theme-swatch" data-color="#FDA4AF" style="--swatch:#FDA4AF" aria-label="파스텔 로즈"></button>
-          <button type="button" class="theme-swatch" data-color="#FF6B6B" style="--swatch:#FF6B6B" aria-label="코랄 레드"></button>
-          <button type="button" class="theme-swatch" data-color="#FF8A65" style="--swatch:#FF8A65" aria-label="코랄"></button>
-          <button type="button" class="theme-swatch" data-color="#FF9F43" style="--swatch:#FF9F43" aria-label="오렌지"></button>
-          <button type="button" class="theme-swatch" data-color="#FDBA74" style="--swatch:#FDBA74" aria-label="파스텔 오렌지"></button>
-          <button type="button" class="theme-swatch" data-color="#F59E0B" style="--swatch:#F59E0B" aria-label="앰버"></button>
-          <button type="button" class="theme-swatch" data-color="#FACC15" style="--swatch:#FACC15" aria-label="옐로우"></button>
-          <button type="button" class="theme-swatch" data-color="#FDE68A" style="--swatch:#FDE68A" aria-label="파스텔 옐로우"></button>
-          <button type="button" class="theme-swatch" data-color="#22C55E" style="--swatch:#22C55E" aria-label="그린"></button>
-          <button type="button" class="theme-swatch" data-color="#34D399" style="--swatch:#34D399" aria-label="민트 그린"></button>
-          <button type="button" class="theme-swatch" data-color="#6EE7B7" style="--swatch:#6EE7B7" aria-label="파스텔 민트"></button>
-          <button type="button" class="theme-swatch" data-color="#14B8A6" style="--swatch:#14B8A6" aria-label="틸"></button>
-          <button type="button" class="theme-swatch" data-color="#2DD4BF" style="--swatch:#2DD4BF" aria-label="터쿼이즈"></button>
-          <button type="button" class="theme-swatch" data-color="#84CC16" style="--swatch:#84CC16" aria-label="라임"></button>
-          <button type="button" class="theme-swatch" data-color="#A3E635" style="--swatch:#A3E635" aria-label="라임 그린"></button>
-          <button type="button" class="theme-swatch" data-color="#D4A373" style="--swatch:#D4A373" aria-label="샌드"></button>
-          <button type="button" class="theme-swatch" data-color="#FB923C" style="--swatch:#FB923C" aria-label="탠저린"></button>
-          <button type="button" class="theme-swatch" data-color="#64748B" style="--swatch:#64748B" aria-label="슬레이트"></button>
+          <button type="button" class="theme-swatch" data-color="#FB7185" style="--swatch:#FB7185" aria-label="로즈 핑크"></button>
+          <button type="button" class="theme-swatch" data-color="#FDA4AF" style="--swatch:#FDA4AF" aria-label="파스텔 핑크"></button>
+          <button type="button" class="theme-swatch" data-color="#111827" style="--swatch:#111827" aria-label="블랙"></button>
+          <button type="button" class="theme-swatch" data-color="#374151" style="--swatch:#374151" aria-label="다크 그레이"></button>
+          <button type="button" class="theme-swatch" data-color="#6B7280" style="--swatch:#6B7280" aria-label="그레이"></button>
+          <button type="button" class="theme-swatch" data-color="#9CA3AF" style="--swatch:#9CA3AF" aria-label="라이트 그레이"></button>
+          <button type="button" class="theme-swatch" data-color="#D1D5DB" style="--swatch:#D1D5DB" aria-label="파스텔 그레이"></button>
         </div>
+        <button type="button" class="custom-color-btn" id="customColorBtn">+ 커스텀 컬러 추가</button>
+
         <div class="color-preview" id="colorPreview"></div>
       </section>
 
@@ -634,7 +652,7 @@
 <script>
 (function(){
   var today = new Date();
-  var state = { entries: [], budget: 0, viewYear: null, viewMonth: null, view: 'list', excludedDates: [], colorHex: '#3182F6', periodStartMonth: today.getMonth()+1, periodStartDay: 1, periodEndMonth: today.getMonth()+1, periodEndDay: daysInMonth(today.getFullYear(),today.getMonth()) };
+  var state = { entries: [], budget: 0, viewYear: null, viewMonth: null, view: 'list', excludedDates: [], colorHex: '#3182F6', periodStartMonth: today.getMonth()+1, periodStartDay: 1, periodEndMonth: today.getMonth()+1, periodEndDay: daysInMonth(today.getFullYear(),today.getMonth()), dailyBudgetMode: 'auto', manualDailyBudget: 0 };
   var todayKey = fmtKey(today);
 
   function fmtKey(d){
@@ -683,6 +701,11 @@
     var c=0;
     forEachDateInRange(r.start,r.end,function(d){ if(isBudgetDay(fmtKey(d))) c++; });
     return c;
+  }
+  function getDailyBudget(budget,r){
+    if(state.dailyBudgetMode==='manual') return Number(state.manualDailyBudget||0);
+    var budgetDays=countBudgetDaysInPeriod(r);
+    return (budget>0 && budgetDays>0) ? budget/budgetDays : 0;
   }
   function hexToRgb(hex){
     var h = String(hex||'').replace('#','');
@@ -788,9 +811,13 @@
       state.periodEndMonth = pem ? JSON.parse(pem.value) : (today.getMonth()+1);
     }catch(err){ state.periodEndMonth = 12; }
     try{
-      var pe = await storageGet('lunch-period-end');
-      state.periodEndDay = pe ? JSON.parse(pe.value) : daysInMonth(today.getFullYear(),today.getMonth());
-    }catch(err){ state.periodEndDay = 31; }
+      var dbm = await storageGet('lunch-daily-budget-mode');
+      state.dailyBudgetMode = dbm ? (JSON.parse(dbm.value)==='manual' ? 'manual' : 'auto') : 'auto';
+    }catch(err){ state.dailyBudgetMode = 'auto'; }
+    try{
+      var dba = await storageGet('lunch-daily-budget-manual');
+      state.manualDailyBudget = dba ? Number(JSON.parse(dba.value)) || 0 : 0;
+    }catch(err){ state.manualDailyBudget = 0; }
     if(!pm && !pem){ state.periodStartMonth = today.getMonth()+1; state.periodStartDay = 1; state.periodEndMonth = today.getMonth()+1; state.periodEndDay = daysInMonth(today.getFullYear(),today.getMonth()); }
   }
   async function saveEntries(){
@@ -799,6 +826,14 @@
   }
   async function saveBudget(){
     try{ await storageSet('lunch-budget', JSON.stringify(state.budget)); }
+    catch(err){ console.error('저장 실패', err); }
+  }
+  async function saveDailyBudgetMode(){
+    try{ await storageSet('lunch-daily-budget-mode', JSON.stringify(state.dailyBudgetMode)); }
+    catch(err){ console.error('저장 실패', err); }
+  }
+  async function saveManualDailyBudget(){
+    try{ await storageSet('lunch-daily-budget-manual', JSON.stringify(state.manualDailyBudget)); }
     catch(err){ console.error('저장 실패', err); }
   }
   async function saveExcluded(){
@@ -914,7 +949,7 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     var budget = Number(state.budget||0);
     var remaining = budget - used;
     var budgetDaysInMonth = countBudgetDaysInPeriod(r);
-    var dailyBudget = (budget > 0 && budgetDaysInMonth > 0) ? budget/budgetDaysInMonth : 0;
+    var dailyBudget = getDailyBudget(budget, r);
     var pct = budget>0 ? Math.min(100, (used/budget)*100) : 0;
     var isCurrentMonth = (todayKey >= r.startKey && todayKey <= r.endKey);
     var passedBudgetDays = 0;
@@ -1099,18 +1134,20 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
       if(dateKey===todayKey) cell.classList.add('today');
       if(!isBudgetDay(dateKey)){
         cell.classList.add('excluded');
-      } else if(list.length>0 && budget>0){
+      } else if(total<=0){
+        cell.classList.add('no-spend');
+      } else if(budget>0){
         cell.classList.add(total<=dailyBudget ? 'has-under' : 'has-over');
       }
       var dayNum = document.createElement('div');
       dayNum.className='cal-day';
       dayNum.textContent = (dObj.getDate()===1 && dateKey!==r.startKey) ? (dObj.getMonth()+1)+'.1' : dObj.getDate();
+      if(dObj.getDay()===0 || dObj.getDay()===6) dayNum.style.color='var(--text-faint)';
       cell.appendChild(dayNum);
-      if(list.length>0){
-        var amt = document.createElement('div');
-        amt.className='cal-amt';
-        amt.textContent = won(total);
-        cell.appendChild(amt);
+      if(dateKey<=todayKey && (cell.classList.contains('has-under') || cell.classList.contains('has-over') || cell.classList.contains('no-spend'))){
+        var status = document.createElement('span');
+        status.className='cal-status';
+        cell.appendChild(status);
       }
       cell.onclick = function(dk){ return function(){ openDayDetail(dk); }; }(dateKey);
       grid.appendChild(cell);
@@ -1118,13 +1155,14 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
   }
 
   function openDayDetail(dateKey){
+    var r = periodRange(state.viewYear, state.viewMonth);
     var list = state.entries.filter(function(e){ return e.date===dateKey; });
     var dObj = new Date(dateKey+'T00:00:00');
     document.getElementById('dayTitle').textContent = (dObj.getMonth()+1)+'월 '+dObj.getDate()+'일 '+dowLabel(dObj)+'요일';
 
     var total = list.reduce(function(s,e){return s+Number(e.budgetAmount != null ? e.budgetAmount : e.price || 0);},0);
     var budgetDaysInMonth = countBudgetDaysInPeriod(r);
-    var dailyBudget = (state.budget>0 && budgetDaysInMonth>0) ? state.budget/budgetDaysInMonth : 0;
+    var dailyBudget = getDailyBudget(state.budget, r);
     var badge = document.getElementById('dayBadge');
     var weekday = isWeekday(dateKey);
     var budgetDay = isBudgetDay(dateKey);
@@ -1363,6 +1401,14 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     render();
     return true;
   }
+  document.getElementById('customColorBtn').addEventListener('click', function(){
+    var value = prompt('컬러 코드를 입력해주세요.\n예: #3182F6', state.colorHex || '#3182F6');
+    if(value === null) return;
+    if(commitColor(value)){
+      document.querySelectorAll('.theme-swatch').forEach(function(item){ item.classList.remove('active'); });
+    }
+  });
+
   document.querySelectorAll('.theme-swatch').forEach(function(btn){
     btn.addEventListener('click', function(){
       state.colorHex = this.getAttribute('data-color');
@@ -1378,7 +1424,18 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     setTimeout(function(){ document.getElementById('quickBudgetInput').focus(); },80);
   };
   document.getElementById('quickBudgetInput').addEventListener('input', function(){ this.value = formatMoneyInput(this.value); });
-  document.getElementById('inpBudget').addEventListener('input', function(){ this.value = formatMoneyInput(this.value); });
+  document.getElementById('inpBudget').addEventListener('input', function(){ this.value = formatMoneyInput(this.value); updateBudgetDetail(); });
+  document.getElementById('inpPeriodStart').addEventListener('change', updateBudgetDetail);
+  document.getElementById('inpPeriodEnd').addEventListener('change', updateBudgetDetail);
+  document.getElementById('inpDailyBudget').addEventListener('input', function(){ this.value = formatMoneyInput(this.value); updateBudgetDetail(); });
+  document.querySelectorAll('#dailyBudgetMode button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      state.dailyBudgetMode = this.getAttribute('data-mode')==='manual' ? 'manual' : 'auto';
+      document.querySelectorAll('#dailyBudgetMode button').forEach(function(item){ item.classList.toggle('active', item===btn); });
+      document.getElementById('manualDailyField').classList.toggle('show', state.dailyBudgetMode==='manual');
+      updateBudgetDetail();
+    });
+  });
   document.getElementById('saveQuickBudget').onclick = function(){
     state.budget = parseMoney(document.getElementById('quickBudgetInput').value);
     saveBudget();
@@ -1386,12 +1443,37 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     closeSheet('budgetOverlay');
   };
 
+  function updateBudgetDetail(){
+    var startValue = document.getElementById('inpPeriodStart').value;
+    var endValue = document.getElementById('inpPeriodEnd').value;
+    var startParts = String(startValue||'').split('-');
+    var endParts = String(endValue||'').split('-');
+    var sm = Math.min(Math.max(Number(startParts[1])||state.periodStartMonth||1,1),12);
+    var sd = Math.min(Math.max(Number(startParts[2])||state.periodStartDay||1,1),31);
+    var em = Math.min(Math.max(Number(endParts[1])||state.periodEndMonth||12,1),12);
+    var ed = Math.min(Math.max(Number(endParts[2])||state.periodEndDay||31,1),31);
+    var oldSm=state.periodStartMonth, oldSd=state.periodStartDay, oldEm=state.periodEndMonth, oldEd=state.periodEndDay;
+    state.periodStartMonth=sm; state.periodStartDay=sd; state.periodEndMonth=em; state.periodEndDay=ed;
+    var r=periodRange(today.getFullYear(),today.getMonth());
+    var budgetDays=countBudgetDaysInPeriod(r);
+    var budget=parseMoney(document.getElementById('inpBudget').value);
+    var daily=state.dailyBudgetMode==='manual' ? Number(state.manualDailyBudget||0) : (budgetDays>0 ? budget/budgetDays : 0);
+    var used=state.entries.filter(function(e){ return e.date>=r.startKey&&e.date<=r.endKey&&isBudgetDay(e.date); }).reduce(function(sum,e){ return sum+entryBudgetAmount(e); },0);
+    document.getElementById('budgetDaysInfo').textContent=budgetDays+'일';
+    document.getElementById('dailyBudgetInfo').textContent=won(daily);
+    document.getElementById('usableBudgetInfo').textContent=won(Math.max(0,budget-used));
+    state.periodStartMonth=oldSm; state.periodStartDay=oldSd; state.periodEndMonth=oldEm; state.periodEndDay=oldEd;
+  }
   document.getElementById('openSettings').onclick = function(){
     document.getElementById('inpBudget').value = formatMoneyInput(state.budget);
     document.getElementById('inpPeriodStart').value = today.getFullYear() + '-' + String(state.periodStartMonth || 1).padStart(2,'0') + '-' + String(state.periodStartDay || 1).padStart(2,'0');
     document.getElementById('inpPeriodEnd').value = today.getFullYear() + '-' + String(state.periodEndMonth || 12).padStart(2,'0') + '-' + String(state.periodEndDay || 31).padStart(2,'0');
+    document.getElementById('inpDailyBudget').value = formatMoneyInput(state.manualDailyBudget);
+    document.querySelectorAll('#dailyBudgetMode button').forEach(function(btn){ btn.classList.toggle('active', btn.getAttribute('data-mode')===state.dailyBudgetMode); });
+    document.getElementById('manualDailyField').classList.toggle('show', state.dailyBudgetMode==='manual');
     applyColor(state.colorHex || '#3182F6');
     document.querySelectorAll('.theme-swatch').forEach(function(btn){ btn.classList.toggle('active', btn.getAttribute('data-color') === (state.colorHex || '#3182F6')); });
+    updateBudgetDetail();
     openSheet('settingsOverlay');
   };
   document.getElementById('saveBudget').onclick = function(){
@@ -1407,7 +1489,10 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     state.periodStartDay = sd;
     state.periodEndMonth = em;
     state.periodEndDay = ed;
+    state.manualDailyBudget = parseMoney(document.getElementById('inpDailyBudget').value);
     saveBudget();
+    saveDailyBudgetMode();
+    saveManualDailyBudget();
     savePeriodStartMonth();
     savePeriodStart();
     savePeriodEndMonth();
@@ -1438,7 +1523,9 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
       periodStartMonth: state.periodStartMonth,
       periodStartDay: state.periodStartDay,
       periodEndMonth: state.periodEndMonth,
-      periodEndDay: state.periodEndDay
+      periodEndDay: state.periodEndDay,
+      dailyBudgetMode: state.dailyBudgetMode,
+      manualDailyBudget: state.manualDailyBudget
     };
     var blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
     var url = URL.createObjectURL(blob);
@@ -1472,6 +1559,8 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
         state.periodStartDay = Number(data.periodStartDay)||1;
         state.periodEndMonth = Number(data.periodEndMonth)||12;
         state.periodEndDay = Number(data.periodEndDay)||31;
+        state.dailyBudgetMode = data.dailyBudgetMode==='manual' ? 'manual' : 'auto';
+        state.manualDailyBudget = Number(data.manualDailyBudget)||0;
         saveEntries();
         saveBudget();
         saveExcluded();
@@ -1480,6 +1569,8 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
         savePeriodStart();
         savePeriodEndMonth();
         savePeriodEnd();
+        saveDailyBudgetMode();
+        saveManualDailyBudget();
         applyColor(state.colorHex);
         render();
         closeSheet('settingsOverlay');
