@@ -203,32 +203,21 @@
   .manual-daily-field{display:none;margin-bottom:12px}
   .manual-daily-field.show{display:block}
   .settings-sheet .primary-btn{border-radius:14px;font-weight:700}
-  /* iOS Safari date input only */
-  .settings-sheet input[type="date"]{display:block;width:100% !important;min-width:0 !important;max-width:100% !important;box-sizing:border-box;-webkit-appearance:none;appearance:none;font-family:inherit;font-size:14px;color:var(--text);text-align:center;overflow:hidden}
-  .settings-sheet input[type="date"]::-webkit-date-and-time-value{text-align:center;width:100%;margin:0;padding:0}
-  .settings-sheet input[type="date"]::-webkit-calendar-picker-indicator{margin:0 0 0 auto;width:18px;height:18px}
   .settings-sheet .ghost-btn{border-radius:14px;background:#f7f8fa;border:0}
   .app-version{margin-top:10px;text-align:center;font-size:11px;color:var(--text-faint);letter-spacing:.2px}
-  /* date fields: 다른 입력칸과 동일 폭 + 텍스트 중앙 정렬 */
-  .settings-sheet .period-row{display:block;width:100%}
-  .settings-sheet .period-row .field{display:block;width:100% !important;min-width:0 !important;max-width:100% !important;box-sizing:border-box !important}
-  .settings-sheet .period-row input[type="date"]{
-    -webkit-appearance:none !important;appearance:none !important;
-    display:block !important;
-    width:100% !important;min-width:0 !important;max-width:100% !important;
-    box-sizing:border-box !important;
-    height:48px !important;
-    margin:0 !important;
-    padding:0 14px 0 32px !important;
-    border:1px solid transparent !important;border-radius:14px !important;
-    background:#f7f8fa !important;
-    font-family:inherit;font-size:14px;color:var(--text);
-    text-align:center !important;
-    overflow:hidden !important;
-  }
-  .settings-sheet .period-row input[type="date"]::-webkit-datetime-edit{flex:1 1 auto;min-width:0;text-align:center;padding:0;margin:0;overflow:hidden}
-  .settings-sheet .period-row input[type="date"]::-webkit-date-and-time-value{width:100%;text-align:center;margin:0;padding:0}
-  .settings-sheet .period-row input[type="date"]::-webkit-calendar-picker-indicator{flex:0 0 auto;margin:0 0 0 auto;width:18px;height:18px;padding:0}
+
+  /* date-box: 날짜 입력칸 3곳(설정 시작일/종료일, 기록추가 날짜) 전용 래퍼.
+     iOS Safari는 input[type=date]에 콘텐츠 기준 intrinsic 폭을 강제로 부여해
+     width:100%를 무시하고 오른쪽으로 밀려나오는 버그가 있음.
+     래퍼(.date-box)를 크기 기준점으로 두고 input을 position:absolute + inset:0으로
+     꽉 채우면, input의 크기가 콘텐츠가 아닌 래퍼(containing block) 크기로 강제 계산되어
+     iOS에서도 다른 입력칸과 동일한 폭을 갖고 텍스트도 정확히 가운데 정렬된다. */
+  .date-box{position:relative !important;width:100% !important;height:48px !important;border-radius:14px !important;background:#f7f8fa !important;border:1.5px solid var(--line) !important;overflow:hidden !important;box-sizing:border-box !important}
+  .date-box input[type="date"]{position:absolute !important;top:0 !important;left:0 !important;right:0 !important;bottom:0 !important;width:100% !important;height:100% !important;margin:0 !important;border:0 !important;background:transparent !important;-webkit-appearance:none !important;appearance:none !important;box-sizing:border-box !important;padding:0 34px 0 14px !important;font-family:inherit;font-size:14px;color:var(--text);text-align:center !important;outline:none}
+  .date-box input[type="date"]:focus{background:transparent !important}
+  .date-box input[type="date"]::-webkit-datetime-edit{width:100%;text-align:center;padding:0;margin:0}
+  .date-box input[type="date"]::-webkit-date-and-time-value{width:100%;text-align:center;margin:0;padding:0}
+  .date-box input[type="date"]::-webkit-calendar-picker-indicator{position:absolute !important;right:10px !important;top:50% !important;transform:translateY(-50%) !important;margin:0 !important;width:18px;height:18px;padding:0}
 
   /* theme palette */
   .theme-palette{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px;margin-top:2px}
@@ -493,7 +482,7 @@
       <div class="sheet-title" id="addSheetTitle">지출 기록</div>
       <div class="field">
         <label>날짜</label>
-        <input type="date" id="inpDate">
+        <div class="date-box"><input type="date" id="inpDate"></div>
       </div>
       <div class="field">
         <label>매장 · 장소</label>
@@ -599,8 +588,8 @@
           <div class="currency-input-wrap settings-currency"><span>₩</span><input type="text" id="inpBudget" placeholder="300,000" inputmode="numeric" autocomplete="off"></div>
         </div>
         <div class="period-row">
-          <div class="field compact-field"><label>시작일</label><input type="date" id="inpPeriodStart" autocomplete="off"></div>
-          <div class="field compact-field"><label>종료일</label><input type="date" id="inpPeriodEnd" autocomplete="off"></div>
+          <div class="field compact-field"><label>시작일</label><div class="date-box"><input type="date" id="inpPeriodStart" autocomplete="off"></div></div>
+          <div class="field compact-field"><label>종료일</label><div class="date-box"><input type="date" id="inpPeriodEnd" autocomplete="off"></div></div>
         </div>
         <div class="field compact-field">
           <label>일 예산</label>
@@ -619,7 +608,7 @@
           <div><span>실제 사용 가능</span><b id="usableBudgetInfo">₩0</b></div>
         </div>
         <button class="primary-btn" id="saveBudget">변경사항 저장</button>
-        <div class="app-version">v1.0.3</div>
+        <div class="app-version">v1.0.4</div>
       </section>
 
       <section class="settings-section">
