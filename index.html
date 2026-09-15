@@ -178,7 +178,7 @@
   .report-title{font-size:16px;font-weight:800;letter-spacing:-.3px}.report-copy{margin-top:5px;font-size:12.5px;line-height:1.55;color:var(--text-sub);min-height:39px;max-width:300px}
   .report-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:14px}.report-metric{padding:11px 10px;border-radius:12px;background:#F7F8FA}.report-metric-label{font-size:10px;color:var(--text-faint);margin-bottom:4px}.report-metric-value{font-size:13px;font-weight:800;color:var(--text)}
   .settings-sheet{padding-bottom:34px}.settings-top{margin-bottom:20px}.settings-top .sheet-title{margin-bottom:4px}.settings-sub{font-size:12px;color:var(--text-faint)}
-  .settings-section{padding:18px 0;border-top:1px solid var(--line)}.settings-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.settings-section-head strong{font-size:14px}.settings-section-head span{font-size:10px;color:var(--text-faint);letter-spacing:.8px;text-transform:uppercase}.compact-field{margin-bottom:12px}.period-row{display:flex;flex-direction:column;min-width:0;width:100%;gap:0}.period-row .field{min-width:0;width:100%;max-width:100%;box-sizing:border-box}.period-row input[type="date"]{display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box;height:48px;padding:0 10px;font-size:14px;overflow:hidden}.period-row input[type="date"]::-webkit-datetime-edit{padding:0;overflow:hidden}.period-row input[type="date"]::-webkit-calendar-picker-indicator{margin-left:2px}.period-dash{display:none}
+  .settings-section{padding:18px 0;border-top:1px solid var(--line)}.settings-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.settings-section-head strong{font-size:14px}.settings-section-head span{font-size:10px;color:var(--text-faint);letter-spacing:.8px;text-transform:uppercase}.compact-field{margin-bottom:12px}.period-row{display:flex;flex-direction:column;min-width:0;width:100%;gap:0}.period-row .field{min-width:0;width:100%;max-width:100%;box-sizing:border-box;overflow:hidden;flex:0 0 100%}.period-row input[type="date"]{display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box;height:48px;padding:0 10px;font-size:14px;overflow:hidden}.period-row input[type="date"]::-webkit-datetime-edit{padding:0;overflow:hidden}.period-row input[type="date"]::-webkit-calendar-picker-indicator{margin-left:2px}.period-dash{display:none}
 
   /* settings UI refinement */
   .settings-sheet{background:#fff}
@@ -204,11 +204,31 @@
   .manual-daily-field.show{display:block}
   .settings-sheet .primary-btn{border-radius:14px;font-weight:700}
   /* iOS Safari date input only */
-  .settings-sheet input[type="date"]{width:100% !important;min-width:0 !important;max-width:100% !important;box-sizing:border-box;-webkit-appearance:none;appearance:none;font-family:inherit;font-size:14px;color:var(--text);text-align:left;overflow:hidden}
-  .settings-sheet input[type="date"]::-webkit-date-and-time-value{text-align:left;margin:0;padding:0}
+  .settings-sheet input[type="date"]{display:block;width:100% !important;min-width:0 !important;max-width:100% !important;box-sizing:border-box;-webkit-appearance:none;appearance:none;font-family:inherit;font-size:14px;color:var(--text);text-align:center;overflow:hidden}
+  .settings-sheet input[type="date"]::-webkit-date-and-time-value{text-align:center;width:100%;margin:0;padding:0}
   .settings-sheet input[type="date"]::-webkit-calendar-picker-indicator{margin:0 0 0 auto;width:18px;height:18px}
   .settings-sheet .ghost-btn{border-radius:14px;background:#f7f8fa;border:0}
   .app-version{margin-top:10px;text-align:center;font-size:11px;color:var(--text-faint);letter-spacing:.2px}
+  /* date fields: 다른 입력칸과 동일 폭 + 텍스트 중앙 정렬 */
+  .settings-sheet .period-row{display:block;width:100%}
+  .settings-sheet .period-row .field{display:block;width:100% !important;min-width:0 !important;max-width:100% !important;box-sizing:border-box !important}
+  .settings-sheet .period-row input[type="date"]{
+    -webkit-appearance:none !important;appearance:none !important;
+    display:block !important;
+    width:100% !important;min-width:0 !important;max-width:100% !important;
+    box-sizing:border-box !important;
+    height:48px !important;
+    margin:0 !important;
+    padding:0 14px 0 32px !important;
+    border:1px solid transparent !important;border-radius:14px !important;
+    background:#f7f8fa !important;
+    font-family:inherit;font-size:14px;color:var(--text);
+    text-align:center !important;
+    overflow:hidden !important;
+  }
+  .settings-sheet .period-row input[type="date"]::-webkit-datetime-edit{flex:1 1 auto;min-width:0;text-align:center;padding:0;margin:0;overflow:hidden}
+  .settings-sheet .period-row input[type="date"]::-webkit-date-and-time-value{width:100%;text-align:center;margin:0;padding:0}
+  .settings-sheet .period-row input[type="date"]::-webkit-calendar-picker-indicator{flex:0 0 auto;margin:0 0 0 auto;width:18px;height:18px;padding:0}
 
   /* theme palette */
   .theme-palette{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px;margin-top:2px}
@@ -486,7 +506,7 @@
       <div class="field">
         <label>정산 유형</label>
         <div class="choice-row" id="entryTypeChoices">
-          <button type="button" class="choice-btn active" data-entry-type="mine">혼자먹음</button>
+          <button type="button" class="choice-btn active" data-entry-type="mine">내가 먹음</button>
           <button type="button" class="choice-btn" data-entry-type="paid_friend">내가사줌</button>
           <button type="button" class="choice-btn" data-entry-type="free">얻어먹음</button>
         </div>
@@ -599,7 +619,7 @@
           <div><span>실제 사용 가능</span><b id="usableBudgetInfo">₩0</b></div>
         </div>
         <button class="primary-btn" id="saveBudget">변경사항 저장</button>
-        <div class="app-version">v1.0.0</div>
+        <div class="app-version">v1.0.3</div>
       </section>
 
       <section class="settings-section">
