@@ -404,6 +404,104 @@
     position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center;
     z-index:100; color:var(--text-faint); font-size:13.5px;
   }
+
+/* Rich stats */
+.stats-hero-card{background:#fff;border-radius:22px;padding:22px;box-shadow:var(--shadow);margin-bottom:12px}
+.stats-hero-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.stats-eyebrow{font-size:12px;font-weight:700;color:var(--text-faint);margin-bottom:7px}
+.stats-hero-value{font-size:30px;font-weight:800;letter-spacing:-1.2px}
+.stats-hero-sub{font-size:13px;color:var(--text-sub);margin-top:8px;line-height:1.55}
+.stats-delta{border-radius:999px;padding:6px 9px;font-size:11px;font-weight:800;white-space:nowrap}
+.stats-delta.good{background:var(--mint-bg);color:var(--mint)}
+.stats-delta.bad{background:var(--red-bg);color:var(--red)}
+.stats-delta.neutral{background:var(--blue-bg);color:var(--blue)}
+.stats-progress{height:10px;background:var(--bg);border-radius:999px;overflow:hidden;margin-top:18px}
+.stats-progress-fill{height:100%;border-radius:inherit;background:var(--mint)}
+.stats-progress-fill.over{background:var(--red)}
+.stats-progress-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--text-faint);margin-top:7px}
+.stats-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stats-mini-card{background:#fff;border-radius:18px;padding:17px;box-shadow:var(--shadow)}
+.stats-mini-card span{display:block;font-size:11px;color:var(--text-faint);margin-bottom:7px}
+.stats-mini-card strong{display:block;font-size:19px;letter-spacing:-.5px}
+.stats-mini-card small{display:block;font-size:11px;color:var(--text-sub);margin-top:6px;line-height:1.45}
+.stats-mini-card strong.good{color:var(--mint)}
+.stats-mini-card strong.bad{color:var(--red)}
+.stats-report-card{background:#fff;border-radius:20px;padding:20px;box-shadow:var(--shadow);margin-bottom:12px}
+.stats-report-title{font-size:15px;font-weight:800;margin-bottom:4px}
+.stats-report-desc{font-size:12px;color:var(--text-sub);line-height:1.5;margin-bottom:17px}
+.stats-week-bars{display:flex;align-items:flex-end;gap:8px;height:116px;padding-top:8px}
+.stats-week-col{flex:1;min-width:0;text-align:center}
+.stats-week-bar-wrap{height:82px;display:flex;align-items:flex-end;justify-content:center}
+.stats-week-bar{width:100%;max-width:28px;min-height:3px;border-radius:8px 8px 4px 4px;background:var(--blue)}
+.stats-week-bar.high{background:var(--red)}
+.stats-week-bar.low{background:var(--mint)}
+.stats-week-label{font-size:10px;color:var(--text-faint);margin-top:7px}
+.stats-week-value{font-size:9px;color:var(--text-sub);margin-bottom:4px;white-space:nowrap}
+.stats-pattern-list{display:flex;flex-direction:column;gap:13px}
+.stats-pattern-row{display:grid;grid-template-columns:74px 1fr auto;align-items:center;gap:10px}
+.stats-pattern-name{font-size:12px;color:var(--text-sub)}
+.stats-pattern-track{height:8px;background:var(--bg);border-radius:999px;overflow:hidden}
+.stats-pattern-fill{height:100%;background:var(--blue);border-radius:999px}
+.stats-pattern-row:nth-child(2) .stats-pattern-fill{background:var(--mint)}
+.stats-pattern-row:nth-child(3) .stats-pattern-fill{background:var(--red)}
+.stats-pattern-value{font-size:11px;font-weight:700;min-width:42px;text-align:right}
+.stats-coach{border-radius:20px;padding:20px;background:var(--blue-bg);margin-bottom:12px}
+.stats-coach-title{font-size:13px;font-weight:800;color:var(--blue);margin-bottom:7px}
+.stats-coach-text{font-size:14px;font-weight:700;line-height:1.6}
+.stats-coach-sub{font-size:11px;color:var(--text-sub);margin-top:8px;line-height:1.5}
+
+
+/* Stats color hierarchy */
+#openStats .stats-hero-card{
+  background:linear-gradient(145deg,#F4F8FF 0%,#FFFFFF 58%,#F2FBF8 100%);
+}
+#openStats .stats-eyebrow{color:var(--blue)}
+#openStats .stats-hero-value{color:#1769E0}
+#openStats .stats-hero-sub{color:#65758B}
+
+#openStats .stats-mini-card:nth-child(1){background:#F3F7FF}
+#openStats .stats-mini-card:nth-child(1) span{color:#5E7FB8}
+#openStats .stats-mini-card:nth-child(1) strong{color:#1769E0}
+
+#openStats .stats-mini-card:nth-child(2){background:#F0FAF6}
+#openStats .stats-mini-card:nth-child(2) span{color:#4B8F76}
+#openStats .stats-mini-card:nth-child(2) strong{color:#28A578}
+
+#openStats .stats-mini-card:nth-child(3){background:#FFF4F3}
+#openStats .stats-mini-card:nth-child(3) span{color:#B76C66}
+#openStats .stats-mini-card:nth-child(3) strong{color:#E05A50}
+
+#openStats .stats-mini-card:nth-child(4){background:#F7F3FF}
+#openStats .stats-mini-card:nth-child(4) span{color:#826EB0}
+#openStats .stats-mini-card:nth-child(4) strong{color:#7658B8}
+
+#openStats .stats-report-title{color:#27364A}
+#openStats .stats-report-desc{color:#7B8797}
+
+#openStats .stats-group{
+  border-left:3px solid transparent;
+}
+#openStats .stats-group:nth-of-type(3n+1){border-left-color:#D9E8FF}
+#openStats .stats-group:nth-of-type(3n+2){border-left-color:#D9F1E7}
+#openStats .stats-group:nth-of-type(3n){border-left-color:#EEE3FF}
+
+#openStats .stats-group-title{color:#536C91}
+#openStats .stats-row-value,
+#openStats .stats-bar-value{color:#33445C}
+
+#openStats .stats-coach{
+  background:linear-gradient(135deg,#EEF5FF,#F4F0FF);
+}
+#openStats .stats-coach-title{color:#5A65C9}
+#openStats .stats-coach-text{color:#34435A}
+#openStats .stats-coach-sub{color:#778399}
+
+#openStats .stats-highlight{
+  background:#F6F9FD;
+  color:#4A5D76;
+}
+#openStats .stats-highlight b{color:#1769E0}
+
 </style>
 </head>
 <body>
@@ -1123,16 +1221,45 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     var changePct=prevUsed>0?Math.round((used-prevUsed)/prevUsed*100):null;
     var compareText=changePct===null?'이전 기간 비교 데이터가 아직 부족해요.':
       (changePct===0?'이전 기간과 지출이 같아요.':changePct<0?'이전 기간보다 '+Math.abs(changePct)+'% 덜 썼어요.':'이전 기간보다 '+changePct+'% 더 썼어요.');
+var report=document.createElement('div');
+    var deltaClass=changePct===null?'neutral':changePct<=0?'good':'bad';
+    var deltaLabel=changePct===null?'비교 데이터 부족':(changePct===0?'이전 기간과 동일':(changePct<0?'이전보다 '+Math.abs(changePct)+'% ↓':'이전보다 '+changePct+'% ↑'));
+    var progressPct=budget>0?Math.min(100,Math.max(0,used/budget*100)):0;
+    report.innerHTML='<div class="stats-hero-card"><div class="stats-hero-top"><div><div class="stats-eyebrow">이번 기간 내 식비</div><div class="stats-hero-value">'+won(used)+'</div><div class="stats-hero-sub">'+(budget>0?(balance>=0?'예산에서 '+won(balance)+' 남았어요.':'예산보다 '+won(Math.abs(balance))+' 더 사용했어요.'):'예산을 설정하면 사용 속도를 함께 보여드려요.')+'</div></div><span class="stats-delta '+deltaClass+'">'+deltaLabel+'</span></div>'+(budget>0?'<div class="stats-progress"><div class="stats-progress-fill '+(used>budget?'over':'')+'" style="width:'+progressPct+'%"></div></div><div class="stats-progress-meta"><span>사용 '+budgetRate+'%</span><span>예산 '+won(budget)+'</span></div>':'')+'</div>'+
+    '<div class="stats-mini-grid">'+
+    '<div class="stats-mini-card"><span>하루 평균 식비</span><strong>'+won(avgSpendDay)+'</strong><small>실제로 돈을 쓴 날 기준</small></div>'+
+    '<div class="stats-mini-card"><span>무지출 점심</span><strong class="good">'+noSpendDays+'일</strong><small>예산일 중 식비 0원인 날</small></div>'+
+    '<div class="stats-mini-card"><span>예산 초과일</span><strong class="'+(overDays?'bad':'good')+'">'+overDays+'일</strong><small>'+(dailyBudget>0?'하루 기준 '+won(dailyBudget):'일 예산 설정 시 계산')+'</small></div>'+
+    '<div class="stats-mini-card"><span>소비 변동성</span><strong>'+mood+'</strong><small>지출 편차 '+variabilityScore+'점</small></div></div>';
+    summary.appendChild(report);
 
-    var insight=document.createElement('div'); insight.className='stats-insight';
-    var statusClass=budget<=0?'neutral':balance>=0?'under':'over';
-    var statusText=budget<=0?'예산 미설정':balance>=0?'예산 이내':'예산 초과';
-    var comment=!count?'기록이 쌓이면 소비 속도와 패턴을 비교해드려요.':
-      (budget>0?(balance>=0?'예산에서 '+won(balance)+' 남아 있어요. ':'예산을 '+won(Math.abs(balance))+' 초과했어요. '):'')+paceText+' '+compareText;
-    insight.innerHTML='<div class="stats-insight-head"><div><div class="stats-insight-title">이번 기간 소비 분석</div><div class="stats-insight-comment">'+comment+'</div></div><span class="stats-status '+statusClass+'">'+statusText+'</span></div>'+
-      '<div class="stats-kpi-row"><div class="stats-kpi"><span>예산 사용률</span><b class="'+(budgetRate>100?'bad':'good')+'">'+(budget>0?budgetRate+'%':'-')+'</b></div><div class="stats-kpi"><span>예산 지킨 날</span><b class="good">'+underDays+'일</b></div><div class="stats-kpi"><span>초과한 날</span><b class="'+(overDays?'bad':'good')+'">'+overDays+'일</b></div></div>'+
-      (budget>0?'<div class="stats-meter"><div class="stats-meter-fill '+(used>budget?'over':'under')+'" style="width:'+Math.min(100,used/budget*100)+'%"></div></div>':'');
-    summary.appendChild(insight);
+    var weekdayNames=['월','화','수','목','금'], weekdaySum=[0,0,0,0,0], weekdayCnt=[0,0,0,0,0];
+    Object.keys(dayMap).forEach(function(k){var d=new Date(k+'T00:00:00'),wd=d.getDay();if(wd>=1&&wd<=5){weekdaySum[wd-1]+=dayMap[k];weekdayCnt[wd-1]++;}});
+    var weekdayAvg=weekdaySum.map(function(v,i){return weekdayCnt[i]?v/weekdayCnt[i]:0;});
+    var maxWeek=Math.max.apply(null,weekdayAvg.concat([1])), nonzero=weekdayAvg.filter(function(v){return v>0;});
+    var minWeek=nonzero.length?Math.min.apply(null,nonzero):0, maxWeekVal=Math.max.apply(null,weekdayAvg);
+    var weekCard=document.createElement('div');weekCard.className='stats-report-card';
+    weekCard.innerHTML='<div class="stats-report-title">요일별 평균 식비</div><div class="stats-report-desc">어느 요일에 점심 지출이 커지는지 한눈에 비교해요.</div>';
+    var weekBars=document.createElement('div');weekBars.className='stats-week-bars';
+    weekdayAvg.forEach(function(v,i){var col=document.createElement('div');col.className='stats-week-col';var cls=v>0&&v===maxWeekVal?'high':v>0&&v===minWeek?'low':'';col.innerHTML='<div class="stats-week-value">'+(v?won(v):'—')+'</div><div class="stats-week-bar-wrap"><div class="stats-week-bar '+cls+'" style="height:'+(v?Math.max(8,v/maxWeek*100):3)+'%"></div></div><div class="stats-week-label">'+weekdayNames[i]+'</div>';weekBars.appendChild(col);});
+    weekCard.appendChild(weekBars);summary.appendChild(weekCard);
+
+    var friendShare=count?Math.round(treatedCount/count*100):0, freeShare=count?Math.round(freeCount/count*100):0, normalShare=Math.max(0,100-friendShare-freeShare);
+    var patternCard=document.createElement('div');patternCard.className='stats-report-card';
+    patternCard.innerHTML='<div class="stats-report-title">점심 결제 패턴</div><div class="stats-report-desc">일반 식비와 사주기·얻어먹기 비중을 분리해서 봐요.</div><div class="stats-pattern-list">'+
+    '<div class="stats-pattern-row"><div class="stats-pattern-name">일반 식비</div><div class="stats-pattern-track"><div class="stats-pattern-fill" style="width:'+normalShare+'%"></div></div><div class="stats-pattern-value">'+normalShare+'%</div></div>'+
+    '<div class="stats-pattern-row"><div class="stats-pattern-name">사준 날</div><div class="stats-pattern-track"><div class="stats-pattern-fill" style="width:'+friendShare+'%"></div></div><div class="stats-pattern-value">'+friendShare+'%</div></div>'+
+    '<div class="stats-pattern-row"><div class="stats-pattern-name">얻어먹은 날</div><div class="stats-pattern-track"><div class="stats-pattern-fill" style="width:'+freeShare+'%"></div></div><div class="stats-pattern-value">'+freeShare+'%</div></div></div>';
+    summary.appendChild(patternCard);
+
+    var coachText='',coachSub='';
+    if(!count){coachText='아직 분석할 기록이 충분하지 않아요.';coachSub='기록이 쌓이면 예산 속도와 소비 패턴을 자동으로 비교해드려요.';}
+    else if(budget>0&&used>budget){coachText='이번 기간은 예산을 '+won(used-budget)+' 넘겼어요.';coachSub=overDays+'일의 초과 지출이 누적 예산에 영향을 줬어요.';}
+    else if(budget>0&&paceDiff>0){coachText='예산 안이지만, 지금 소비 속도는 계획보다 조금 빨라요.';coachSub='현재 계획선보다 '+won(paceDiff)+' 앞서 사용 중이에요.';}
+    else if(noSpendDays>=2){coachText='무지출 점심 '+noSpendDays+'일이 예산을 지키는 데 도움 됐어요.';coachSub=budget>0?'현재 '+won(Math.max(0,balance))+'의 예산 여유가 있어요.':'무지출일이 평균 식비를 낮추고 있어요.';}
+    else if(cv>=.4){coachText='이번 기간은 평균보다 지출 편차를 보는 게 더 중요해요.';coachSub='소비 변동성은 '+mood+' 수준이에요.';}
+    else{coachText='이번 기간 점심 지출은 비교적 안정적으로 유지되고 있어요.';coachSub=budget>0?'예산 준수율은 '+adherence+'%예요.':'하루 평균은 '+won(avgSpendDay)+'이에요.';}
+    var coach=document.createElement('div');coach.className='stats-coach';coach.innerHTML='<div class="stats-coach-title">이번 기간 한 줄 리포트</div><div class="stats-coach-text">'+coachText+'</div><div class="stats-coach-sub">'+coachSub+'</div>';summary.appendChild(coach);
 
     makeGroup('내 소비 습관',[
       ["무지출일",noSpendDays+'일'],
