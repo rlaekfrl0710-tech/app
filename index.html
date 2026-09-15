@@ -209,26 +209,6 @@
   .settings-sheet input[type="date"]::-webkit-calendar-picker-indicator{margin:0 0 0 auto;width:18px;height:18px}
   .settings-sheet .ghost-btn{border-radius:14px;background:#f7f8fa;border:0}
   .app-version{margin-top:10px;text-align:center;font-size:11px;color:var(--text-faint);letter-spacing:.2px}
-  /* date fields: 다른 입력칸과 동일 폭 + 텍스트 중앙 정렬 */
-  .settings-sheet .period-row{display:block;width:100%}
-  .settings-sheet .period-row .field{display:block;width:100% !important;min-width:0 !important;max-width:100% !important;box-sizing:border-box !important}
-  .settings-sheet .period-row input[type="date"]{
-    -webkit-appearance:none !important;appearance:none !important;
-    display:block !important;
-    width:100% !important;min-width:0 !important;max-width:100% !important;
-    box-sizing:border-box !important;
-    height:48px !important;
-    margin:0 !important;
-    padding:0 14px 0 32px !important;
-    border:1px solid transparent !important;border-radius:14px !important;
-    background:#f7f8fa !important;
-    font-family:inherit;font-size:14px;color:var(--text);
-    text-align:center !important;
-    overflow:hidden !important;
-  }
-  .settings-sheet .period-row input[type="date"]::-webkit-datetime-edit{flex:1 1 auto;min-width:0;text-align:center;padding:0;margin:0;overflow:hidden}
-  .settings-sheet .period-row input[type="date"]::-webkit-date-and-time-value{width:100%;text-align:center;margin:0;padding:0}
-  .settings-sheet .period-row input[type="date"]::-webkit-calendar-picker-indicator{flex:0 0 auto;margin:0 0 0 auto;width:18px;height:18px;padding:0}
 
   /* theme palette */
   .theme-palette{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px;margin-top:2px}
@@ -619,7 +599,7 @@
           <div><span>실제 사용 가능</span><b id="usableBudgetInfo">₩0</b></div>
         </div>
         <button class="primary-btn" id="saveBudget">변경사항 저장</button>
-        <div class="app-version">v1.0.3</div>
+        <div class="app-version">v1.0.2</div>
       </section>
 
       <section class="settings-section">
