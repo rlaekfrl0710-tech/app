@@ -178,7 +178,7 @@
   .report-title{font-size:16px;font-weight:800;letter-spacing:-.3px}.report-copy{margin-top:5px;font-size:12.5px;line-height:1.55;color:var(--text-sub);min-height:39px;max-width:300px}
   .report-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:14px}.report-metric{padding:11px 10px;border-radius:12px;background:#F7F8FA}.report-metric-label{font-size:10px;color:var(--text-faint);margin-bottom:4px}.report-metric-value{font-size:13px;font-weight:800;color:var(--text)}
   .settings-sheet{padding-bottom:34px}.settings-top{margin-bottom:20px}.settings-top .sheet-title{margin-bottom:4px}.settings-sub{font-size:12px;color:var(--text-faint)}
-  .settings-section{padding:18px 0;border-top:1px solid var(--line)}.settings-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.settings-section-head strong{font-size:14px}.settings-section-head span{font-size:10px;color:var(--text-faint);letter-spacing:.8px;text-transform:uppercase}.compact-field{margin-bottom:12px}.period-row{display:grid;grid-template-columns:minmax(0,1fr) 16px minmax(0,1fr);align-items:start;gap:6px;min-width:0;width:100%;overflow:hidden}.period-row .field{min-width:0;width:100%}.period-row input[type="date"]{width:100%;min-width:0;max-width:100%;box-sizing:border-box}.period-dash{height:48px;display:flex;align-items:center;justify-content:center;color:var(--text-faint);padding-top:0;margin-top:20px}
+  .settings-section{padding:18px 0;border-top:1px solid var(--line)}.settings-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.settings-section-head strong{font-size:14px}.settings-section-head span{font-size:10px;color:var(--text-faint);letter-spacing:.8px;text-transform:uppercase}.compact-field{margin-bottom:12px}.period-row{display:flex;flex-direction:column;min-width:0;width:100%}.period-row .field{min-width:0;width:100%}.period-row input[type="date"]{width:100%;min-width:0;max-width:100%;box-sizing:border-box}.period-dash{display:none}
 
   /* settings UI refinement */
   .settings-sheet{background:#fff}
@@ -312,7 +312,7 @@
   .stats-section-title{font-size:13px;font-weight:800;color:var(--text);margin:0 2px 11px}
   .stats-panel{background:#fff;border-radius:18px;padding:20px;box-shadow:var(--shadow)}
   .stats-row{display:flex;align-items:center;gap:10px;margin:16px 0}.stats-row:first-child{margin-top:0}.stats-row:last-child{margin-bottom:0}
-  .stats-row-label{width:42px;font-size:12px;color:var(--text-sub);font-weight:600;flex-shrink:0}.stats-row-bar{flex:1;height:8px;background:#F1F3F5;border-radius:8px;overflow:hidden}.stats-row-fill{height:100%;border-radius:8px;background:var(--blue)}.stats-row-value{width:74px;text-align:right;font-size:12px;font-weight:800}
+  .stats-row-label{width:42px;font-size:12px;color:var(--text-sub);font-weight:600;flex-shrink:0}.stats-row-bar{flex:1;min-width:0;height:8px;background:#F1F3F5;border-radius:8px;overflow:hidden}.stats-row-fill{height:100%;border-radius:8px;background:var(--blue)}.stats-row-value{width:80px;flex-shrink:0;white-space:nowrap;text-align:right;font-size:12px;font-weight:800}
   .stats-empty{text-align:center;color:var(--text-faint);font-size:13px;padding:24px 5px}
   .stats-highlight{background:#fff;border-radius:18px;padding:20px;box-shadow:var(--shadow);font-size:12.5px;color:var(--text-sub);line-height:1.5;box-sizing:border-box}.stats-highlight b{color:var(--blue);font-weight:800}
 
@@ -571,7 +571,6 @@
         </div>
         <div class="period-row">
           <div class="field compact-field"><label>시작일</label><input type="date" id="inpPeriodStart" autocomplete="off"></div>
-          <span class="period-dash">—</span>
           <div class="field compact-field"><label>종료일</label><input type="date" id="inpPeriodEnd" autocomplete="off"></div>
         </div>
         <div class="field compact-field">
@@ -882,7 +881,7 @@
     var title='오늘의 식비 리포트', copy='아직 오늘의 지출이 없습니다. 여유 있게 시작해보세요.';
 if(!todayInPeriod) copy='현재 선택한 예산 기간과 오늘이 다릅니다.';
 else if(budget<=0) copy=todaySpent>0 ? '오늘 '+won(todaySpent)+'을 사용했어요.<br>예산을 설정하면 지출 흐름까지 확인할 수 있어요.' : '오늘의 지출을 기록하면<br>하루 단위로 흐름을 확인할 수 있어요.';
-else if(todaySpent===0) copy='오늘은 아직 지출이 없어요.<br>현재 기준으로 예산에 여유가 있습니다.';
+else if(todaySpent===0) copy='오늘은 아직 지출이 없어요~<br>현재 기준으로 예산에 여유가 있습니다.';
 else if(todaySpent<=dailyBudget) copy='오늘은 기준 예산 안에서 사용하고 있어요.<br>지금 흐름을 유지해보세요.';
 else copy='오늘은 기준 예산보다 '+won(todaySpent-dailyBudget)+' 더 사용했어요.<br>남은 기간은 조금 여유 있게 관리해보세요.';
 document.getElementById('reportTitle').textContent=title;
