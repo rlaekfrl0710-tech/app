@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>점심 가계부</title>
+<title>🍴 점심 가계부</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='48' fill='%233182F6'/%3E%3Cg fill='none' stroke='white' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M65 35v42M53 35v27M77 35v27M53 62c0 13 6 21 12 21v74M77 62c0 13-6 21-12 21'/%3E%3Cpath d='M127 35v122M127 35c-18 0-27 15-27 34s9 32 27 32'/%3E%3C/g%3E%3C/svg%3E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="점심 가계부">
+<meta name="theme-color" content="#3182F6">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%EC%A0%90%EC%8B%AC%20%EA%B0%80%EA%B3%84%EB%B6%80%22%2C%22short_name%22%3A%22%EC%A0%90%EC%8B%AC%20%EA%B0%80%EA%B3%84%EB%B6%80%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23F5F6F8%22%2C%22theme_color%22%3A%22%233182F6%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%253D%2527http%253A%252F%252Fwww.w3.org%252F2000%252Fsvg%2527%2520viewBox%253D%25270%25200%2520192%2520192%2527%253E%253Crect%2520width%253D%2527192%2527%2520height%253D%2527192%2527%2520rx%253D%252748%2527%2520fill%253D%2527%25233182F6%2527%252F%253E%253Cpath%2520d%253D%2527M65%252035v42M53%252035v27M77%252035v27M53%252062c0%252013%25206%252021%252012%252021v74M77%252062c0%252013-6%252021-12%252021M127%252035v122M127%252035c-18%25200-27%252015-27%252034s9%252032%252027%252032%2527%2520fill%253D%2527none%2527%2520stroke%253D%2527white%2527%2520stroke-width%253D%252710%2527%2520stroke-linecap%253D%2527round%2527%2520stroke-linejoin%253D%2527round%2527%252F%253E%253C%252Fsvg%253E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
+
 <style>
   :root{
     --bg:#F5F6F8;
@@ -81,28 +87,30 @@
 
   /* hero card */
   .hero{
-    background:linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+    background:linear-gradient(135deg,rgba(255,255,255,0.42) 0%,rgba(255,255,255,0.10) 28%,transparent 52%),var(--blue);
     border-radius:var(--radius-lg);
     padding:26px 24px 22px;
     color:#fff;
-    box-shadow:0 14px 30px rgba(var(--blue-rgb),0.28);
+    box-shadow:0 14px 30px rgba(var(--blue-rgb),0.10);
     margin-top:6px;
   }
   .hero.over{
-    background:linear-gradient(135deg,#F04452 0%, #D8303F 60%, #B8202E 100%);
-    box-shadow:0 14px 30px rgba(240,68,82,0.28);
+    background:linear-gradient(135deg,rgba(255,255,255,0.42) 0%,rgba(255,255,255,0.10) 28%,transparent 52%),var(--red);
+    box-shadow:0 14px 30px rgba(240,68,82,0.10);
   }
-  .hero-label{ font-size:13px; opacity:0.85; font-weight:600; }
-  .hero-amount{ font-size:34px; font-weight:800; margin-top:6px; letter-spacing:-0.5px; }
+  .hero-label{ font-size:13px; color:rgba(255,255,255,0.76); font-weight:600; }
+  .hero-amount{ font-size:34px; font-weight:800; margin-top:6px; letter-spacing:-0.5px; color:#fff; }
   .hero-bar{
-    margin-top:16px; height:7px; border-radius:6px; background:rgba(255,255,255,0.28); overflow:hidden;
+    margin-top:16px; height:7px; border-radius:6px; background:rgba(255,255,255,0.22); overflow:hidden;
   }
-  .hero-bar-fill{ height:100%; background:#fff; border-radius:6px; transition:width .35s ease; }
+  .hero.over .hero-bar{ background:rgba(255,255,255,0.22); }
+  .hero-bar-fill{ height:100%; background:rgba(255,255,255,0.92); border-radius:6px; transition:width .35s ease; }
+  .hero.over .hero-bar-fill{ background:rgba(255,255,255,0.92); }
   .hero-stats{
     display:flex; justify-content:space-between; margin-top:16px;
   }
-  .hero-stat{ font-size:12.5px; opacity:0.9; }
-  .hero-stat b{ display:block; font-size:14.5px; font-weight:700; margin-top:2px; }
+  .hero-stat{ font-size:12.5px; color:rgba(255,255,255,0.72); }
+  .hero-stat b{ display:block; font-size:14.5px; font-weight:700; margin-top:2px; color:#fff; }
 
   /* today card */
   .today-card{
@@ -157,23 +165,39 @@
   .cal-cell.excluded{ background:#F1F2F4; }
   .cal-cell.excluded .cal-day{ color:var(--text-faint); }
   .cal-cell.excluded .cal-amt{ color:var(--text-faint); }
-  .cal-legend{ display:flex; gap:14px; margin:2px 2px 4px; flex-wrap:wrap; }
+  .cal-legend{ display:flex; gap:14px; margin:2px 2px 10px; flex-wrap:wrap; }
   .cal-legend span{ font-size:11.5px; color:var(--text-sub); display:flex; align-items:center; gap:5px; }
   .cal-legend i{ width:8px; height:8px; border-radius:50%; display:inline-block; }
 
 
   .report-card{ margin:18px 0 22px; padding:18px; background:var(--surface); border:1px solid var(--line); border-radius:18px; }
   .report-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.report-kicker{font-size:10px;font-weight:800;letter-spacing:1.2px;color:var(--blue)}.report-date{font-size:11px;color:var(--text-faint)}
-  .report-title{font-size:16px;font-weight:800;letter-spacing:-.3px}.report-copy{margin-top:5px;font-size:12.5px;line-height:1.55;color:var(--text-sub)}
+  .report-title{font-size:16px;font-weight:800;letter-spacing:-.3px}.report-copy{margin-top:5px;font-size:12.5px;line-height:1.55;color:var(--text-sub);min-height:39px;max-width:300px}
   .report-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:14px}.report-metric{padding:11px 10px;border-radius:12px;background:#F7F8FA}.report-metric-label{font-size:10px;color:var(--text-faint);margin-bottom:4px}.report-metric-value{font-size:13px;font-weight:800;color:var(--text)}
   .settings-sheet{padding-bottom:34px}.settings-top{margin-bottom:20px}.settings-top .sheet-title{margin-bottom:4px}.settings-sub{font-size:12px;color:var(--text-faint)}
   .settings-section{padding:18px 0;border-top:1px solid var(--line)}.settings-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.settings-section-head strong{font-size:14px}.settings-section-head span{font-size:10px;color:var(--text-faint);letter-spacing:.8px;text-transform:uppercase}.compact-field{margin-bottom:12px}.period-row{display:grid;grid-template-columns:1fr 20px 1fr;align-items:end;gap:5px}.period-dash{height:48px;display:flex;align-items:center;justify-content:center;color:var(--text-faint)}
 
-  /* custom color */
-  .color-input-row{ display:flex; align-items:center; gap:10px; }
-  .color-input-row input[type="text"]{ flex:1; min-width:0; text-transform:uppercase; }
-  .color-picker-native{ width:48px; height:48px; padding:4px; border-radius:var(--radius-sm); border:1.5px solid var(--line); background:#fff; cursor:pointer; }
-  .color-preview{ width:100%; height:10px; border-radius:8px; margin-top:10px; background:var(--blue); }
+  /* settings UI refinement */
+  .settings-sheet{background:#fff}
+  .settings-top{margin-bottom:24px;padding:0 2px}
+  .settings-top .sheet-title{font-size:22px;letter-spacing:-.6px;margin-bottom:5px}
+  .settings-section{padding:20px 0;border-top:0;margin-bottom:8px}
+  .settings-section-head{margin-bottom:12px}
+  .settings-section-head strong{font-size:15px;letter-spacing:-.2px}
+  .settings-section-head span{font-size:11px;letter-spacing:0;text-transform:none}
+  .settings-sheet .field label{font-size:11px;margin-bottom:7px}
+  .settings-sheet input:not([type="color"]){border-radius:14px;background:#f7f8fa;border:1px solid transparent}
+  .settings-sheet .currency-input-wrap{border-radius:14px;background:#f7f8fa;border:1px solid transparent}
+  .settings-sheet .primary-btn{border-radius:14px;font-weight:700}
+  .settings-sheet .ghost-btn{border-radius:14px;background:#f7f8fa;border:0}
+  .app-version{margin-top:10px;text-align:center;font-size:11px;color:var(--text-faint);letter-spacing:.2px}
+
+  /* theme palette */
+  .theme-palette{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px;margin-top:2px}
+  .theme-swatch{width:100%;aspect-ratio:1;border:0;border-radius:12px;background:var(--swatch);cursor:pointer;padding:0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.04)}
+  .theme-swatch.active{box-shadow:inset 0 0 0 2px #fff,0 0 0 2px var(--swatch)}
+  .color-preview{width:100%;height:8px;border-radius:8px;margin-top:14px;background:var(--blue)}
+  @media (max-width:360px){.theme-palette{grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}}
 
   .day-toggle-btn{
     width:100%; padding:12px; border-radius:var(--radius-sm); border:1.5px solid var(--line);
@@ -253,6 +277,28 @@
   .quick-budget-secondary{ width:100%; border:0; background:none; color:var(--text-sub); font:600 13px inherit; padding:13px 0 2px; cursor:pointer; }
   #statBudget{ cursor:pointer; }
 
+  /* statistics */
+  .stats-page{width:100%;max-width:430px;height:100vh;background:var(--bg);overflow-y:auto;padding-bottom:34px}
+  .stats-header{position:sticky;top:0;z-index:2;background:rgba(245,246,248,.94);backdrop-filter:blur(10px);padding:18px 20px 14px;display:flex;align-items:center;gap:10px}
+  .stats-back{width:36px;height:36px;border:0;border-radius:50%;background:#fff;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;color:var(--text);cursor:pointer}
+  .stats-title{font-size:19px;font-weight:800;letter-spacing:-.3px}
+  .stats-content{padding:6px 20px 0}
+  .stats-period{font-size:12px;color:var(--text-sub);margin:8px 2px 14px}
+  .stats-summary{display:flex;flex-direction:column;gap:12px}
+  .stats-group{background:#fff;border-radius:18px;padding:15px;box-shadow:var(--shadow)}
+  .stats-group-title{font-size:12px;font-weight:800;color:var(--text-sub);margin:0 2px 11px}
+  .stats-group-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .stats-card{background:#F7F8FA;border-radius:13px;padding:13px 14px}
+  .stats-card-label{font-size:10.5px;color:var(--text-sub);font-weight:600}
+  .stats-card-value{font-size:19px;font-weight:800;margin-top:5px;letter-spacing:-.4px}
+  .stats-section{margin-top:24px}
+  .stats-section-title{font-size:15px;font-weight:800;margin:0 2px 10px}
+  .stats-panel{background:#fff;border-radius:18px;padding:17px;box-shadow:var(--shadow)}
+  .stats-row{display:flex;align-items:center;gap:10px;margin:12px 0}.stats-row:first-child{margin-top:0}.stats-row:last-child{margin-bottom:0}
+  .stats-row-label{width:62px;font-size:12px;color:var(--text-sub);font-weight:600;flex-shrink:0}.stats-row-bar{flex:1;height:9px;background:#F1F3F5;border-radius:8px;overflow:hidden}.stats-row-fill{height:100%;border-radius:8px;background:var(--blue)}.stats-row-value{width:74px;text-align:right;font-size:12.5px;font-weight:800}
+  .stats-empty{text-align:center;color:var(--text-faint);font-size:13px;padding:22px 5px}
+  .stats-highlight{background:var(--blue-bg);border-radius:14px;padding:14px;margin-top:10px;font-size:12.5px;color:var(--text-sub);line-height:1.5}.stats-highlight b{color:var(--blue);font-weight:800}
+
   /* sheets */
   .overlay{
     position:fixed; inset:0; background:rgba(15,18,22,0.42);
@@ -315,10 +361,15 @@
 
   <header>
     <div class="headline">
-      <h1>점심 가계부</h1>
-      <button class="icon-btn" id="openSettings" aria-label="설정">
+      <h1>🍴 점심 가계부</h1>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="icon-btn" id="openStats" aria-label="통계">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="20" x2="5" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="19" y1="20" x2="19" y2="7"></line></svg>
+        </button>
+        <button class="icon-btn" id="openSettings" aria-label="설정">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-      </button>
+        </button>
+      </div>
     </div>
     <div class="month-nav">
       <button id="prevMonth" aria-label="이전달">
@@ -409,7 +460,7 @@
         <label>정산 유형</label>
         <div class="choice-row" id="entryTypeChoices">
           <button type="button" class="choice-btn active" data-entry-type="mine">내가 먹음</button>
-          <button type="button" class="choice-btn" data-entry-type="paid_friend">친구 것까지 결제</button>
+          <button type="button" class="choice-btn" data-entry-type="paid_friend">내가 사줌</button>
           <button type="button" class="choice-btn" data-entry-type="free">얻어먹음</button>
         </div>
       </div>
@@ -453,6 +504,38 @@
     </div>
   </div>
 
+  <!-- Statistics Page -->
+  <div class="overlay" id="statsOverlay" style="align-items:stretch;background:var(--bg);">
+    <div class="stats-page">
+      <div class="stats-header">
+        <button class="stats-back" id="closeStats" aria-label="뒤로가기">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <div class="stats-title">통계</div>
+      </div>
+      <div class="stats-content">
+        <div class="stats-period" id="statsPeriod"></div>
+        <div class="stats-summary" id="statsSummary"></div>
+        <div class="stats-section">
+          <div class="stats-section-title">요일별 지출</div>
+          <div class="stats-panel" id="statsWeekday"></div>
+        </div>
+        <div class="stats-section">
+          <div class="stats-section-title">결제수단</div>
+          <div class="stats-panel" id="statsPayment"></div>
+        </div>
+        <div class="stats-section">
+          <div class="stats-section-title">정산 유형</div>
+          <div class="stats-panel" id="statsType"></div>
+        </div>
+        <div class="stats-section">
+          <div class="stats-section-title">한눈에 보기</div>
+          <div id="statsHighlight"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Settings Sheet -->
   <div class="overlay" id="settingsOverlay">
     <div class="sheet settings-sheet">
@@ -469,21 +552,51 @@
           <div class="currency-input-wrap settings-currency"><span>₩</span><input type="text" id="inpBudget" placeholder="300,000" inputmode="numeric" autocomplete="off"></div>
         </div>
         <div class="period-row">
-          <div class="field compact-field"><label>시작일</label><input type="number" id="inpPeriodStart" placeholder="1" inputmode="numeric" min="1" max="31"></div>
+          <div class="field compact-field"><label>시작일</label><input type="text" id="inpPeriodStart" placeholder="MM-DD" inputmode="numeric" maxlength="5" autocomplete="off"></div>
           <span class="period-dash">—</span>
-          <div class="field compact-field"><label>종료일</label><input type="number" id="inpPeriodEnd" placeholder="31" inputmode="numeric" min="1" max="31"></div>
+          <div class="field compact-field"><label>종료일</label><input type="text" id="inpPeriodEnd" placeholder="MM-DD" inputmode="numeric" maxlength="5" autocomplete="off"></div>
         </div>
         <button class="primary-btn" id="saveBudget">변경사항 저장</button>
+        <div class="app-version">v1.0.0</div>
       </section>
 
       <section class="settings-section">
-        <div class="settings-section-head"><strong>테마</strong><span>Appearance</span></div>
-        <div class="color-input-row">
-          <input type="text" id="inpColorHex" value="#3182F6" placeholder="#3182F6" maxlength="7" inputmode="text" autocomplete="off">
-          <input type="color" id="inpColorPicker" class="color-picker-native" value="#3182F6" aria-label="테마 컬러 선택">
+        <div class="settings-section-head"><strong>테마</strong><span>Color</span></div>
+        <div class="theme-palette" id="themePalette">
+          <button type="button" class="theme-swatch" data-color="#3182F6" style="--swatch:#3182F6" aria-label="블루"></button>
+          <button type="button" class="theme-swatch" data-color="#5B8DEF" style="--swatch:#5B8DEF" aria-label="라이트 블루"></button>
+          <button type="button" class="theme-swatch" data-color="#00AEEF" style="--swatch:#00AEEF" aria-label="시안 블루"></button>
+          <button type="button" class="theme-swatch" data-color="#38BDF8" style="--swatch:#38BDF8" aria-label="스카이"></button>
+          <button type="button" class="theme-swatch" data-color="#7DD3FC" style="--swatch:#7DD3FC" aria-label="파스텔 스카이"></button>
+          <button type="button" class="theme-swatch" data-color="#2563EB" style="--swatch:#2563EB" aria-label="딥 블루"></button>
+          <button type="button" class="theme-swatch" data-color="#6366F1" style="--swatch:#6366F1" aria-label="인디고"></button>
+          <button type="button" class="theme-swatch" data-color="#818CF8" style="--swatch:#818CF8" aria-label="라이트 인디고"></button>
+          <button type="button" class="theme-swatch" data-color="#8B5CF6" style="--swatch:#8B5CF6" aria-label="퍼플"></button>
+          <button type="button" class="theme-swatch" data-color="#A78BFA" style="--swatch:#A78BFA" aria-label="라벤더"></button>
+          <button type="button" class="theme-swatch" data-color="#C4B5FD" style="--swatch:#C4B5FD" aria-label="파스텔 라벤더"></button>
+          <button type="button" class="theme-swatch" data-color="#D946EF" style="--swatch:#D946EF" aria-label="마젠타"></button>
+          <button type="button" class="theme-swatch" data-color="#F472B6" style="--swatch:#F472B6" aria-label="핑크"></button>
+          <button type="button" class="theme-swatch" data-color="#FB7185" style="--swatch:#FB7185" aria-label="로즈"></button>
+          <button type="button" class="theme-swatch" data-color="#FDA4AF" style="--swatch:#FDA4AF" aria-label="파스텔 로즈"></button>
+          <button type="button" class="theme-swatch" data-color="#FF6B6B" style="--swatch:#FF6B6B" aria-label="코랄 레드"></button>
+          <button type="button" class="theme-swatch" data-color="#FF8A65" style="--swatch:#FF8A65" aria-label="코랄"></button>
+          <button type="button" class="theme-swatch" data-color="#FF9F43" style="--swatch:#FF9F43" aria-label="오렌지"></button>
+          <button type="button" class="theme-swatch" data-color="#FDBA74" style="--swatch:#FDBA74" aria-label="파스텔 오렌지"></button>
+          <button type="button" class="theme-swatch" data-color="#F59E0B" style="--swatch:#F59E0B" aria-label="앰버"></button>
+          <button type="button" class="theme-swatch" data-color="#FACC15" style="--swatch:#FACC15" aria-label="옐로우"></button>
+          <button type="button" class="theme-swatch" data-color="#FDE68A" style="--swatch:#FDE68A" aria-label="파스텔 옐로우"></button>
+          <button type="button" class="theme-swatch" data-color="#22C55E" style="--swatch:#22C55E" aria-label="그린"></button>
+          <button type="button" class="theme-swatch" data-color="#34D399" style="--swatch:#34D399" aria-label="민트 그린"></button>
+          <button type="button" class="theme-swatch" data-color="#6EE7B7" style="--swatch:#6EE7B7" aria-label="파스텔 민트"></button>
+          <button type="button" class="theme-swatch" data-color="#14B8A6" style="--swatch:#14B8A6" aria-label="틸"></button>
+          <button type="button" class="theme-swatch" data-color="#2DD4BF" style="--swatch:#2DD4BF" aria-label="터쿼이즈"></button>
+          <button type="button" class="theme-swatch" data-color="#84CC16" style="--swatch:#84CC16" aria-label="라임"></button>
+          <button type="button" class="theme-swatch" data-color="#A3E635" style="--swatch:#A3E635" aria-label="라임 그린"></button>
+          <button type="button" class="theme-swatch" data-color="#D4A373" style="--swatch:#D4A373" aria-label="샌드"></button>
+          <button type="button" class="theme-swatch" data-color="#FB923C" style="--swatch:#FB923C" aria-label="탠저린"></button>
+          <button type="button" class="theme-swatch" data-color="#64748B" style="--swatch:#64748B" aria-label="슬레이트"></button>
         </div>
         <div class="color-preview" id="colorPreview"></div>
-        <div class="hint">HEX 컬러 코드를 입력해 테마를 변경할 수 있습니다.</div>
       </section>
 
       <section class="settings-section">
@@ -520,7 +633,7 @@
 
 <script>
 (function(){
-  var state = { entries: [], budget: 0, viewYear: null, viewMonth: null, view: 'list', excludedDates: [], colorHex: '#3182F6', periodStartDay: 1, periodEndDay: 31 };
+  var state = { entries: [], budget: 0, viewYear: null, viewMonth: null, view: 'list', excludedDates: [], colorHex: '#3182F6', periodStartMonth: 1, periodStartDay: 1, periodEndMonth: 12, periodEndDay: 31 };
   var today = new Date();
   var todayKey = fmtKey(today);
 
@@ -543,13 +656,13 @@
     return isWeekday(dateKey) && state.excludedDates.indexOf(dateKey)===-1;
   }
   function periodRange(y,m){
-    var startDay = Math.min(Math.max(Number(state.periodStartDay)||1, 1), 31);
-    var endDay = Math.min(Math.max(Number(state.periodEndDay)||31, 1), 31);
-    var start = new Date(y, m, Math.min(startDay, daysInMonth(y,m)));
-    var endMonth = endDay >= startDay ? m : m + 1;
-    var endYear = y;
-    if(endMonth > 11){ endMonth = 0; endYear++; }
-    var end = new Date(endYear, endMonth, Math.min(endDay, daysInMonth(endYear,endMonth)));
+    var startMonth = Math.min(Math.max(Number(state.periodStartMonth)||1, 1), 12) - 1;
+    var startDay = Math.min(Math.max(Number(state.periodStartDay)||1, 1), daysInMonth(y,startMonth));
+    var endMonth = Math.min(Math.max(Number(state.periodEndMonth)||12, 1), 12) - 1;
+    var endDay = Math.min(Math.max(Number(state.periodEndDay)||31, 1), daysInMonth(y,endMonth));
+    var start = new Date(y, startMonth, startDay);
+    var endYear = endMonth >= startMonth ? y : y + 1;
+    var end = new Date(endYear, endMonth, endDay);
     return { start: start, end: end, startKey: fmtKey(start), endKey: fmtKey(end) };
   }
   function forEachDateInRange(start, end, cb){
@@ -564,6 +677,11 @@
     var r = periodRange(y,m);
     var c = 0;
     forEachDateInRange(r.start, r.end, function(d){ if(isBudgetDay(fmtKey(d))) c++; });
+    return c;
+  }
+  function countBudgetDaysInPeriod(r){
+    var c=0;
+    forEachDateInRange(r.start,r.end,function(d){ if(isBudgetDay(fmtKey(d))) c++; });
     return c;
   }
   function hexToRgb(hex){
@@ -610,55 +728,96 @@
     if(picker) picker.value=normalized;
     if(preview) preview.style.background=normalized;
   }
+  async function storageGet(key){
+    try{
+      if(window.storage && typeof window.storage.get==='function'){
+        var result=await window.storage.get(key,false);
+        if(result && result.value!=null) return result;
+      }
+    }catch(err){ console.warn('외부 저장소 조회 실패', err); }
+    try{
+      var value=window.localStorage.getItem(key);
+      return value==null ? null : {value:value};
+    }catch(err){ return null; }
+  }
+  async function storageSet(key,value){
+    var saved=false;
+    try{
+      if(window.storage && typeof window.storage.set==='function'){
+        await window.storage.set(key,value,false);
+        saved=true;
+      }
+    }catch(err){ console.warn('외부 저장소 저장 실패', err); }
+    try{ window.localStorage.setItem(key,value); saved=true; }catch(err){}
+    return saved;
+  }
+
   async function saveColor(){
-    try{ await window.storage.set('lunch-color', JSON.stringify(state.colorHex), false); }
+    try{ await storageSet('lunch-color', JSON.stringify(state.colorHex)); }
     catch(err){ console.error('저장 실패', err); }
   }
 
   async function loadData(){
     try{
-      var e = await window.storage.get('lunch-entries', false);
+      var e = await storageGet('lunch-entries');
       state.entries = e ? JSON.parse(e.value) : [];
     }catch(err){ state.entries = []; }
     try{
-      var b = await window.storage.get('lunch-budget', false);
+      var b = await storageGet('lunch-budget');
       state.budget = b ? JSON.parse(b.value) : 0;
     }catch(err){ state.budget = 0; }
     try{
-      var x = await window.storage.get('lunch-excluded', false);
+      var x = await storageGet('lunch-excluded');
       state.excludedDates = x ? JSON.parse(x.value) : [];
     }catch(err){ state.excludedDates = []; }
     try{
-      var c = await window.storage.get('lunch-color', false);
+      var c = await storageGet('lunch-color');
       state.colorHex = c ? (normalizeHex(JSON.parse(c.value)) || '#3182F6') : '#3182F6';
     }catch(err){ state.colorHex = '#3182F6'; }
     try{
-      var p = await window.storage.get('lunch-period-start', false);
+      var pm = await storageGet('lunch-period-start-month');
+      state.periodStartMonth = pm ? JSON.parse(pm.value) : 1;
+    }catch(err){ state.periodStartMonth = 1; }
+    try{
+      var p = await storageGet('lunch-period-start');
       state.periodStartDay = p ? JSON.parse(p.value) : 1;
     }catch(err){ state.periodStartDay = 1; }
     try{
-      var pe = await window.storage.get('lunch-period-end', false);
+      var pem = await storageGet('lunch-period-end-month');
+      state.periodEndMonth = pem ? JSON.parse(pem.value) : 12;
+    }catch(err){ state.periodEndMonth = 12; }
+    try{
+      var pe = await storageGet('lunch-period-end');
       state.periodEndDay = pe ? JSON.parse(pe.value) : 31;
     }catch(err){ state.periodEndDay = 31; }
+    if(!pm && !pem){ state.periodStartMonth = 1; state.periodEndMonth = 12; }
   }
   async function saveEntries(){
-    try{ await window.storage.set('lunch-entries', JSON.stringify(state.entries), false); }
+    try{ await storageSet('lunch-entries', JSON.stringify(state.entries)); }
     catch(err){ console.error('저장 실패', err); }
   }
   async function saveBudget(){
-    try{ await window.storage.set('lunch-budget', JSON.stringify(state.budget), false); }
+    try{ await storageSet('lunch-budget', JSON.stringify(state.budget)); }
     catch(err){ console.error('저장 실패', err); }
   }
   async function saveExcluded(){
-    try{ await window.storage.set('lunch-excluded', JSON.stringify(state.excludedDates), false); }
+    try{ await storageSet('lunch-excluded', JSON.stringify(state.excludedDates)); }
+    catch(err){ console.error('저장 실패', err); }
+  }
+  async function savePeriodStartMonth(){
+    try{ await storageSet('lunch-period-start-month', JSON.stringify(state.periodStartMonth)); }
     catch(err){ console.error('저장 실패', err); }
   }
   async function savePeriodStart(){
-    try{ await window.storage.set('lunch-period-start', JSON.stringify(state.periodStartDay), false); }
+    try{ await storageSet('lunch-period-start', JSON.stringify(state.periodStartDay)); }
+    catch(err){ console.error('저장 실패', err); }
+  }
+  async function savePeriodEndMonth(){
+    try{ await storageSet('lunch-period-end-month', JSON.stringify(state.periodEndMonth)); }
     catch(err){ console.error('저장 실패', err); }
   }
   async function savePeriodEnd(){
-    try{ await window.storage.set('lunch-period-end', JSON.stringify(state.periodEndDay), false); }
+    try{ await storageSet('lunch-period-end', JSON.stringify(state.periodEndDay)); }
     catch(err){ console.error('저장 실패', err); }
   }
 
@@ -679,27 +838,72 @@
     document.getElementById('reportDate').textContent=(d.getMonth()+1)+'월 '+d.getDate()+'일';
     var todayEntries=mEntries.filter(function(e){return e.date===todayKey;});
     var todaySpent=todayEntries.reduce(function(s,e){return s+entryBudgetAmount(e);},0);
-    var budgetDays=countBudgetDaysInMonth(state.viewYear,state.viewMonth);
+    var budgetDays=countBudgetDaysInPeriod(r);
     var elapsed=0;
     if(todayInPeriod){ forEachDateInRange(r.start,new Date(todayKey+'T00:00:00'),function(x){if(isBudgetDay(fmtKey(x))) elapsed++;}); }
     var remainingDays=Math.max(0,budgetDays-elapsed);
     var avg=elapsed>0?used/elapsed:0;
     var title='오늘의 식비 리포트', copy='아직 오늘의 지출이 없습니다. 여유 있게 시작해보세요.';
-    if(!todayInPeriod) copy='현재 선택한 예산 기간과 오늘이 다릅니다.';
-    else if(budget<=0) copy=todaySpent>0 ? '오늘 '+won(todaySpent)+'을 사용했어요. 예산을 설정하면 지출 흐름까지 확인할 수 있어요.' : '오늘의 지출을 기록하면 하루 단위로 흐름을 확인할 수 있어요.';
-    else if(todaySpent===0) copy='오늘은 아직 지출이 없어요. 현재 기준으로 예산에 여유가 있습니다.';
-    else if(todaySpent<=dailyBudget) copy='오늘은 기준 예산 안에서 사용하고 있어요. 지금 흐름을 유지해보세요.';
-    else copy='오늘은 기준 예산보다 '+won(todaySpent-dailyBudget)+' 더 사용했어요. 남은 기간은 조금 여유 있게 관리해보세요.';
-    document.getElementById('reportTitle').textContent=title; document.getElementById('reportCopy').textContent=copy;
-    var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
-    [[todayInPeriod?'오늘 사용':'오늘 기록',won(todaySpent)],[budget>0?'하루 기준':'현재 평균',budget>0?won(dailyBudget):won(avg)],[budget>0?'남은 기간':'기록 수',budget>0?(remainingDays+'일'):mEntries.length+'건']].forEach(function(x){var el=document.createElement('div');el.className='report-metric';el.innerHTML='<div class="report-metric-label">'+x[0]+'</div><div class="report-metric-value">'+x[1]+'</div>';metrics.appendChild(el);});
+if(!todayInPeriod) copy='현재 선택한 예산 기간과 오늘이 다릅니다.';
+else if(budget<=0) copy=todaySpent>0 ? '오늘 '+won(todaySpent)+'을 사용했어요.<br>예산을 설정하면 지출 흐름까지 확인할 수 있어요.' : '오늘의 지출을 기록하면<br>하루 단위로 흐름을 확인할 수 있어요.';
+else if(todaySpent===0) copy='오늘은 아직 지출이 없어요.<br>현재 기준으로 예산에 여유가 있습니다.';
+else if(todaySpent<=dailyBudget) copy='오늘은 기준 예산 안에서 사용하고 있어요.<br>지금 흐름을 유지해보세요.';
+else copy='오늘은 기준 예산보다 '+won(todaySpent-dailyBudget)+' 더 사용했어요.<br>남은 기간은 조금 여유 있게 관리해보세요.';
+document.getElementById('reportTitle').textContent=title;
+document.getElementById('reportCopy').innerHTML=copy;
+var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
+[[todayInPeriod?'오늘 사용':'오늘 기록',won(todaySpent)],[budget>0?'하루 기준':'현재 평균',budget>0?won(dailyBudget):won(avg)],[budget>0?'남은 기간':'기록 수',budget>0?(remainingDays+'일'):mEntries.length+'건']].forEach(function(x){var el=document.createElement('div');el.className='report-metric';el.innerHTML='<div class="report-metric-label">'+x[0]+'</div><div class="report-metric-value">'+x[1]+'</div>';metrics.appendChild(el);});
+  }
+
+  function renderStats(){
+    var r=periodRange(state.viewYear,state.viewMonth);
+    var entries=state.entries.filter(function(e){return e.date>=r.startKey&&e.date<=r.endKey;});
+    var paid=entries.reduce(function(s,e){return s+entryPaidAmount(e);},0);
+    var used=entries.reduce(function(s,e){return s+entryBudgetAmount(e);},0);
+    var count=entries.length;
+    var avg=count?used/count:0;
+    var budget=Number(state.budget||0);
+    var treatedCount=entries.filter(function(e){return entryType(e)==='paid_friend';}).length;
+    var treatedTotal=entries.filter(function(e){return entryType(e)==='paid_friend';}).reduce(function(s,e){return s+entryPaidAmount(e);},0);
+    var freeCount=entries.filter(function(e){return entryType(e)==='free';}).length;
+    var freeTotal=entries.filter(function(e){return entryType(e)==='free';}).reduce(function(s,e){return s+entryPaidAmount(e);},0);
+    document.getElementById('statsPeriod').textContent=(r.start.getMonth()+1)+'월 '+r.start.getDate()+'일 — '+(r.end.getMonth()+1)+'월 '+r.end.getDate()+'일';
+    var summary=document.getElementById('statsSummary'); summary.innerHTML='';
+    function makeGroup(title,items){
+      var group=document.createElement('div'); group.className='stats-group';
+      var heading=document.createElement('div'); heading.className='stats-group-title'; heading.textContent=title;
+      var grid=document.createElement('div'); grid.className='stats-group-grid';
+      items.forEach(function(x){var c=document.createElement('div');c.className='stats-card';c.innerHTML='<div class="stats-card-label">'+x[0]+'</div><div class="stats-card-value">'+x[1]+'</div>';grid.appendChild(c);});
+      group.appendChild(heading); group.appendChild(grid); summary.appendChild(group);
+    }
+    makeGroup('지출',[["총 지출",won(paid)],["예산 반영",won(used)],["기록 횟수",count+'건'],["1회 평균",won(avg)]]);
+    makeGroup('정산',[["사준 횟수",treatedCount+'회'],["사준 금액 합계",won(treatedTotal)],["얻어먹은 횟수",freeCount+'회'],["얻어먹은 금액 합계",won(freeTotal)]]);
+    function renderRows(id,items){
+      var wrap=document.getElementById(id); wrap.innerHTML='';
+      var max=items.reduce(function(m,x){return Math.max(m,x.value);},0);
+      if(!items.length||max===0){wrap.innerHTML='<div class="stats-empty">아직 통계를 만들 기록이 없어요.</div>';return;}
+      items.forEach(function(x){var row=document.createElement('div');row.className='stats-row';var pct=max?x.value/max*100:0;row.innerHTML='<div class="stats-row-label">'+x.label+'</div><div class="stats-row-bar"><div class="stats-row-fill" style="width:'+pct+'%"></div></div><div class="stats-row-value">'+won(x.value)+'</div>';wrap.appendChild(row);});
+    }
+    var weekdays=[['월',0],['화',0],['수',0],['목',0],['금',0],['토',0],['일',0]];
+    entries.forEach(function(e){var d=new Date(e.date+'T00:00:00');var i=(d.getDay()+6)%7;weekdays[i][1]+=entryBudgetAmount(e);});
+    renderRows('statsWeekday',weekdays.map(function(x){return {label:x[0],value:x[1]};}));
+    var payment={card:0,cash:0,other:0}; entries.forEach(function(e){if(entryType(e)!=='free') payment[e.paymentMethod||'card']+=entryBudgetAmount(e);});
+    renderRows('statsPayment',[{label:'카드',value:payment.card},{label:'현금',value:payment.cash},{label:'기타',value:payment.other}]);
+    var types={mine:0,paid_friend:0,free:0}; entries.forEach(function(e){types[entryType(e)]+=entryBudgetAmount(e);});
+    renderRows('statsType',[{label:'혼자먹음',value:types.mine},{label:'내가사줌',value:types.paid_friend},{label:'얻어먹음',value:types.free}]);
+    var highlight=document.getElementById('statsHighlight');
+    if(!count){highlight.innerHTML='<div class="stats-highlight">기록을 추가하면 이 기간의 지출 흐름을 한눈에 볼 수 있어요.</div>';return;}
+    var topDay={date:'',value:0}; entries.forEach(function(e){if(entryBudgetAmount(e)>topDay.value){topDay={date:e.date,value:entryBudgetAmount(e)};}});
+    var topDate=topDay.date?new Date(topDay.date+'T00:00:00'):null;
+    var budgetText=budget>0?' 예산의 '+Math.round(used/budget*100)+'%를 사용했어요.':'';
+    highlight.innerHTML='<div class="stats-highlight">현재 기간에는 총 <b>'+won(used)+'</b>을 사용했고,'+(topDate?' 가장 많이 지출한 기록은 <b>'+ (topDate.getMonth()+1)+'월 '+topDate.getDate()+'일 '+won(topDay.value)+'</b>입니다.':'')+budgetText+'</div>';
   }
 
   function render(){
     var r = periodRange(state.viewYear, state.viewMonth);
     var monthLabelEl = document.getElementById('monthLabel');
-    if(state.periodStartDay===1 && state.periodEndDay===31){
-      monthLabelEl.textContent = state.viewYear + '년 ' + (state.viewMonth+1) + '월';
+    if(state.periodStartMonth===1 && state.periodStartDay===1 && state.periodEndMonth===12 && state.periodEndDay===31){
+      monthLabelEl.textContent = state.viewYear + '년 전체 기간';
     } else {
       monthLabelEl.textContent = (r.start.getMonth()+1)+'.'+r.start.getDate()+' - '+(r.end.getMonth()+1)+'.'+r.end.getDate();
     }
@@ -708,7 +912,7 @@
     var used = mEntries.filter(function(e){ return isBudgetDay(e.date); }).reduce(function(s,e){ return s+Number(e.budgetAmount != null ? e.budgetAmount : e.price || 0); }, 0);
     var budget = Number(state.budget||0);
     var remaining = budget - used;
-    var budgetDaysInMonth = countBudgetDaysInMonth(state.viewYear, state.viewMonth);
+    var budgetDaysInMonth = countBudgetDaysInPeriod(r);
     var dailyBudget = (budget > 0 && budgetDaysInMonth > 0) ? budget/budgetDaysInMonth : 0;
     var pct = budget>0 ? Math.min(100, (used/budget)*100) : 0;
     var isCurrentMonth = (todayKey >= r.startKey && todayKey <= r.endKey);
@@ -918,7 +1122,7 @@
     document.getElementById('dayTitle').textContent = (dObj.getMonth()+1)+'월 '+dObj.getDate()+'일 '+dowLabel(dObj)+'요일';
 
     var total = list.reduce(function(s,e){return s+Number(e.budgetAmount != null ? e.budgetAmount : e.price || 0);},0);
-    var budgetDaysInMonth = countBudgetDaysInMonth(state.viewYear, state.viewMonth);
+    var budgetDaysInMonth = countBudgetDaysInPeriod(r);
     var dailyBudget = (state.budget>0 && budgetDaysInMonth>0) ? state.budget/budgetDaysInMonth : 0;
     var badge = document.getElementById('dayBadge');
     var weekday = isWeekday(dateKey);
@@ -1158,17 +1362,13 @@
     render();
     return true;
   }
-  document.getElementById('inpColorPicker').addEventListener('input', function(){
-    applyColor(this.value);
-  });
-  document.getElementById('inpColorPicker').addEventListener('change', function(){
-    commitColor(this.value);
-  });
-  document.getElementById('inpColorHex').addEventListener('change', function(){
-    commitColor(this.value);
-  });
-  document.getElementById('inpColorHex').addEventListener('keydown', function(ev){
-    if(ev.key==='Enter'){ ev.preventDefault(); commitColor(this.value); }
+  document.querySelectorAll('.theme-swatch').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      state.colorHex = this.getAttribute('data-color');
+      applyColor(state.colorHex);
+      saveColor();
+      document.querySelectorAll('.theme-swatch').forEach(function(item){ item.classList.toggle('active', item===btn); });
+    });
   });
 
   document.getElementById('statBudget').onclick = function(){
@@ -1187,26 +1387,29 @@
 
   document.getElementById('openSettings').onclick = function(){
     document.getElementById('inpBudget').value = formatMoneyInput(state.budget);
-    document.getElementById('inpPeriodStart').value = state.periodStartDay || 1;
-    document.getElementById('inpPeriodEnd').value = state.periodEndDay || 31;
-    document.getElementById('inpColorHex').value = state.colorHex || '#3182F6';
-    document.getElementById('inpColorPicker').value = state.colorHex || '#3182F6';
+    document.getElementById('inpPeriodStart').value = String(state.periodStartMonth || 1).padStart(2,'0') + '-' + String(state.periodStartDay || 1).padStart(2,'0');
+    document.getElementById('inpPeriodEnd').value = String(state.periodEndMonth || 12).padStart(2,'0') + '-' + String(state.periodEndDay || 31).padStart(2,'0');
     applyColor(state.colorHex || '#3182F6');
+    document.querySelectorAll('.theme-swatch').forEach(function(btn){ btn.classList.toggle('active', btn.getAttribute('data-color') === (state.colorHex || '#3182F6')); });
     openSheet('settingsOverlay');
   };
   document.getElementById('saveBudget').onclick = function(){
     var v = parseMoney(document.getElementById('inpBudget').value);
-    var p = Number(document.getElementById('inpPeriodStart').value)||1;
-    var pe = Number(document.getElementById('inpPeriodEnd').value)||31;
-    if(p<1) p=1;
-    if(p>31) p=31;
-    if(pe<1) pe=1;
-    if(pe>31) pe=31;
+    var startParts = String(document.getElementById('inpPeriodStart').value||'01-01').replace(/\//g,'-').split('-');
+    var endParts = String(document.getElementById('inpPeriodEnd').value||'12-31').replace(/\//g,'-').split('-');
+    var sm = Math.min(Math.max(Number(startParts[0])||1,1),12);
+    var sd = Math.min(Math.max(Number(startParts[1])||1,1),31);
+    var em = Math.min(Math.max(Number(endParts[0])||12,1),12);
+    var ed = Math.min(Math.max(Number(endParts[1])||31,1),31);
     state.budget = v;
-    state.periodStartDay = p;
-    state.periodEndDay = pe;
+    state.periodStartMonth = sm;
+    state.periodStartDay = sd;
+    state.periodEndMonth = em;
+    state.periodEndDay = ed;
     saveBudget();
+    savePeriodStartMonth();
     savePeriodStart();
+    savePeriodEndMonth();
     savePeriodEnd();
     render();
     closeSheet('settingsOverlay');
@@ -1231,7 +1434,9 @@
       entries: state.entries,
       excludedDates: state.excludedDates,
       colorHex: state.colorHex,
+      periodStartMonth: state.periodStartMonth,
       periodStartDay: state.periodStartDay,
+      periodEndMonth: state.periodEndMonth,
       periodEndDay: state.periodEndDay
     };
     var blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
@@ -1262,13 +1467,17 @@
         state.budget = Number(data.budget)||0;
         state.excludedDates = Array.isArray(data.excludedDates) ? data.excludedDates : [];
         state.colorHex = normalizeHex(data.colorHex || data.colorId) || '#3182F6';
+        state.periodStartMonth = Number(data.periodStartMonth)||1;
         state.periodStartDay = Number(data.periodStartDay)||1;
+        state.periodEndMonth = Number(data.periodEndMonth)||12;
         state.periodEndDay = Number(data.periodEndDay)||31;
         saveEntries();
         saveBudget();
         saveExcluded();
         saveColor();
+        savePeriodStartMonth();
         savePeriodStart();
+        savePeriodEndMonth();
         savePeriodEnd();
         applyColor(state.colorHex);
         render();
@@ -1281,6 +1490,10 @@
     };
     reader.readAsText(file);
   };
+
+  document.getElementById('openStats').onclick=function(){ renderStats(); openSheet('statsOverlay'); };
+  document.getElementById('closeStats').onclick=function(){ closeSheet('statsOverlay'); };
+  document.getElementById('statsOverlay').addEventListener('click',function(ev){ if(ev.target===this) closeSheet('statsOverlay'); });
 
   async function init(){
     await loadData();
