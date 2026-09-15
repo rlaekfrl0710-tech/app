@@ -333,6 +333,13 @@
   .stats-row-label{width:42px;font-size:12px;color:var(--text-sub);font-weight:600;flex-shrink:0}.stats-row-bar{flex:1;min-width:0;height:8px;background:#F1F3F5;border-radius:8px;overflow:hidden}.stats-row-fill{height:100%;border-radius:8px;background:var(--blue)}.stats-row-value{width:80px;flex-shrink:0;white-space:nowrap;text-align:right;font-size:12px;font-weight:800}
   .stats-empty{text-align:center;color:var(--text-faint);font-size:13px;padding:24px 5px}
   .stats-highlight{background:#fff;border-radius:18px;padding:20px;box-shadow:var(--shadow);font-size:12.5px;color:var(--text-sub);line-height:1.5;box-sizing:border-box}.stats-highlight b{color:var(--blue);font-weight:800}
+  .rank-row{display:flex;align-items:center;gap:10px;padding:10px 4px}
+  .rank-row+.rank-row{border-top:1px solid var(--line)}
+  .rank-row .rank-num{width:20px;flex:none;font-size:12px;font-weight:800;color:var(--text-faint);text-align:center}
+  .rank-row .rank-info{flex:1;min-width:0}
+  .rank-row .rank-name{font-size:13.5px;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rank-row .rank-sub{font-size:11px;color:var(--text-faint);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rank-row .rank-amount{flex:none;font-size:12.5px;font-weight:800;color:var(--text);text-align:right}
 
 
   /* sheets */
@@ -402,6 +409,9 @@
         <button class="icon-btn" id="openStats" aria-label="통계">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="20" x2="5" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="19" y1="20" x2="19" y2="7"></line></svg>
         </button>
+        <button class="icon-btn" id="openHistory" aria-label="과거 기록">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path><polyline points="12 7 12 12 16 14"></polyline></svg>
+        </button>
         <button class="icon-btn" id="openSettings" aria-label="설정">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
         </button>
@@ -425,7 +435,7 @@
       <div class="hero-bar"><div class="hero-bar-fill" id="heroBarFill" style="width:0%"></div></div>
       <div class="hero-stats">
         <div class="hero-stat">설정 예산<b id="statBudget">0원</b></div>
-        <div class="hero-stat">합계<b id="statUsed">0원</b></div>
+        <div class="hero-stat">사용 가능<b id="statUsed">0원</b></div>
         <div class="hero-stat">일 예산<b id="statAvg">0원</b></div>
       </div>
     </div>
@@ -486,7 +496,13 @@
       </div>
       <div class="field">
         <label>매장 · 장소</label>
-        <input type="text" id="inpPlace" placeholder="예: 김밥천국 강남점" maxlength="30">
+        <input type="text" id="inpPlace" list="placeSuggestions" placeholder="예: 김밥천국 강남점" maxlength="30" autocomplete="off">
+        <datalist id="placeSuggestions"></datalist>
+      </div>
+      <div class="field">
+        <label>가게 메모</label>
+        <input type="text" id="inpPlaceMemo" placeholder="예: 맵기 3단계 추천" maxlength="60">
+        <div class="calc-note">이 가게에 대한 메모는 같은 매장 기록에 공통으로 반영됩니다.</div>
       </div>
       <div class="field">
         <label>메뉴</label>
@@ -495,7 +511,7 @@
       <div class="field">
         <label>정산 유형</label>
         <div class="choice-row" id="entryTypeChoices">
-          <button type="button" class="choice-btn active" data-entry-type="mine">혼자먹음</button>
+          <button type="button" class="choice-btn active" data-entry-type="mine">내가 먹음</button>
           <button type="button" class="choice-btn" data-entry-type="paid_friend">내가사줌</button>
           <button type="button" class="choice-btn" data-entry-type="free">얻어먹음</button>
         </div>
@@ -519,6 +535,10 @@
         </div>
       </div>
       <button class="primary-btn" id="saveEntry">기록 저장</button>
+      <button class="ghost-btn" id="copyEntryBtn" style="display:none; margin-top:10px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        복사해서 새 기록으로 추가
+      </button>
       <button class="ghost-btn danger" id="deleteEntryBtn" style="display:none; margin-top:10px;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
         기록 삭제
@@ -568,6 +588,29 @@
           <div class="stats-section-title">정산 유형</div>
           <div class="stats-panel" id="statsType"></div>
         </div>
+        <div class="stats-section">
+          <div class="stats-section-title">자주 가는 가게</div>
+          <div class="stats-panel" id="statsPlaces"></div>
+        </div>
+        <div class="stats-section">
+          <div class="stats-section-title">자주 먹는 메뉴</div>
+          <div class="stats-panel" id="statsMenus"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- History Page -->
+  <div class="overlay" id="historyOverlay" style="align-items:stretch;background:var(--bg);">
+    <div class="stats-page">
+      <div class="stats-header">
+        <button class="stats-back" id="closeHistory" aria-label="뒤로가기">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <div class="stats-title">지난 기록</div>
+      </div>
+      <div class="stats-content">
+        <div id="historyList"></div>
       </div>
     </div>
   </div>
@@ -608,7 +651,7 @@
           <div><span>실제 사용 가능</span><b id="usableBudgetInfo">₩0</b></div>
         </div>
         <button class="primary-btn" id="saveBudget">변경사항 저장</button>
-        <div class="app-version">v1.0.6</div>
+        <div class="app-version">v1.1.0</div>
       </section>
 
       <section class="settings-section">
@@ -670,7 +713,7 @@
 <script>
 (function(){
   var today = new Date();
-  var state = { entries: [], budget: 0, viewYear: null, viewMonth: null, view: 'list', excludedDates: [], colorHex: '#3182F6', customColors: [], periodStartMonth: today.getMonth()+1, periodStartDay: 1, periodEndMonth: today.getMonth()+1, periodEndDay: daysInMonth(today.getFullYear(),today.getMonth()), dailyBudgetMode: 'auto', manualDailyBudget: 0 };
+  var state = { entries: [], budget: 0, viewYear: null, viewMonth: null, view: 'list', excludedDates: [], colorHex: '#3182F6', customColors: [], periodStartMonth: today.getMonth()+1, periodStartDay: 1, periodEndMonth: today.getMonth()+1, periodEndDay: daysInMonth(today.getFullYear(),today.getMonth()), dailyBudgetMode: 'auto', manualDailyBudget: 0, placeMemos: {} };
   var todayKey = fmtKey(today);
 
   function fmtKey(d){
@@ -868,6 +911,11 @@
       state.manualDailyBudget = dba ? Number(JSON.parse(dba.value)) || 0 : 0;
     }catch(err){ state.manualDailyBudget = 0; }
     if(!pm && !pem){ state.periodStartMonth = today.getMonth()+1; state.periodStartDay = 1; state.periodEndMonth = today.getMonth()+1; state.periodEndDay = daysInMonth(today.getFullYear(),today.getMonth()); }
+    try{
+      var pmemo = await storageGet('lunch-place-memos');
+      var parsedMemos = pmemo ? JSON.parse(pmemo.value) : {};
+      state.placeMemos = (parsedMemos && typeof parsedMemos==='object') ? parsedMemos : {};
+    }catch(err){ state.placeMemos = {}; }
   }
   async function saveEntries(){
     try{ await storageSet('lunch-entries', JSON.stringify(state.entries)); }
@@ -905,11 +953,33 @@
     try{ await storageSet('lunch-period-end', JSON.stringify(state.periodEndDay)); }
     catch(err){ console.error('저장 실패', err); }
   }
+  async function savePlaceMemos(){
+    try{ await storageSet('lunch-place-memos', JSON.stringify(state.placeMemos || {})); }
+    catch(err){ console.error('저장 실패', err); }
+  }
 
   function entryBudgetAmount(e){ return Math.max(0, Number(e.budgetAmount != null ? e.budgetAmount : (e.price||0))); }
   function entryPaidAmount(e){ return Math.max(0, Number(e.paidAmount != null ? e.paidAmount : (e.price||0))); }
   function entryType(e){ return e.entryType || 'mine'; }
   function paymentLabel(e){ var p=e.paymentMethod || 'card'; return p==='cash' ? '현금' : p==='other' ? '기타' : '카드'; }
+  function normalizePlaceKey(v){ return String(v||'').trim(); }
+  function updatePlaceDatalist(){
+    var dl = document.getElementById('placeSuggestions');
+    if(!dl) return;
+    var seen = {};
+    var names = [];
+    state.entries.forEach(function(e){
+      var k = normalizePlaceKey(e.place);
+      if(k && !seen[k]){ seen[k]=true; names.push(k); }
+    });
+    names.sort(function(a,b){ return a.localeCompare(b,'ko'); });
+    dl.innerHTML = '';
+    names.forEach(function(n){
+      var opt = document.createElement('option');
+      opt.value = n;
+      dl.appendChild(opt);
+    });
+  }
 
   function monthEntries(){
     var r = periodRange(state.viewYear, state.viewMonth);
@@ -976,6 +1046,45 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     renderRows('statsPayment',[{label:'카드',value:payment.card},{label:'현금',value:payment.cash},{label:'기타',value:payment.other}]);
     var types={mine:0,paid_friend:0,free:0}; entries.forEach(function(e){types[entryType(e)]+=entryType(e)==='free' ? entryPaidAmount(e) : entryBudgetAmount(e);});
     renderRows('statsType',[{label:'혼자먹음',value:types.mine},{label:'내가사줌',value:types.paid_friend},{label:'얻어먹음',value:types.free}]);
+    function renderRankRows(id, items){
+      var wrap=document.getElementById(id); wrap.innerHTML='';
+      if(!items.length){ wrap.innerHTML='<div class="stats-empty">아직 통계를 만들 기록이 없어요.</div>'; return; }
+      items.forEach(function(x, i){
+        var row=document.createElement('div'); row.className='rank-row';
+        var numEl=document.createElement('div'); numEl.className='rank-num'; numEl.textContent=(i+1);
+        var infoEl=document.createElement('div'); infoEl.className='rank-info';
+        var nameEl=document.createElement('div'); nameEl.className='rank-name'; nameEl.textContent=x.label;
+        var subEl=document.createElement('div'); subEl.className='rank-sub'; subEl.textContent=x.sub;
+        infoEl.appendChild(nameEl); infoEl.appendChild(subEl);
+        var amtEl=document.createElement('div'); amtEl.className='rank-amount'; amtEl.textContent=won(x.value);
+        row.appendChild(numEl); row.appendChild(infoEl); row.appendChild(amtEl);
+        wrap.appendChild(row);
+      });
+    }
+    var placeAgg={};
+    entries.forEach(function(e){
+      var key=normalizePlaceKey(e.place)||'장소 미입력';
+      if(!placeAgg[key]) placeAgg[key]={count:0, amount:0};
+      placeAgg[key].count++;
+      placeAgg[key].amount+=entryBudgetAmount(e);
+    });
+    var topPlaces=Object.keys(placeAgg).map(function(k){
+      var memo=state.placeMemos[k];
+      return {label:k, value:placeAgg[k].amount, sub:placeAgg[k].count+'회'+(memo?(' · '+memo):'')};
+    }).sort(function(a,b){return b.value-a.value;}).slice(0,6);
+    renderRankRows('statsPlaces', topPlaces);
+    var menuAgg={};
+    entries.forEach(function(e){
+      var key=String(e.menu||'').trim();
+      if(!key) return;
+      if(!menuAgg[key]) menuAgg[key]={count:0, amount:0};
+      menuAgg[key].count++;
+      menuAgg[key].amount+=entryBudgetAmount(e);
+    });
+    var topMenus=Object.keys(menuAgg).map(function(k){
+      return {label:k, value:menuAgg[k].amount, sub:menuAgg[k].count+'회'};
+    }).sort(function(a,b){return b.value-a.value;}).slice(0,6);
+    renderRankRows('statsMenus', topMenus);
     var highlight=document.getElementById('statsHighlight');
     if(!count){highlight.innerHTML='<div class="stats-highlight">기록을 추가하면 이 기간의 지출 흐름을 한눈에 볼 수 있어요.</div>';return;}
     var topDay={date:'',value:0}; entries.forEach(function(e){if(entryBudgetAmount(e)>topDay.value){topDay={date:e.date,value:entryBudgetAmount(e)};}});
@@ -985,6 +1094,7 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
   }
 
   function render(){
+    updatePlaceDatalist();
     var r = periodRange(state.viewYear, state.viewMonth);
     var monthLabelEl = document.getElementById('monthLabel');
     if(state.periodStartMonth===1 && state.periodStartDay===1 && state.periodEndMonth===12 && state.periodEndDay===31){
@@ -1203,6 +1313,90 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     });
   }
 
+  function renderHistory(){
+    var wrap = document.getElementById('historyList');
+    wrap.innerHTML = '';
+    if(state.entries.length===0){
+      wrap.innerHTML = '<div class="empty-state"><p>기록이 없습니다.<br>오늘 점심을 기록해보세요.</p></div>';
+      return;
+    }
+    var groups = {};
+    state.entries.forEach(function(e){
+      if(!groups[e.date]) groups[e.date]=[];
+      groups[e.date].push(e);
+    });
+    var dates = Object.keys(groups).sort().reverse();
+    dates.forEach(function(dateKey){
+      var list = groups[dateKey];
+      var dayTotal = list.reduce(function(s,e){return s+Number(e.budgetAmount != null ? e.budgetAmount : e.price || 0);},0);
+      var dObj = new Date(dateKey+'T00:00:00');
+      var group = document.createElement('div');
+      group.className = 'day-group';
+
+      var head = document.createElement('div');
+      head.className = 'day-head';
+      var dLeft = document.createElement('div');
+      dLeft.className = 'd-left';
+      var dDate = document.createElement('span');
+      dDate.className='d-date';
+      dDate.textContent = dObj.getFullYear()+'.'+(dObj.getMonth()+1)+'.'+dObj.getDate();
+      var dDow = document.createElement('span');
+      dDow.className='d-dow';
+      dDow.textContent = dowLabel(dObj)+'요일';
+      dLeft.appendChild(dDate); dLeft.appendChild(dDow);
+      head.appendChild(dLeft);
+
+      var right = document.createElement('span');
+      right.className='day-total';
+      right.textContent = won(dayTotal);
+      head.appendChild(right);
+      group.appendChild(head);
+
+      list.forEach(function(e){
+        var card = document.createElement('div');
+        card.className='entry-card';
+        card.onclick = function(entry){ return function(){ closeSheet('historyOverlay'); openEditEntry(entry); }; }(e);
+        var left = document.createElement('div');
+        left.className='entry-left';
+        var place = document.createElement('div');
+        place.className='entry-place';
+        place.textContent = e.place || '장소 미입력';
+        var menu = document.createElement('div');
+        menu.className='entry-menu';
+        menu.textContent = e.menu || '';
+        left.appendChild(place); left.appendChild(menu);
+
+        var rightWrap = document.createElement('div');
+        rightWrap.className='entry-right';
+        var priceBox = document.createElement('div');
+        priceBox.className='entry-right';
+        var price = document.createElement('div');
+        price.className='entry-price';
+        price.textContent = won(entryBudgetAmount(e));
+        var sub = document.createElement('div');
+        sub.className='entry-price-sub';
+        if(entryType(e)==='paid_friend') sub.textContent = '실제 결제 '+won(entryPaidAmount(e));
+        else if(entryType(e)==='free') sub.textContent = '예산 반영 0원';
+        else sub.textContent = paymentLabel(e);
+        var tags = document.createElement('div');
+        tags.className='entry-meta';
+        if(entryType(e)==='paid_friend'){ var t=document.createElement('span'); t.className='entry-tag'; t.textContent='친구 몫 포함'; tags.appendChild(t); }
+        if(entryType(e)==='free'){ var f=document.createElement('span'); f.className='entry-tag free'; f.textContent='얻어먹음 · 예산 제외'; tags.appendChild(f); }
+        if(entryType(e)!=='free' && (e.paymentMethod==='cash')){ var c=document.createElement('span'); c.className='entry-tag cash'; c.textContent='현금'; tags.appendChild(c); }
+        left.appendChild(tags);
+        var chevron = document.createElement('span');
+        chevron.className='entry-chevron';
+        chevron.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+        priceBox.appendChild(price); priceBox.appendChild(sub); rightWrap.appendChild(priceBox); rightWrap.appendChild(chevron);
+
+        card.appendChild(left); card.appendChild(rightWrap);
+        group.appendChild(card);
+      });
+
+      wrap.appendChild(group);
+    });
+  }
+
   function openDayDetail(dateKey){
     var r = periodRange(state.viewYear, state.viewMonth);
     var list = state.entries.filter(function(e){ return e.date===dateKey; });
@@ -1340,11 +1534,13 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     document.getElementById('addSheetTitle').textContent = '지출 기록';
     document.getElementById('saveEntry').textContent = '기록 저장';
     document.getElementById('deleteEntryBtn').style.display = 'none';
+    document.getElementById('copyEntryBtn').style.display = 'none';
     document.getElementById('inpDate').value = dateKey || todayKey;
     document.getElementById('inpPlace').value='';
     document.getElementById('inpMenu').value='';
     document.getElementById('inpPrice').value='';
     document.getElementById('inpMyShare').value='';
+    document.getElementById('inpPlaceMemo').value='';
     resetEntryOptions();
     openSheet('addOverlay');
   }
@@ -1354,11 +1550,13 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     document.getElementById('addSheetTitle').textContent = '점심 기록 수정';
     document.getElementById('saveEntry').textContent = '수정하기';
     document.getElementById('deleteEntryBtn').style.display = 'flex';
+    document.getElementById('copyEntryBtn').style.display = 'flex';
     document.getElementById('inpDate').value = entry.date;
     document.getElementById('inpPlace').value = entry.place || '';
     document.getElementById('inpMenu').value = entry.menu || '';
     document.getElementById('inpPrice').value = entry.paidAmount != null ? entry.paidAmount : entry.price;
     document.getElementById('inpMyShare').value = entry.budgetAmount != null ? entry.budgetAmount : entry.price;
+    document.getElementById('inpPlaceMemo').value = state.placeMemos[normalizePlaceKey(entry.place)] || '';
     currentEntryType = entry.entryType || 'mine';
     currentPaymentMethod = entry.paymentMethod || 'card';
     setChoice('entryTypeChoices','data-entry-type',currentEntryType);
@@ -1366,6 +1564,36 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     updateEntryTypeUI();
     openSheet('addOverlay');
   }
+
+  function duplicateCurrentEntry(){
+    if(!editingId) return;
+    var target = state.entries.filter(function(e){ return e.id===editingId; })[0];
+    if(!target) return;
+    editingId = null;
+    document.getElementById('addSheetTitle').textContent = '지출 기록';
+    document.getElementById('saveEntry').textContent = '기록 저장';
+    document.getElementById('deleteEntryBtn').style.display = 'none';
+    document.getElementById('copyEntryBtn').style.display = 'none';
+    document.getElementById('inpDate').value = todayKey;
+    document.getElementById('inpPlace').value = target.place || '';
+    document.getElementById('inpMenu').value = target.menu || '';
+    document.getElementById('inpPrice').value = target.paidAmount != null ? target.paidAmount : target.price;
+    document.getElementById('inpMyShare').value = target.budgetAmount != null ? target.budgetAmount : target.price;
+    document.getElementById('inpPlaceMemo').value = state.placeMemos[normalizePlaceKey(target.place)] || '';
+    currentEntryType = target.entryType || 'mine';
+    currentPaymentMethod = target.paymentMethod || 'card';
+    setChoice('entryTypeChoices','data-entry-type',currentEntryType);
+    setChoice('paymentChoices','data-payment',currentPaymentMethod);
+    updateEntryTypeUI();
+  }
+  document.getElementById('copyEntryBtn').onclick = duplicateCurrentEntry;
+  document.getElementById('inpPlace').addEventListener('blur', function(){
+    var key = normalizePlaceKey(this.value);
+    var memoField = document.getElementById('inpPlaceMemo');
+    if(key && state.placeMemos[key] && !memoField.value){
+      memoField.value = state.placeMemos[key];
+    }
+  });
 
   var sheetScrollY = 0;
   var sheetOpenCount = 0;
@@ -1429,6 +1657,7 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     var date = document.getElementById('inpDate').value;
     var place = document.getElementById('inpPlace').value.trim();
     var menu = document.getElementById('inpMenu').value.trim();
+    var placeMemo = document.getElementById('inpPlaceMemo').value.trim();
     var paidAmount = Number(document.getElementById('inpPrice').value);
     var myShare = Number(document.getElementById('inpMyShare').value);
     var budgetAmount = currentEntryType==='free' ? 0 : paidAmount;
@@ -1446,6 +1675,12 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
       }
     } else {
       state.entries.push({ id: Date.now()+'-'+Math.random().toString(36).slice(2,8), date: date, place: place, menu: menu, price: paidAmount, paidAmount: paidAmount, budgetAmount: budgetAmount, entryType: currentEntryType, paymentMethod: currentEntryType==='free' ? 'none' : currentPaymentMethod });
+    }
+    var memoKey = normalizePlaceKey(place);
+    if(memoKey){
+      if(placeMemo){ state.placeMemos[memoKey] = placeMemo; }
+      else { delete state.placeMemos[memoKey]; }
+      savePlaceMemos();
     }
     saveEntries();
     state.viewYear = Number(date.slice(0,4));
@@ -1666,6 +1901,9 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
   document.getElementById('openStats').onclick=function(){ renderStats(); openSheet('statsOverlay'); };
   document.getElementById('closeStats').onclick=function(){ closeSheet('statsOverlay'); };
   document.getElementById('statsOverlay').addEventListener('click',function(ev){ if(ev.target===this) closeSheet('statsOverlay'); });
+  document.getElementById('openHistory').onclick=function(){ renderHistory(); openSheet('historyOverlay'); };
+  document.getElementById('closeHistory').onclick=function(){ closeSheet('historyOverlay'); };
+  document.getElementById('historyOverlay').addEventListener('click',function(ev){ if(ev.target===this) closeSheet('historyOverlay'); });
 
   async function init(){
     await loadData();
