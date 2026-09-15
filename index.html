@@ -340,6 +340,9 @@
   .rank-row .rank-name{font-size:13.5px;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .rank-row .rank-sub{font-size:11px;color:var(--text-faint);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .rank-row .rank-amount{flex:none;font-size:12.5px;font-weight:800;color:var(--text);text-align:right}
+  .stats-period-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin:6px 2px 18px}
+  .stats-period-nav button{background:none;border:none;padding:6px;cursor:pointer;color:var(--text-faint);display:flex;align-items:center}
+  .stats-period-nav .stats-period-label{font-size:13px;font-weight:700;color:var(--text-sub);min-width:150px;text-align:center}
 
 
   /* sheets */
@@ -506,7 +509,8 @@
       </div>
       <div class="field">
         <label>메뉴</label>
-        <input type="text" id="inpMenu" placeholder="예: 참치김밥 + 라면" maxlength="30">
+        <input type="text" id="inpMenu" list="menuSuggestions" placeholder="예: 참치김밥 + 라면" maxlength="30" autocomplete="off">
+        <datalist id="menuSuggestions"></datalist>
       </div>
       <div class="field">
         <label>정산 유형</label>
@@ -570,7 +574,15 @@
         <div class="stats-title">통계</div>
       </div>
       <div class="stats-content">
-        <div class="stats-period" id="statsPeriod"></div>
+        <div class="stats-period-nav">
+          <button id="statsPrevPeriod" aria-label="이전 기간">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
+          <span class="stats-period-label" id="statsPeriod"></span>
+          <button id="statsNextPeriod" aria-label="다음 기간">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
         <div class="stats-section stats-overview">
           <div class="stats-section-title">한눈에 보기</div>
           <div id="statsHighlight"></div>
@@ -713,7 +725,7 @@
 <script>
 (function(){
   var today = new Date();
-  var state = { entries: [], budget: 0, viewYear: null, viewMonth: null, view: 'list', excludedDates: [], colorHex: '#3182F6', customColors: [], periodStartMonth: today.getMonth()+1, periodStartDay: 1, periodEndMonth: today.getMonth()+1, periodEndDay: daysInMonth(today.getFullYear(),today.getMonth()), dailyBudgetMode: 'auto', manualDailyBudget: 0, placeMemos: {} };
+  var state = { entries: [], budget: 0, viewYear: null, viewMonth: null, view: 'list', excludedDates: [], colorHex: '#3182F6', customColors: [], periodStartMonth: today.getMonth()+1, periodStartDay: 1, periodEndMonth: today.getMonth()+1, periodEndDay: daysInMonth(today.getFullYear(),today.getMonth()), dailyBudgetMode: 'auto', manualDailyBudget: 0, placeMemos: {}, statsYear: null, statsMonth: null };
   var todayKey = fmtKey(today);
 
   function fmtKey(d){
@@ -980,6 +992,23 @@
       dl.appendChild(opt);
     });
   }
+  function updateMenuDatalist(){
+    var dl = document.getElementById('menuSuggestions');
+    if(!dl) return;
+    var seen = {};
+    var names = [];
+    state.entries.forEach(function(e){
+      var k = normalizePlaceKey(e.menu);
+      if(k && !seen[k]){ seen[k]=true; names.push(k); }
+    });
+    names.sort(function(a,b){ return a.localeCompare(b,'ko'); });
+    dl.innerHTML = '';
+    names.forEach(function(n){
+      var opt = document.createElement('option');
+      opt.value = n;
+      dl.appendChild(opt);
+    });
+  }
 
   function monthEntries(){
     var r = periodRange(state.viewYear, state.viewMonth);
@@ -1011,7 +1040,7 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
   }
 
   function renderStats(){
-    var r=periodRange(state.viewYear,state.viewMonth);
+    var r=periodRange(state.statsYear,state.statsMonth);
     var entries=state.entries.filter(function(e){return e.date>=r.startKey&&e.date<=r.endKey;});
     var paid=entries.reduce(function(s,e){return s+entryPaidAmount(e);},0);
     var used=entries.reduce(function(s,e){return s+entryBudgetAmount(e);},0);
@@ -1095,6 +1124,7 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
 
   function render(){
     updatePlaceDatalist();
+    updateMenuDatalist();
     var r = periodRange(state.viewYear, state.viewMonth);
     var monthLabelEl = document.getElementById('monthLabel');
     if(state.periodStartMonth===1 && state.periodStartDay===1 && state.periodEndMonth===12 && state.periodEndDay===31){
@@ -1827,6 +1857,17 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     render();
   };
 
+  document.getElementById('statsPrevPeriod').onclick = function(){
+    state.statsMonth--;
+    if(state.statsMonth<0){ state.statsMonth=11; state.statsYear--; }
+    renderStats();
+  };
+  document.getElementById('statsNextPeriod').onclick = function(){
+    state.statsMonth++;
+    if(state.statsMonth>11){ state.statsMonth=0; state.statsYear++; }
+    renderStats();
+  };
+
   document.getElementById('exportBtn').onclick = function(){
     var payload = {
       app: 'lunch-budget',
@@ -1898,7 +1939,7 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
     reader.readAsText(file);
   };
 
-  document.getElementById('openStats').onclick=function(){ renderStats(); openSheet('statsOverlay'); };
+  document.getElementById('openStats').onclick=function(){ state.statsYear = state.viewYear; state.statsMonth = state.viewMonth; renderStats(); openSheet('statsOverlay'); };
   document.getElementById('closeStats').onclick=function(){ closeSheet('statsOverlay'); };
   document.getElementById('statsOverlay').addEventListener('click',function(ev){ if(ev.target===this) closeSheet('statsOverlay'); });
   document.getElementById('openHistory').onclick=function(){ renderHistory(); openSheet('historyOverlay'); };
