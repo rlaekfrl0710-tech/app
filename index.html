@@ -175,7 +175,7 @@
   .report-title{font-size:16px;font-weight:800;letter-spacing:-.3px}.report-copy{margin-top:5px;font-size:12.5px;line-height:1.55;color:var(--text-sub);min-height:39px;max-width:300px}
   .report-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:14px}.report-metric{padding:11px 10px;border-radius:12px;background:#F7F8FA}.report-metric-label{font-size:10px;color:var(--text-faint);margin-bottom:4px}.report-metric-value{font-size:13px;font-weight:800;color:var(--text)}
   .settings-sheet{padding-bottom:34px}.settings-top{margin-bottom:20px}.settings-top .sheet-title{margin-bottom:4px}.settings-sub{font-size:12px;color:var(--text-faint)}
-  .settings-section{padding:18px 0;border-top:1px solid var(--line)}.settings-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.settings-section-head strong{font-size:14px}.settings-section-head span{font-size:10px;color:var(--text-faint);letter-spacing:.8px;text-transform:uppercase}.compact-field{margin-bottom:12px}.period-row{display:grid;grid-template-columns:1fr 20px 1fr;align-items:end;gap:5px}.period-dash{height:48px;display:flex;align-items:center;justify-content:center;color:var(--text-faint);padding-top:18px}
+  .settings-section{padding:18px 0;border-top:1px solid var(--line)}.settings-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.settings-section-head strong{font-size:14px}.settings-section-head span{font-size:10px;color:var(--text-faint);letter-spacing:.8px;text-transform:uppercase}.compact-field{margin-bottom:12px}.period-row{display:grid;grid-template-columns:minmax(0,1fr) 20px minmax(0,1fr);align-items:start;gap:8px}.period-dash{height:48px;display:flex;align-items:center;justify-content:center;color:var(--text-faint);padding-top:0;margin-top:20px}
 
   /* settings UI refinement */
   .settings-sheet{background:#fff}
@@ -633,8 +633,8 @@
 
 <script>
 (function(){
-  var state = { entries: [], budget: 0, viewYear: null, viewMonth: null, view: 'list', excludedDates: [], colorHex: '#3182F6', periodStartMonth: 1, periodStartDay: 1, periodEndMonth: 12, periodEndDay: 31 };
   var today = new Date();
+  var state = { entries: [], budget: 0, viewYear: null, viewMonth: null, view: 'list', excludedDates: [], colorHex: '#3182F6', periodStartMonth: today.getMonth()+1, periodStartDay: 1, periodEndMonth: today.getMonth()+1, periodEndDay: daysInMonth(today.getFullYear(),today.getMonth()) };
   var todayKey = fmtKey(today);
 
   function fmtKey(d){
@@ -777,7 +777,7 @@
     }catch(err){ state.colorHex = '#3182F6'; }
     try{
       var pm = await storageGet('lunch-period-start-month');
-      state.periodStartMonth = pm ? JSON.parse(pm.value) : 1;
+      state.periodStartMonth = pm ? JSON.parse(pm.value) : (today.getMonth()+1);
     }catch(err){ state.periodStartMonth = 1; }
     try{
       var p = await storageGet('lunch-period-start');
@@ -785,13 +785,13 @@
     }catch(err){ state.periodStartDay = 1; }
     try{
       var pem = await storageGet('lunch-period-end-month');
-      state.periodEndMonth = pem ? JSON.parse(pem.value) : 12;
+      state.periodEndMonth = pem ? JSON.parse(pem.value) : (today.getMonth()+1);
     }catch(err){ state.periodEndMonth = 12; }
     try{
       var pe = await storageGet('lunch-period-end');
-      state.periodEndDay = pe ? JSON.parse(pe.value) : 31;
+      state.periodEndDay = pe ? JSON.parse(pe.value) : daysInMonth(today.getFullYear(),today.getMonth());
     }catch(err){ state.periodEndDay = 31; }
-    if(!pm && !pem){ state.periodStartMonth = 1; state.periodEndMonth = 12; }
+    if(!pm && !pem){ state.periodStartMonth = today.getMonth()+1; state.periodStartDay = 1; state.periodEndMonth = today.getMonth()+1; state.periodEndDay = daysInMonth(today.getFullYear(),today.getMonth()); }
   }
   async function saveEntries(){
     try{ await storageSet('lunch-entries', JSON.stringify(state.entries)); }
@@ -1388,8 +1388,8 @@ var metrics=document.getElementById('reportMetrics'); metrics.innerHTML='';
 
   document.getElementById('openSettings').onclick = function(){
     document.getElementById('inpBudget').value = formatMoneyInput(state.budget);
-    document.getElementById('inpPeriodStart').value = '2000-' + String(state.periodStartMonth || 1).padStart(2,'0') + '-' + String(state.periodStartDay || 1).padStart(2,'0');
-    document.getElementById('inpPeriodEnd').value = '2000-' + String(state.periodEndMonth || 12).padStart(2,'0') + '-' + String(state.periodEndDay || 31).padStart(2,'0');
+    document.getElementById('inpPeriodStart').value = today.getFullYear() + '-' + String(state.periodStartMonth || 1).padStart(2,'0') + '-' + String(state.periodStartDay || 1).padStart(2,'0');
+    document.getElementById('inpPeriodEnd').value = today.getFullYear() + '-' + String(state.periodEndMonth || 12).padStart(2,'0') + '-' + String(state.periodEndDay || 31).padStart(2,'0');
     applyColor(state.colorHex || '#3182F6');
     document.querySelectorAll('.theme-swatch').forEach(function(btn){ btn.classList.toggle('active', btn.getAttribute('data-color') === (state.colorHex || '#3182F6')); });
     openSheet('settingsOverlay');
